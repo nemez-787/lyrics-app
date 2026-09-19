@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Переводы Песен и Альбомы</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #0b0e14;
+            color: #d1d5db;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #1f2937;
+            margin-bottom: 25px;
+            gap: 12px;
+        }
+        .nav-left {
+            margin-right: auto;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn {
+            background-color: #1e293b;
+            color: #60a5fa;
+            border: 1px solid #3b82f6;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover { background-color: #3b82f6; color: #fff; }
+        .btn-secondary {
+            background-color: #0f172a;
+            color: #94a3b8;
+            border-color: #334155;
+        }
+        .btn-secondary:hover {
+            background-color: #1e293b;
+            color: #f8fafc;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            color: #f3f4f6;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 1px solid #1f2937;
+            padding-bottom: 10px;
+        }
+
+        /* Grid layouts */
+        .artist-grid, .album-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #000;
+            border: 2px solid #1d4ed8;
+            border-radius: 4px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: center;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 15px rgba(59, 130, 246, 0.4);
+        }
+        .card-cover {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            display: block;
+            background-color: #050b14;
+        }
+        .card-title-bar {
+            background-color: #030712;
+            color: #3b82f6;
+            padding: 9px 5px;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border-top: 1px solid #1d4ed8;
+        }
+
+        /* Tracklist View */
+        .tracklist-container {
+            display: flex;
+            gap: 30px;
+            background: #000;
+            border: 1px solid #1f2937;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        @media (max-width: 650px) {
+            .tracklist-container { flex-direction: column; }
+        }
+        .tracklist-cover {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border: 2px solid #3b82f6;
+            border-radius: 4px;
+        }
+        .tracklist-info { flex: 1; }
+        .tracklist-title { font-size: 26px; color: #fff; margin-bottom: 15px; }
+        .tracks-ol { padding-left: 20px; }
+        .track-item {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .track-link {
+            color: #60a5fa;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .track-link:hover { text-decoration: underline; color: #93c5fd; }
+        .stream-btn {
+            margin-top: 20px;
+            background: #1d4ed8;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Lyrics View */
+        .lyrics-container {
+            background: #111827;
+            padding: 25px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .lyrics-header { margin-bottom: 20px; border-bottom: 1px solid #374151; padding-bottom: 15px; }
+        .lyric-line-pair {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+        @media (max-width: 600px) {
+            .lyric-line-pair { grid-template-columns: 1fr; }
+        }
+        .lyric-line-pair:hover { background-color: #1f2937; }
+        .orig-text { color: #f3f4f6; font-weight: 500; }
+        .trans-text { color: #60a5fa; }
+
+        /* Modal Form */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+        .modal-content {
+            background: #1f2937;
+            padding: 25px;
+            border-radius: 8px;
+            width: 480px;
+            max-width: 90%;
+            border: 1px solid #3b82f6;
+        }
+        .modal-content h3 { margin-bottom: 15px; color: #fff; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 13px; color: #9ca3af; }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 8px 10px;
+            background: #111827;
+            border: 1px solid #374151;
+            color: #fff;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .modal-buttons { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="nav-left">
+            <button class="btn btn-secondary" onclick="showArtistsView()">🏠 Исполнители</button>
+        </div>
+        <button class="btn" onclick="openModal('artistModal')">+ Добавить исполнителя</button>
+        <button class="btn" onclick="openModal('albumModal')">+ Добавить альбом</button>
+        <button class="btn" onclick="openModal('songModal')">+ Добавить песню</button>
+    </header>
+
+    <!-- 1. Исполнители -->
+    <div id="artistsView">
+        <h2 class="section-title">Исполнители</h2>
+        <div class="artist-grid" id="artistGrid"></div>
+    </div>
+
+    <!-- 2. Альбомы выбранного исполнителя -->
+    <div id="artistAlbumsView" style="display:none;">
+        <h2 class="section-title" id="artistTitleHeader">Альбомы</h2>
+        <div class="album-grid" id="albumGrid"></div>
+    </div>
+
+    <!-- 3. Треклист альбома -->
+    <div id="tracklistView" style="display:none;"></div>
+
+    <!-- 4. Перевод песни -->
+    <div id="lyricsView" style="display:none;"></div>
+</div>
+
+<!-- Modal Add Artist -->
+<div class="modal" id="artistModal">
+    <div class="modal-content">
+        <h3>Добавить исполнителя</h3>
+        <div class="form-group">
+            <label>Имя / Название группы</label>
+            <input type="text" id="newArtistName" placeholder="например, Slayer">
+        </div>
+        <div class="form-group">
+            <label>Ссылка на фото / логотип (URL)</label>
+            <input type="text" id="newArtistImage" placeholder="https://example.com/logo.jpg">
+        </div>
+        <div class="modal-buttons">
+            <button class="btn btn-secondary" onclick="closeModal('artistModal')">Отмена</button>
+            <button class="btn" onclick="saveArtist()">Сохранить</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add Album -->
+<div class="modal" id="albumModal">
+    <div class="modal-content">
+        <h3>Добавить новый альбом</h3>
+        <div class="form-group">
+            <label>Исполнитель</label>
+            <select id="albArtistSelect"></select>
+        </div>
+        <div class="form-group">
+            <label>Название альбома</label>
+            <input type="text" id="albName" placeholder="например, Master of Puppets">
+        </div>
+        <div class="form-group">
+            <label>Год выпуска</label>
+            <input type="text" id="albYear" placeholder="1986">
+        </div>
+        <div class="form-group">
+            <label>Ссылка на обложку (URL)</label>
+            <input type="text" id="albCover" placeholder="https://example.com/cover.jpg">
+        </div>
+        <div class="modal-buttons">
+            <button class="btn btn-secondary" onclick="closeModal('albumModal')">Отмена</button>
+            <button class="btn" onclick="saveAlbum()">Сохранить</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Add Song -->
+<div class="modal" id="songModal">
+    <div class="modal-content">
+        <h3>Добавить песню и перевод</h3>
+        <div class="form-group">
+            <label>Выберите альбом</label>
+            <select id="songAlbumSelect"></select>
+        </div>
+        <div class="form-group">
+            <label>Название песни</label>
+            <input type="text" id="songTitle" placeholder="Master of Puppets">
+        </div>
+        <div class="form-group">
+            <label>Английский текст (построчно)</label>
+            <textarea id="songLyricsEng" rows="5" placeholder="End of passion play, crumbling away..."></textarea>
+        </div>
+        <div class="form-group">
+            <label>Русский перевод (построчно)</label>
+            <textarea id="songLyricsRus" rows="5" placeholder="Конец спектакля страстей, всё рушится..."></textarea>
+        </div>
+        <div class="modal-buttons">
+            <button class="btn btn-secondary" onclick="closeModal('songModal')">Отмена</button>
+            <button class="btn" onclick="saveSong()">Сохранить</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const defaultArtists = [
+        {
+            id: 'art_metallica',
+            name: 'Metallica',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/b/b7/Metallica_logo.png'
+        },
+        {
+            id: 'art_tool',
+            name: 'Tool',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Tool_Band_Logo.svg/1200px-Tool_Band_Logo.svg.png'
+        },
+        {
+            id: 'art_slipknot',
+            name: 'Slipknot',
+            image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Slipknot_logo.svg/1200px-Slipknot_logo.svg.png'
+        }
+    ];
+
+    const defaultAlbums = [
+        {
+            id: 'alb_m1',
+            artistId: 'art_metallica',
+            title: 'Master of Puppets',
+            year: '1986',
+            cover: 'https://upload.wikimedia.org/wikipedia/en/b/b2/Metallica_-_Master_of_Puppets_cover.jpg',
+            tracks: [
+                { title: 'Battery', eng: 'Lashing out the action, returning the reaction', rus: 'Выплёскивая действия, получая реакцию' },
+                { title: 'Master of Puppets', eng: 'End of passion play, crumbling away\nI\'m your source of self-destruction', rus: 'Конец спектакля страстей, всё рушится\nЯ твой источник саморазрушения' }
+            ]
+        },
+        {
+            id: 'alb_m2',
+            artistId: 'art_metallica',
+            title: '...And Justice for All',
+            year: '1988',
+            cover: 'https://upload.wikimedia.org/wikipedia/en/b/bd/Metallica_-_...And_Justice_for_All_cover.jpg',
+            tracks: [
+                { title: 'Blackened', eng: 'Blackened is the end, winter it will send', rus: 'Почерневший конец, принесет зиму' },
+                { title: 'One', eng: 'I can\'t remember anything, can\'t tell if this is true or dream', rus: 'Ничего не помню, не пойму, явь это или сон' }
+            ]
+        },
+        {
+            id: 'alb_m3',
+            artistId: 'art_metallica',
+            title: '72 Seasons',
+            year: '2023',
+            cover: 'https://upload.wikimedia.org/wikipedia/en/4/44/Metallica_-_72_Seasons.png',
+            tracks: [
+                { title: '72 Seasons', eng: 'Feeding on the wrath of man', rus: 'Питаясь человеческой яростью' }
+            ]
+        },
+        {
+            id: 'alb_t1',
+            artistId: 'art_tool',
+            title: 'Lateralus',
+            year: '2001',
+            cover: 'https://upload.wikimedia.org/wikipedia/en/6/63/Tool_-_Lateralus.jpg',
+            tracks: [
+                { title: 'Schism', eng: 'I know the pieces fit \'cause I watched them fall away', rus: 'Я знаю, элементы подходят, ведь я видел, как они отпадали' },
+                { title: 'Lateralus', eng: 'Black then white are all I see in my infancy', rus: 'Черное, затем белое — все, что я вижу в своем младенчестве' }
+            ]
+        }
+    ];
+
+    let artists = JSON.parse(localStorage.getItem('musinfo_artists')) || defaultArtists;
+    let albums = JSON.parse(localStorage.getItem('musinfo_albums')) || defaultAlbums;
+    let currentArtistId = null;
+
+    function saveToStorage() {
+        localStorage.setItem('musinfo_artists', JSON.stringify(artists));
+        localStorage.setItem('musinfo_albums', JSON.stringify(albums));
+    }
+
+    // --- NAVIGATION VIEWS ---
+
+    function hideAllViews() {
+        document.getElementById('artistsView').style.display = 'none';
+        document.getElementById('artistAlbumsView').style.display = 'none';
+        document.getElementById('tracklistView').style.display = 'none';
+        document.getElementById('lyricsView').style.display = 'none';
+    }
+
+    function showArtistsView() {
+        hideAllViews();
+        document.getElementById('artistsView').style.display = 'block';
+        renderArtists();
+    }
+
+    function showArtistAlbumsView(artistId) {
+        currentArtistId = artistId;
+        const artist = artists.find(a => a.id === artistId);
+        if (!artist) return;
+
+        hideAllViews();
+        document.getElementById('artistAlbumsView').style.display = 'block';
+        document.getElementById('artistTitleHeader').innerText = `${artist.name} Альбомы`;
+
+        renderAlbums(artistId);
+    }
+
+    // --- RENDERING ---
+
+    function renderArtists() {
+        const grid = document.getElementById('artistGrid');
+        grid.innerHTML = '';
+        artists.forEach(art => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.onclick = () => showArtistAlbumsView(art.id);
+            card.innerHTML = `
+                <img src="${art.image}" class="card-cover" alt="${art.name}" onerror="this.src='https://via.placeholder.com/300/000000/3b82f6?text=${encodeURIComponent(art.name)}'">
+                <div class="card-title-bar">${art.name}</div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function renderAlbums(artistId) {
+        const grid = document.getElementById('albumGrid');
+        grid.innerHTML = '';
+        const artistAlbums = albums.filter(a => a.artistId === artistId);
+
+        if (artistAlbums.length === 0) {
+            grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #6b7280; padding: 40px;">В этом окне пока нет альбомов. Нажмите "+ Добавить альбом".</div>`;
+            return;
+        }
+
+        artistAlbums.forEach(alb => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.onclick = () => openAlbum(alb.id);
+            card.innerHTML = `
+                <img src="${alb.cover}" class="card-cover" alt="${alb.title}" onerror="this.src='https://via.placeholder.com/300/000000/3b82f6?text=No+Cover'">
+                <div class="card-title-bar">${alb.title} [${alb.year}]</div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function openAlbum(id) {
+        const alb = albums.find(a => a.id === id);
+        const artist = artists.find(a => a.id === alb.artistId);
+        if (!alb) return;
+
+        hideAllViews();
+        const tv = document.getElementById('tracklistView');
+        tv.style.display = 'flex';
+
+        let tracksHtml = alb.tracks && alb.tracks.length > 0 
+            ? alb.tracks.map((t, idx) => `
+                <li class="track-item">
+                    <a class="track-link" onclick="openLyrics('${alb.id}', ${idx})">${t.title}</a>
+                </li>
+            `).join('')
+            : '<p style="color:#6b7280;">Нет добавленных песен</p>';
+
+        tv.innerHTML = `
+            <div>
+                <img src="${alb.cover}" class="tracklist-cover" onerror="this.src='https://via.placeholder.com/300/000000/3b82f6?text=No+Cover'">
+                <div style="margin-top: 15px;">
+                    <button class="btn btn-secondary" style="width:100%;" onclick="showArtistAlbumsView('${alb.artistId}')">← Назад к альбомам</button>
+                </div>
+            </div>
+            <div class="tracklist-info">
+                <h2 class="tracklist-title">${artist ? artist.name : ''} ${alb.title} Список песен</h2>
+                <ol class="tracks-ol">${tracksHtml}</ol>
+                <button class="stream-btn">📻 Включить Музыкальный Стриминг</button>
+            </div>
+        `;
+    }
+
+    function openLyrics(albId, trackIdx) {
+        const alb = albums.find(a => a.id === albId);
+        const artist = artists.find(a => a.id === alb.artistId);
+        const track = alb.tracks[trackIdx];
+
+        hideAllViews();
+        const lv = document.getElementById('lyricsView');
+        lv.style.display = 'block';
+
+        const engLines = (track.eng || '').split('\n');
+        const rusLines = (track.rus || '').split('\n');
+
+        let lyricsHtml = '';
+        const maxLen = Math.max(engLines.length, rusLines.length);
+
+        for (let i = 0; i < maxLen; i++) {
+            lyricsHtml += `
+                <div class="lyric-line-pair">
+                    <div class="orig-text">${engLines[i] || ''}</div>
+                    <div class="trans-text">[Русский] ${rusLines[i] || ''}</div>
+                </div>
+            `;
+        }
+
+        lv.innerHTML = `
+            <div class="lyrics-header">
+                <h2>${artist ? artist.name : ''} — ${track.title}</h2>
+                <p style="color:#9ca3af; margin-top: 5px;">Альбом: ${alb.title} (${alb.year})</p>
+                <button class="btn btn-secondary" style="margin-top:12px;" onclick="openAlbum('${alb.id}')">← К списку треков</button>
+            </div>
+            <div>${lyricsHtml}</div>
+        `;
+    }
+
+    // --- MODALS & CREATION ---
+
+    function openModal(id) {
+        if (id === 'albumModal') {
+            const select = document.getElementById('albArtistSelect');
+            select.innerHTML = artists.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
+            if (currentArtistId) select.value = currentArtistId;
+        } else if (id === 'songModal') {
+            const select = document.getElementById('songAlbumSelect');
+            select.innerHTML = albums.map(a => {
+                const art = artists.find(ar => ar.id === a.artistId);
+                return `<option value="${a.id}">${art ? art.name : ''} - ${a.title}</option>`;
+            }).join('');
+        }
+        document.getElementById(id).style.display = 'flex';
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).style.display = 'none';
+    }
+
+    function saveArtist() {
+        const name = document.getElementById('newArtistName').value.trim();
+        const image = document.getElementById('newArtistImage').value.trim();
+
+        if (!name) return alert('Введите имя исполнителя');
+
+        const newArt = {
+            id: 'art_' + Date.now(),
+            name: name,
+            image: image || 'https://via.placeholder.com/300/000000/3b82f6?text=' + encodeURIComponent(name)
+        };
+
+        artists.push(newArt);
+        saveToStorage();
+        closeModal('artistModal');
+        showArtistsView();
+    }
+
+    function saveAlbum() {
+        const artistId = document.getElementById('albArtistSelect').value;
+        const title = document.getElementById('albName').value.trim();
+        const year = document.getElementById('albYear').value.trim();
+        const cover = document.getElementById('albCover').value.trim();
+
+        if (!title) return alert('Введите название альбома');
+
+        const newAlb = {
+            id: 'alb_' + Date.now(),
+            artistId: artistId,
+            title: title,
+            year: year || '2024',
+            cover: cover || 'https://via.placeholder.com/300/000000/3b82f6?text=' + encodeURIComponent(title),
+            tracks: []
+        };
+
+        albums.push(newAlb);
+        saveToStorage();
+        closeModal('albumModal');
+        showArtistAlbumsView(artistId);
+    }
+
+    function saveSong() {
+        const albId = document.getElementById('songAlbumSelect').value;
+        const title = document.getElementById('songTitle').value.trim();
+        const eng = document.getElementById('songLyricsEng').value;
+        const rus = document.getElementById('songLyricsRus').value;
+
+        if (!title) return alert('Введите название песни');
+
+        const alb = albums.find(a => a.id === albId);
+        if (alb) {
+            alb.tracks.push({ title, eng, rus });
+            saveToStorage();
+            closeModal('songModal');
+            openAlbum(albId);
+        }
+    }
+
+    // Init App
+    showArtistsView();
+</script>
+
+</body>
+</html>
