@@ -3,1011 +3,882 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lyrics App - Музыкальная Библиотека</title>
+  <title>Music & Lyrics Library</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    :root {
-      --bg-dark: #0d1117;
-      --card-bg: #161b22;
-      --border-color: #30363d;
-      --text-main: #c9d1d9;
-      --text-muted: #8b949e;
-      --accent-blue: #1f6feb;
-      --accent-hover: #388bfd;
-      --btn-bg: #21262d;
-      --btn-hover: #30363d;
-      --danger: #da3633;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
     body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      padding: 20px;
-      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      background-color: #0b0f17;
+      color: #e2e8f0;
     }
 
-    header {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid var(--border-color);
-      margin-bottom: 24px;
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
     }
 
-    .nav-left, .nav-right {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+    .glass-card {
+      background: rgba(22, 27, 34, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .btn {
-      background-color: var(--btn-bg);
-      color: var(--text-main);
-      border: 1px solid var(--border-color);
-      padding: 8px 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: background 0.2s, border-color 0.2s;
+    .glass-card:hover {
+      border-color: rgba(59, 130, 246, 0.4);
+      box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.5);
     }
 
-    .btn:hover {
-      background-color: var(--btn-hover);
-      border-color: #8b949e;
-    }
-
-    .btn-primary {
-      background-color: var(--accent-blue);
-      color: #ffffff;
-      border-color: rgba(240, 246, 252, 0.1);
-    }
-
-    .btn-primary:hover {
-      background-color: var(--accent-hover);
-    }
-
-    .btn-danger {
-      background-color: #21262d;
-      color: #f85149;
-      border-color: var(--border-color);
-    }
-
-    .btn-danger:hover {
-      background-color: var(--danger);
-      color: #ffffff;
-    }
-
-    .btn-sm {
-      padding: 4px 8px;
-      font-size: 12px;
-    }
-
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .section-title {
-      font-size: 24px;
-      margin-bottom: 20px;
-      text-align: center;
-      font-weight: 600;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 16px;
-      text-align: center;
-      cursor: pointer;
-      position: relative;
-      transition: transform 0.2s, border-color 0.2s;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      border-color: var(--accent-blue);
-    }
-
-    .card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 6px;
-      margin-bottom: 12px;
-    }
-
-    .card h3 {
-      font-size: 18px;
-      margin-bottom: 6px;
-    }
-
-    .card p {
-      color: var(--text-muted);
-      font-size: 14px;
-    }
-
-    .card-actions {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      display: flex;
-      gap: 4px;
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-
-    .card:hover .card-actions {
-      opacity: 1;
-    }
-
-    .breadcrumbs {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 20px;
-      font-size: 15px;
-      color: var(--text-muted);
-    }
-
-    .breadcrumbs span {
-      color: var(--text-main);
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .breadcrumbs span:hover {
-      text-decoration: underline;
-    }
-
-    .album-header-info {
-      display: flex;
-      gap: 24px;
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 24px;
-      align-items: center;
-    }
-
-    .album-header-info img {
-      width: 140px;
-      height: 140px;
-      object-fit: cover;
-      border-radius: 6px;
-    }
-
-    .track-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .track-item {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      padding: 12px 16px;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      transition: background 0.2s;
-    }
-
-    .track-item:hover {
-      border-color: #8b949e;
-    }
-
-    .track-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex: 1;
-      cursor: pointer;
-    }
-
-    .track-drag-handle {
-      cursor: grab;
-      color: var(--text-muted);
-      user-select: none;
-      font-size: 18px;
-    }
-
-    .track-number {
-      color: var(--text-muted);
-      font-size: 14px;
-      min-width: 24px;
-    }
-
-    .track-title {
-      font-weight: 600;
-      font-size: 16px;
-    }
-
-    .track-item-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.75);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      padding: 16px;
-    }
-
-    .modal {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      width: 100%;
-      max-width: 850px;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-
-    .modal-header {
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .modal-title {
-      font-size: 18px;
-      font-weight: 600;
-    }
-
-    .modal-body {
-      padding: 20px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .modal-footer {
-      padding: 16px 20px;
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-    }
-
-    .song-lyrics-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    @media (max-width: 650px) {
-      .song-lyrics-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .lyrics-box {
-      background: #0d1117;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      padding: 14px;
-      font-family: monospace;
-      font-size: 14px;
-      line-height: 1.6;
-      white-space: pre-wrap;
-      word-break: break-word;
-      max-height: 380px;
-      overflow-y: auto;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .form-group label {
-      font-size: 13px;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .form-control {
-      background: #0d1117;
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-size: 14px;
-    }
-
-    .form-control:focus {
-      outline: none;
-      border-color: var(--accent-blue);
-    }
-
-    textarea.form-control {
-      resize: vertical;
-      min-height: 220px;
-      font-family: monospace;
-      line-height: 1.4;
-    }
-
-    .hidden {
-      display: none !important;
     }
   </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
 
-<div class="container">
-  <header>
-    <div class="nav-left">
-      <button class="btn" onclick="showArtists()"><span class="icon">🏠</span> Исполнители</button>
-    </div>
-    <div class="nav-right">
-      <button class="btn" onclick="exportData()"><span class="icon">💾</span> Скачать данные</button>
-      <button class="btn" onclick="document.getElementById('importFile').click()"><span class="icon">📁</span> Загрузить данные</button>
-      <input type="file" id="importFile" class="hidden" accept=".json" onchange="importData(event)">
-      <button class="btn btn-primary" onclick="openArtistModal()"><span class="icon">+</span> Добавить исполнителя</button>
-      <button class="btn btn-primary" onclick="openAlbumModal()"><span class="icon">+</span> Добавить альбом</button>
-      <button class="btn btn-primary" id="addTrackBtn" onclick="openTrackModal()" style="display:none;"><span class="icon">+</span> Добавить песню</button>
+  <!-- Header -->
+  <header class="sticky top-0 z-40 bg-[#0f172a]/90 backdrop-blur-md border-b border-slate-800/80 px-4 lg:px-8 py-3">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Brand & Root Nav -->
+      <div class="flex items-center gap-3">
+        <button onclick="showArtists()" class="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700 text-slate-100 px-3.5 py-2 rounded-lg border border-slate-700 text-sm font-medium transition-all shadow-sm active:scale-95">
+          <i class="fa-solid font-bold text-blue-400 fa-house"></i>
+          <span>Главная</span>
+        </button>
+        <span class="text-xs font-semibold tracking-wider text-slate-500 uppercase hidden sm:inline-block">/ Rock & Metal Vault</span>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="openArtistModal()" class="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium transition-all shadow-md shadow-blue-900/20 active:scale-95">
+          <i class="fa-solid fa-user-plus"></i>
+          <span>+ Исполнитель</span>
+        </button>
+
+        <button onclick="openAlbumModal()" class="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium transition-all shadow-md shadow-indigo-900/20 active:scale-95">
+          <i class="fa-solid fa-record-vinyl"></i>
+          <span>+ Альбом</span>
+        </button>
+
+        <button id="headerAddTrackBtn" onclick="openTrackModal()" class="hidden items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium transition-all shadow-md shadow-emerald-900/20 active:scale-95">
+          <i class="fa-solid fa-music"></i>
+          <span>+ Песня</span>
+        </button>
+
+        <div class="h-4 w-px bg-slate-800 mx-1 hidden sm:block"></div>
+
+        <button onclick="exportData()" title="Сохранить базу данных в файл" class="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 text-xs md:text-sm font-medium transition-all active:scale-95">
+          <i class="fa-solid fa-download text-slate-400"></i>
+          <span class="hidden md:inline">Экспорт</span>
+        </button>
+
+        <label title="Загрузить базу данных из файла" class="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 text-xs md:text-sm font-medium transition-all cursor-pointer active:scale-95">
+          <i class="fa-solid fa-upload text-slate-400"></i>
+          <span class="hidden md:inline">Импорт</span>
+          <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="importData(event)">
+        </label>
+      </div>
+
     </div>
   </header>
 
-  <main id="appContent"></main>
-</div>
+  <!-- Main Container -->
+  <main id="appContent" class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8">
+    <!-- Dynamic content rendered here -->
+  </main>
 
-<!-- Modal: View Song Window -->
-<div id="songModal" class="modal-overlay hidden">
-  <div class="modal">
-    <div class="modal-header">
-      <div>
-        <div class="modal-title" id="songModalTitle">Название песни</div>
-        <p style="font-size: 13px; color: var(--text-muted);" id="songModalSubtitle">Исполнитель - Альбом</p>
-      </div>
-      <button class="btn btn-sm" onclick="closeSongModal()">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="song-lyrics-grid">
+  <!-- ================= MODALS ================= -->
+
+  <!-- Modal: View Song Lyrics -->
+  <div id="songLyricsModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden">
+    <div class="glass-card w-full max-w-4xl max-h-[90vh] rounded-2xl border border-slate-800 flex flex-col overflow-hidden shadow-2xl">
+      <!-- Modal Header -->
+      <div class="p-4 sm:p-6 border-b border-slate-800 flex items-center justify-between bg-slate-900/60">
         <div>
-          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600;">ОРИГИНАЛ (ENGLISH)</div>
-          <div class="lyrics-box" id="songModalEng"></div>
+          <h3 id="songModalTitle" class="text-xl sm:text-2xl font-bold text-white"></h3>
+          <p id="songModalSubtitle" class="text-xs sm:text-sm text-blue-400 font-medium mt-1"></p>
         </div>
-        <div>
-          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600;">ПЕРЕВОД (РУССКИЙ)</div>
-          <div class="lyrics-box" id="songModalRus"></div>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn" id="editSongFromViewBtn">✏️ Редактировать</button>
-      <button class="btn btn-primary" onclick="closeSongModal()">Закрыть</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal: Add/Edit Artist -->
-<div id="artistModal" class="modal-overlay hidden">
-  <div class="modal" style="max-width: 450px;">
-    <div class="modal-header">
-      <div class="modal-title" id="artistModalTitle">Добавить исполнителя</div>
-      <button class="btn btn-sm" onclick="closeModal('artistModal')">✕</button>
-    </div>
-    <div class="modal-body">
-      <input type="hidden" id="artistEditId">
-      <div class="form-group">
-        <label>Имя исполнителя / Группы</label>
-        <input type="text" id="artistNameInput" class="form-control" placeholder="Например: Metallica">
-      </div>
-      <div class="form-group">
-        <label>Ссылка на логотип / фото (URL)</label>
-        <input type="text" id="artistImageInput" class="form-control" placeholder="https://...">
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn" onclick="closeModal('artistModal')">Отмена</button>
-      <button class="btn btn-primary" onclick="saveArtist()">Сохранить</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal: Add/Edit Album -->
-<div id="albumModal" class="modal-overlay hidden">
-  <div class="modal" style="max-width: 450px;">
-    <div class="modal-header">
-      <div class="modal-title" id="albumModalTitle">Добавить альбом</div>
-      <button class="btn btn-sm" onclick="closeModal('albumModal')">✕</button>
-    </div>
-    <div class="modal-body">
-      <input type="hidden" id="albumEditId">
-      <div class="form-group">
-        <label>Исполнитель</label>
-        <select id="albumArtistSelect" class="form-control"></select>
-      </div>
-      <div class="form-group">
-        <label>Название альбома</label>
-        <input type="text" id="albumTitleInput" class="form-control" placeholder="Например: Master of Puppets">
-      </div>
-      <div class="form-group">
-        <label>Год выпуска</label>
-        <input type="text" id="albumYearInput" class="form-control" placeholder="1986">
-      </div>
-      <div class="form-group">
-        <label>Ссылка на обложку (URL)</label>
-        <input type="text" id="albumCoverInput" class="form-control" placeholder="https://...">
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn" onclick="closeModal('albumModal')">Отмена</button>
-      <button class="btn btn-primary" onclick="saveAlbum()">Сохранить</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal: Add/Edit Track -->
-<div id="trackModal" class="modal-overlay hidden">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title" id="trackModalTitle">Добавить песню</div>
-      <button class="btn btn-sm" onclick="closeModal('trackModal')">✕</button>
-    </div>
-    <div class="modal-body">
-      <input type="hidden" id="trackEditIndex" value="-1">
-      <div class="form-group">
-        <label>Название песни</label>
-        <input type="text" id="trackTitleInput" class="form-control" placeholder="Например: Battery">
-      </div>
-      
-      <div style="text-align: center; margin: 4px 0;">
-        <button type="button" class="btn btn-primary" id="autoTranslateBtn" onclick="autoTranslateTrack()" style="width: 100%;">
-          🌐 Автоперевод (English ➔ Русский)
+        <button onclick="closeModal('songLyricsModal')" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition">
+          <i class="fa-solid fa-xmark text-xl"></i>
         </button>
       </div>
-
-      <div class="song-lyrics-grid">
-        <div class="form-group">
-          <label>Оригинальный текст (English)</label>
-          <textarea id="trackEngInput" class="form-control" placeholder="Текст песни на английском..."></textarea>
+      <!-- Modal Body -->
+      <div class="p-4 sm:p-6 overflow-y-auto flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 bg-slate-950/40">
+        <!-- English Lyrics -->
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2 mb-2 text-xs font-semibold tracking-wider text-slate-400 uppercase">
+            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+            Оригинал (English)
+          </div>
+          <pre id="songModalEng" class="flex-1 p-4 rounded-xl bg-slate-900/90 border border-slate-800 text-slate-200 text-sm font-mono whitespace-pre-wrap leading-relaxed overflow-y-auto min-h-[220px]"></pre>
         </div>
-        <div class="form-group">
-          <label>Перевод текста (Русский)</label>
-          <textarea id="trackRusInput" class="form-control" placeholder="Перевод текста на русский..."></textarea>
+        <!-- Russian Lyrics -->
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2 mb-2 text-xs font-semibold tracking-wider text-slate-400 uppercase">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            Перевод (Русский)
+          </div>
+          <pre id="songModalRus" class="flex-1 p-4 rounded-xl bg-slate-900/90 border border-slate-800 text-slate-200 text-sm font-mono whitespace-pre-wrap leading-relaxed overflow-y-auto min-h-[220px]"></pre>
         </div>
       </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn" onclick="closeModal('trackModal')">Отмена</button>
-      <button class="btn btn-primary" onclick="saveTrack()">Сохранить</button>
+      <!-- Modal Footer -->
+      <div class="p-4 border-t border-slate-800 bg-slate-900/80 flex items-center justify-end gap-3">
+        <button id="songModalEditBtn" class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-lg text-sm font-medium transition border border-slate-700">
+          <i class="fa-solid fa-pen-to-square text-blue-400"></i>
+          Редактировать
+        </button>
+        <button onclick="closeModal('songLyricsModal')" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-lg text-sm font-medium transition">
+          Закрыть
+        </button>
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-  const defaultArtists = [
-    {
-      "id": "art_metallica",
-      "name": "Metallica",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Metallica_logo.png"
-    },
-    {
-      "id": "art_tool",
-      "name": "Tool",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Tool_Band_Logo.svg/1200px-Tool_Band_Logo.svg.png"
-    },
-    {
-      "id": "art_slipknot",
-      "name": "Slipknot",
-      "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Slipknot_logo.svg/1200px-Slipknot_logo.svg.png"
-    },
-    {
-      "id": "art_1789750335619",
-      "name": "Slayer",
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4cbvHuMITD6tpppUnwCf1XyKugkERoxhGZ6IiaSsKxw&s=10"
-    }
-  ];
-
-  const defaultAlbums = [
-    {
-      "id": "alb_m1",
-      "artistId": "art_metallica",
-      "title": "Master of Puppets",
-      "year": "1986",
-      "cover": "https://upload.wikimedia.org/wikipedia/en/b/b2/Metallica_-_Master_of_Puppets_cover.jpg",
-      "tracks": [
-        {
-          "title": "Battery",
-          "eng": "Lashing out the action, returning the reaction\nWeak are ripped and torn away\nHypnotizing power, crushing all that cower\nBattery is here to stay",
-          "rus": "Выплёскивая действия, получая реакцию\nСлабые вырваны и разорваны\nГипнотизирующая сила, крушащая всех, кто сжимается\nБатарея здесь навсегда"
-        },
-        {
-          "title": "Master of Puppets",
-          "eng": "End of passion play, crumbling away\nI'm your source of self-destruction",
-          "rus": "Конец спектакля страстей, всё рушится\nЯ твой источник саморазрушения"
-        },
-        {
-          "title": "Disposable Heroes",
-          "eng": "Bodies fill the fields I see, hungry heroes end\nNo one to play soldier now, no one to pretend",
-          "rus": "Тела заполняют поля, которые я вижу, голодные герои заканчиваются\nТеперь некому играть в солдата, некому притворяться"
-        }
-      ]
-    },
-    {
-      "id": "alb_m2",
-      "artistId": "art_metallica",
-      "title": "...And Justice for All",
-      "year": "1988",
-      "cover": "https://upload.wikimedia.org/wikipedia/en/b/bd/Metallica_-_...And_Justice_for_All_cover.jpg",
-      "tracks": [
-        {
-          "title": "Blackened",
-          "eng": "Blackened is the end, winter it will send",
-          "rus": "Почерневший конец, принесет зиму"
-        },
-        {
-          "title": "One",
-          "eng": "I can't remember anything, can't tell if this is true or dream",
-          "rus": "Ничего не помню, не пойму, явь это или сон"
-        }
-      ]
-    },
-    {
-      "id": "alb_1789750484122",
-      "artistId": "art_1789750335619",
-      "title": "Reign in Blood",
-      "year": "1986",
-      "cover": "https://m.media-amazon.com/images/I/61RPpNxysnL._UF1000,1000_QL80_.jpg",
-      "tracks": [
-        {
-          "title": "Raining Blood",
-          "eng": "Trapped in purgatory\nA lifeless object, alive\nAwaiting reprisal",
-          "rus": "В ловушке чистилища\nБезжизненный предмет, живой\nОжидание расправы"
-        }
-      ]
-    }
-  ];
-
-  let artists = JSON.parse(localStorage.getItem('music_artists')) || defaultArtists;
-  let albums = JSON.parse(localStorage.getItem('music_albums')) || defaultAlbums;
-  let currentArtistId = null;
-  let currentAlbumId = null;
-  let dragSrcIndex = null;
-
-  function saveData() {
-    localStorage.setItem('music_artists', JSON.stringify(artists));
-    localStorage.setItem('music_albums', JSON.stringify(albums));
-  }
-
-  function showArtists() {
-    currentArtistId = null;
-    currentAlbumId = null;
-    document.getElementById('addTrackBtn').style.display = 'none';
-
-    const app = document.getElementById('appContent');
-    app.innerHTML = `
-      <h2 class="section-title">Исполнители</h2>
-      <div class="grid">
-        ${artists.map(art => `
-          <div class="card" onclick="showAlbums('${art.id}')">
-            <div class="card-actions">
-              <button class="btn btn-sm" onclick="event.stopPropagation(); openArtistModal('${art.id}')">✏️</button>
-              <button class="btn btn-sm btn-danger" onclick="event.stopPropagation(); deleteArtist('${art.id}')">🗑️</button>
-            </div>
-            <img src="${art.image \vert{}\vert{} 'https://via.placeholder.com/200'}" alt="${art.name}">
-            <h3>${art.name}</h3>
-          </div>
-        `).join('')}
+  <!-- Modal: Artist Add/Edit -->
+  <div id="artistModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden">
+    <div class="glass-card w-full max-w-md rounded-2xl border border-slate-800 p-6 shadow-2xl">
+      <div class="flex items-center justify-between mb-5">
+        <h3 id="artistModalHeader" class="text-lg font-bold text-white"></h3>
+        <button onclick="closeModal('artistModal')" class="text-slate-400 hover:text-white">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
       </div>
-    `;
-  }
-
-  function showAlbums(artistId) {
-    currentArtistId = artistId;
-    currentAlbumId = null;
-    document.getElementById('addTrackBtn').style.display = 'none';
-
-    const artist = artists.find(a => a.id === artistId);
-    if (!artist) return showArtists();
-
-    const artistAlbums = albums.filter(a => a.artistId === artistId);
-    const app = document.getElementById('appContent');
-
-    app.innerHTML = `
-      <div class="breadcrumbs">
-        <span onclick="showArtists()">Исполнители</span> /
-        <span>${artist.name}</span>
-      </div>
-      <h2 class="section-title">Альбомы: ${artist.name}</h2>
-      <div class="grid">
-        ${artistAlbums.map(alb => `
-          <div class="card" onclick="showTracks('${alb.id}')">
-            <div class="card-actions">
-              <button class="btn btn-sm" onclick="event.stopPropagation(); openAlbumModal('${alb.id}')">✏️</button>
-              <button class="btn btn-sm btn-danger" onclick="event.stopPropagation(); deleteAlbum('${alb.id}')">🗑️</button>
-            </div>
-            <img src="${alb.cover \vert{}\vert{} 'https://via.placeholder.com/200'}" alt="${alb.title}">
-            <h3>${alb.title}</h3>
-            <p>${alb.year || ''}</p>
-          </div>
-        `).join('')}
-      </div>
-    `;
-  }
-
-  function showTracks(albumId) {
-    currentAlbumId = albumId;
-    const album = albums.find(a => a.id === albumId);
-    if (!album) return showArtists();
-
-    currentArtistId = album.artistId;
-    const artist = artists.find(a => a.id === currentArtistId);
-    const artistName = artist ? artist.name : '';
-
-    document.getElementById('addTrackBtn').style.display = 'inline-flex';
-
-    const app = document.getElementById('appContent');
-    app.innerHTML = `
-      <div class="breadcrumbs">
-        <span onclick="showArtists()">Исполнители</span> /
-        <span onclick="showAlbums('${artist ? artist.id : ''}')">${artistName}</span> /
-        <span>${album.title}</span>
-      </div>
-
-      <div class="album-header-info">
-        <img src="${album.cover || 'https://via.placeholder.com/200'}" alt="${album.title}">
+      <input type="hidden" id="artistEditId">
+      <div class="space-y-4">
         <div>
-          <h2>${album.title}</h2>
-          <p style="color: var(--text-muted); margin-top: 4px;">${artistName} • ${album.year || ''}</p>
-          <p style="color: var(--text-muted); font-size: 13px; margin-top: 8px;">Всего треков: ${album.tracks ? album.tracks.length : 0}</p>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Имя исполнителя / Группы</label>
+          <input type="text" id="artistNameInput" placeholder="Например: Megadeth" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">URL Изображения / Логотипа</label>
+          <input type="text" id="artistImageInput" placeholder="https://..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+        </div>
+      </div>
+      <div class="flex justify-end gap-3 mt-6">
+        <button onclick="closeModal('artistModal')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded-lg text-sm font-medium">Отмена</button>
+        <button onclick="saveArtist()" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-lg text-sm font-medium">Сохранить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Album Add/Edit -->
+  <div id="albumModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden">
+    <div class="glass-card w-full max-w-md rounded-2xl border border-slate-800 p-6 shadow-2xl">
+      <div class="flex items-center justify-between mb-5">
+        <h3 id="albumModalHeader" class="text-lg font-bold text-white"></h3>
+        <button onclick="closeModal('albumModal')" class="text-slate-400 hover:text-white">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <input type="hidden" id="albumEditId">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Исполнитель</label>
+          <select id="albumArtistSelect" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white focus:outline-none focus:border-blue-500"></select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Название альбома</label>
+          <input type="text" id="albumTitleInput" placeholder="Например: Rust in Peace" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Год выпуска</label>
+          <input type="text" id="albumYearInput" placeholder="1990" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">URL Обложки альбома</label>
+          <input type="text" id="albumCoverInput" placeholder="https://..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+        </div>
+      </div>
+      <div class="flex justify-end gap-3 mt-6">
+        <button onclick="closeModal('albumModal')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded-lg text-sm font-medium">Отмена</button>
+        <button onclick="saveAlbum()" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-lg text-sm font-medium">Сохранить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Track Add/Edit -->
+  <div id="trackModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden">
+    <div class="glass-card w-full max-w-3xl rounded-2xl border border-slate-800 p-6 shadow-2xl flex flex-col max-h-[90vh]">
+      <div class="flex items-center justify-between mb-4">
+        <h3 id="trackModalHeader" class="text-lg font-bold text-white"></h3>
+        <button onclick="closeModal('trackModal')" class="text-slate-400 hover:text-white">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <input type="hidden" id="trackEditIndex" value="-1">
+      
+      <div class="space-y-4 overflow-y-auto pr-1">
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1">Название трека</label>
+          <input type="text" id="trackTitleInput" placeholder="Например: Holy Wars... The Punishment Due" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3.5 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+        </div>
+
+        <!-- Auto Translate Button -->
+        <button type="button" id="autoTranslateBtn" onclick="autoTranslateTrack()" class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-2 rounded-lg text-sm font-medium transition shadow-md">
+          <i class="fa-solid fa-language text-lg"></i>
+          <span>🌐 Автоперевод (English ➔ Русский)</span>
+        </button>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Текст песни (English)</label>
+            <textarea id="trackEngInput" rows="10" placeholder="Вставьте оригинал текста..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-xs font-mono text-white focus:outline-none focus:border-blue-500 leading-relaxed"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-slate-400 mb-1">Перевод текста (Русский)</label>
+            <textarea id="trackRusInput" rows="10" placeholder="Вставьте или сгенерируйте перевод..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-xs font-mono text-white focus:outline-none focus:border-blue-500 leading-relaxed"></textarea>
+          </div>
         </div>
       </div>
 
-      <ul class="track-list" id="trackListContainer">
-        ${(album.tracks || []).map((track, idx) => `
-          <li class="track-item" draggable="true" ondragstart="handleDragStart(event, ${idx})" ondragover="handleDragOver(event)" ondrop="handleDrop(event, ${idx})">
-            <div class="track-info" onclick="openSongModal(${idx})">
-              <span class="track-drag-handle">≡</span>
-              <span class="track-number">${idx + 1}.</span>
-              <span class="track-title">${track.title}</span>
+      <div class="flex justify-end gap-3 mt-6 pt-3 border-t border-slate-800">
+        <button onclick="closeModal('trackModal')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded-lg text-sm font-medium">Отмена</button>
+        <button onclick="saveTrack()" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-lg text-sm font-medium">Сохранить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // Initial Seed Database
+    const defaultArtists = [
+      {
+        id: "art_metallica",
+        name: "Metallica",
+        image: "https://i.pinimg.com/736x/45/d3/27/45d327dbd742dfe43180b819c33e7d6c.jpg"
+      },
+      {
+        id: "art_slipknot",
+        name: "Slipknot",
+        image: "https://i.ebayimg.com/images/g/9~YAAOSwHH5nt1Rv/s-l1200.jpg"
+      },
+      {
+        id: "art_slayer",
+        name: "Slayer",
+        image: "https://band-logos.com/wp-content/uploads/2024/09/Slayer-Band-Logo-1.png.webp"
+      },
+      {
+        id: "art_tool",
+        name: "Tool",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTp23CyLPQOdZlT1rsUC1g5YmGOUmAMY49KJMbbeZSEzj0UHJVRTnIF41U&s=10"
+      },
+      {
+        id: "art_staticx",
+        name: "Static-X",
+        image: "https://i.pinimg.com/474x/48/41/79/48417935d98947f323654c57dd0d26ec.jpg"
+      }
+    ];
+
+    const defaultAlbums = [
+      {
+        id: "alb_m1",
+        artistId: "art_metallica",
+        title: "Master of Puppets",
+        year: "1986",
+        cover: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=500&auto=format&fit=crop&q=60",
+        tracks: [
+          {
+            title: "Battery",
+            eng: "Lashing out the action, returning the reaction\nWeak are ripped and torn away\nHypnotizing power, crushing all that cower\nBattery is here to stay",
+            rus: "Выплёскивая действия, получая реакцию\nСлабые вырваны и разорваны\nГипнотизирующая сила, крушащая всех, кто сжимается\nБатарея здесь навсегда"
+          },
+          {
+            title: "Master of Puppets",
+            eng: "End of passion play, crumbling away\nI'm your source of self-destruction\nVein that pumps with fear, sucking darkest clear\nLeading on your deaths construction",
+            rus: "Конец спектакля страстей, всё рушится\nЯ твой источник саморазрушения\nВена, что качает страх, высасывая тьму\nВедущая к постройке твоей смерти"
+          }
+        ]
+      },
+      {
+        id: "alb_s1",
+        artistId: "art_slayer",
+        title: "Reign in Blood",
+        year: "1986",
+        cover: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=500&auto=format&fit=crop&q=60",
+        tracks: [
+          {
+            title: "Raining Blood",
+            eng: "Trapped in purgatory\nA lifeless object, alive\nAwaiting reprisal\nDeath will be their acquittance",
+            rus: "В ловушке чистилища\nБезжизненный предмет, оживший\nОжидающий расправы\nСмерть станет их оправданием"
+          }
+        ]
+      },
+      {
+        id: "alb_sx1",
+        artistId: "art_staticx",
+        title: "Wisconsin Death Trip",
+        year: "1999",
+        cover: "https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=500&auto=format&fit=crop&q=60",
+        tracks: [
+          {
+            title: "Push It",
+            eng: "I see it, I need it\nI want it, I take it\nPush it, push it",
+            rus: "Я вижу это, мне это нужно\nЯ хочу это, я беру это\nТолкай это, дави"
+          }
+        ]
+      }
+    ];
+
+    // Global State
+    let artists = defaultArtists;
+    let albums = defaultAlbums;
+    let currentArtistId = null;
+    let currentAlbumId = null;
+    let draggedTrackIdx = null;
+
+    // Local Storage Resilience
+    try {
+      const storedArtists = localStorage.getItem('ml_artists');
+      const storedAlbums = localStorage.getItem('ml_albums');
+      if (storedArtists) artists = JSON.parse(storedArtists);
+      if (storedAlbums) albums = JSON.parse(storedAlbums);
+    } catch (e) {
+      console.warn('LocalStorage access issue:', e);
+    }
+
+    function saveData() {
+      try {
+        localStorage.setItem('ml_artists', JSON.stringify(artists));
+        localStorage.setItem('ml_albums', JSON.stringify(albums));
+      } catch (e) {
+        console.warn('Could not save to LocalStorage:', e);
+      }
+    }
+
+    // NAVIGATION & VIEW RENDERING
+
+    function showArtists() {
+      currentArtistId = null;
+      currentAlbumId = null;
+      document.getElementById('headerAddTrackBtn').classList.add('hidden');
+      document.getElementById('headerAddTrackBtn').classList.remove('flex');
+
+      const app = document.getElementById('appContent');
+      
+      let html = `
+        <div class="mb-6">
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Исполнители</h1>
+          <p class="text-sm text-slate-400 mt-1">Выберите группы или добавьте новых артистов в вашу коллекцию</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+      `;
+
+      artists.forEach(art => {
+        const albumCount = albums.filter(a => a.artistId === art.id).length;
+        html += `
+          <div onclick="showAlbums('${art.id}')" class="glass-card rounded-2xl p-4 flex flex-col items-center text-center cursor-pointer group transition-all duration-200 relative overflow-hidden">
+            <div class="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+              <button onclick="event.stopPropagation(); openArtistModal('${art.id}')" class="w-7 h-7 bg-slate-800/90 hover:bg-blue-600 text-slate-300 hover:text-white rounded-lg flex items-center justify-center text-xs transition">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button onclick="event.stopPropagation(); deleteArtist('${art.id}')" class="w-7 h-7 bg-slate-800/90 hover:bg-rose-600 text-slate-300 hover:text-white rounded-lg flex items-center justify-center text-xs transition">
+                <i class="fa-solid fa-trash"></i>
+              </button>
             </div>
-            <div class="track-item-actions">
-              <button class="btn btn-sm" onclick="moveTrack(${idx}, -1)" ${idx === 0 ? 'disabled style="opacity:0.3;"' : ''}>↑</button>
-              <button class="btn btn-sm" onclick="moveTrack(${idx}, 1)" ${idx === album.tracks.length - 1 ? 'disabled style="opacity:0.3;"' : ''}>↓</button>
-              <button class="btn btn-sm" onclick="openTrackModal(${idx})">✏️</button>
-              <button class="btn btn-sm btn-danger" onclick="deleteTrack(${idx})">🗑️</button>
+            <div class="w-32 h-32 rounded-full overflow-hidden mb-4 border-2 border-slate-700/60 group-hover:border-blue-500 transition shadow-lg">
+              <img src="${art.image || 'https://via.placeholder.com/300?text=No+Image'}" alt="${art.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300?text=No+Image'">
             </div>
-          </li>
-        `).join('')}
-      </ul>
-    `;
-  }
+            <h3 class="font-bold text-slate-100 text-lg group-hover:text-blue-400 transition line-clamp-1">${art.name}</h3>
+            <p class="text-xs text-slate-400 mt-1">${albumCount} ${albumCount === 1 ? 'альбом' : 'альбомов'}</p>
+          </div>
+        `;
+      });
 
-  function openSongModal(trackIndex) {
-    const album = albums.find(a => a.id === currentAlbumId);
-    if (!album || !album.tracks || !album.tracks[trackIndex]) return;
+      html += `</div>`;
+      app.innerHTML = html;
+    }
 
-    const track = album.tracks[trackIndex];
-    const artist = artists.find(a => a.id === album.artistId);
+    function showAlbums(artistId) {
+      currentArtistId = artistId;
+      currentAlbumId = null;
+      document.getElementById('headerAddTrackBtn').classList.add('hidden');
+      document.getElementById('headerAddTrackBtn').classList.remove('flex');
 
-    document.getElementById('songModalTitle').textContent = track.title;
-    document.getElementById('songModalSubtitle').textContent = `${artist ? artist.name : ''} — ${album.title}`;
-    document.getElementById('songModalEng').textContent = track.eng || '(Текст отсутствует)';
-    document.getElementById('songModalRus').textContent = track.rus || '(Перевод отсутствует)';
+      const artist = artists.find(a => a.id === artistId);
+      if (!artist) return showArtists();
 
-    document.getElementById('editSongFromViewBtn').onclick = function() {
-      closeSongModal();
-      openTrackModal(trackIndex);
-    };
+      const artistAlbums = albums.filter(a => a.artistId === artistId);
+      const app = document.getElementById('appContent');
 
-    document.getElementById('songModal').classList.remove('hidden');
-  }
+      let html = `
+        <!-- Breadcrumbs -->
+        <div class="flex items-center gap-2 text-sm text-slate-400 mb-6">
+          <span onclick="showArtists()" class="hover:text-blue-400 cursor-pointer font-medium transition">Исполнители</span>
+          <i class="fa-solid fa-chevron-right text-xs text-slate-600"></i>
+          <span class="text-slate-200 font-semibold">${artist.name}</span>
+        </div>
 
-  function closeSongModal() {
-    document.getElementById('songModal').classList.add('hidden');
-  }
+        <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Альбомы: ${artist.name}</h1>
+            <p class="text-sm text-slate-400 mt-1">Дискография и музыкальные релизы</p>
+          </div>
+          <button onclick="openAlbumModal()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-sm font-medium transition shadow-md flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i> Добавить альбом
+          </button>
+        </div>
 
-  function handleDragStart(e, index) {
-    dragSrcIndex = index;
-    e.dataTransfer.effectAllowed = 'move';
-  }
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+      `;
 
-  function handleDragOver(e) {
-    if (e.preventDefault) e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-    return false;
-  }
+      if (artistAlbums.length === 0) {
+        html += `
+          <div class="col-span-full glass-card rounded-2xl p-8 text-center text-slate-400">
+            <i class="fa-solid fa-compact-disc text-4xl mb-3 text-slate-600"></i>
+            <p class="text-base font-medium">Альбомы пока не добавлены.</p>
+          </div>
+        `;
+      } else {
+        artistAlbums.forEach(alb => {
+          const trackCount = alb.tracks ? alb.tracks.length : 0;
+          html += `
+            <div onclick="showTracks('${alb.id}')" class="glass-card rounded-2xl p-4 flex flex-col cursor-pointer group transition-all duration-200 relative overflow-hidden">
+              <div class="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                <button onclick="event.stopPropagation(); openAlbumModal('${alb.id}')" class="w-7 h-7 bg-slate-800/90 hover:bg-blue-600 text-slate-300 hover:text-white rounded-lg flex items-center justify-center text-xs transition">
+                  <i class="fa-solid fa-pen"></i>
+                </button>
+                <button onclick="event.stopPropagation(); deleteAlbum('${alb.id}')" class="w-7 h-7 bg-slate-800/90 hover:bg-rose-600 text-slate-300 hover:text-white rounded-lg flex items-center justify-center text-xs transition">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+              <div class="aspect-square w-full rounded-xl overflow-hidden mb-3 border border-slate-800 group-hover:border-blue-500/50 transition shadow-md">
+                <img src="${alb.cover || 'https://via.placeholder.com/300?text=No+Cover'}" alt="${alb.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300?text=No+Cover'">
+              </div>
+              <h3 class="font-bold text-slate-100 text-base group-hover:text-blue-400 transition line-clamp-1">${alb.title}</h3>
+              <div class="flex items-center justify-between text-xs text-slate-400 mt-1">
+                <span>${alb.year || 'Год не указан'}</span>
+                <span>${trackCount} ${trackCount === 1 ? 'трек' : 'треков'}</span>
+              </div>
+            </div>
+          `;
+        });
+      }
 
-  function handleDrop(e, index) {
-    if (e.stopPropagation) e.stopPropagation();
-    if (dragSrcIndex !== null && dragSrcIndex !== index) {
+      html += `</div>`;
+      app.innerHTML = html;
+    }
+
+    function showTracks(albumId) {
+      currentAlbumId = albumId;
+      const album = albums.find(a => a.id === albumId);
+      if (!album) return showArtists();
+
+      currentArtistId = album.artistId;
+      const artist = artists.find(a => a.id === currentArtistId);
+
+      // Show Header Add Track Button
+      const addBtn = document.getElementById('headerAddTrackBtn');
+      addBtn.classList.remove('hidden');
+      addBtn.classList.add('flex');
+
+      const app = document.getElementById('appContent');
+
+      let html = `
+        <!-- Breadcrumbs -->
+        <div class="flex items-center gap-2 text-sm text-slate-400 mb-6">
+          <span onclick="showArtists()" class="hover:text-blue-400 cursor-pointer font-medium transition">Исполнители</span>
+          <i class="fa-solid fa-chevron-right text-xs text-slate-600"></i>
+          <span onclick="showAlbums('${artist ? artist.id : ''}')" class="hover:text-blue-400 cursor-pointer font-medium transition">${artist ? artist.name : ''}</span>
+          <i class="fa-solid fa-chevron-right text-xs text-slate-600"></i>
+          <span class="text-slate-200 font-semibold">${album.title}</span>
+        </div>
+
+        <!-- Album Header Info Card -->
+        <div class="glass-card rounded-2xl p-6 mb-6 flex flex-col sm:flex-row items-center sm:items-start gap-6 border border-slate-800">
+          <img src="${album.cover || 'https://via.placeholder.com/300?text=No+Cover'}" alt="${album.title}" class="w-36 h-36 rounded-xl object-cover border border-slate-700 shadow-xl" onerror="this.src='https://via.placeholder.com/300?text=No+Cover'">
+          <div class="flex-1 text-center sm:text-left">
+            <span class="text-xs font-semibold uppercase tracking-wider text-blue-400">Альбом</span>
+            <h1 class="text-2xl sm:text-4xl font-extrabold text-white mt-1">${album.title}</h1>
+            <p class="text-sm font-medium text-slate-300 mt-1">${artist ? artist.name : ''} • ${album.year || 'Год неизвестен'}</p>
+            <p class="text-xs text-slate-400 mt-3">Всего композиций: <span class="text-slate-200 font-semibold">${album.tracks ? album.tracks.length : 0}</span></p>
+          </div>
+          <button onclick="openTrackModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-medium transition shadow-md flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i> Добавить песню
+          </button>
+        </div>
+
+        <!-- Tracklist -->
+        <div class="glass-card rounded-2xl p-4 sm:p-6 border border-slate-800">
+          <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-list-ol text-blue-400"></i> Треклист
+          </h3>
+          <div class="space-y-2">
+      `;
+
+      if (!album.tracks || album.tracks.length === 0) {
+        html += `
+          <div class="text-center py-8 text-slate-400 text-sm">
+            Треков в этом альбоме пока нет. Нажмите «Добавить песню», чтобы заполнить список.
+          </div>
+        `;
+      } else {
+        album.tracks.forEach((tr, idx) => {
+          html += `
+            <div 
+              draggable="true" 
+              ondragstart="handleDragStart(event, ${idx})" 
+              ondragover="handleDragOver(event)" 
+              ondrop="handleDrop(event, ${idx})" 
+              class="flex items-center justify-between p-3 rounded-xl bg-slate-900/60 hover:bg-slate-800/80 border border-slate-800/80 transition group"
+            >
+              <div onclick="openSongLyricsModal(${idx})" class="flex items-center gap-3.5 flex-1 cursor-pointer min-w-0 pr-2">
+                <span class="text-slate-500 cursor-grab active:cursor-grabbing hover:text-slate-300 px-1">
+                  <i class="fa-solid fa-grip-vertical"></i>
+                </span>
+                <span class="text-sm font-bold text-slate-400 w-6 text-right">${idx + 1}.</span>
+                <span class="font-semibold text-slate-100 group-hover:text-blue-400 transition truncate text-sm sm:text-base">${tr.title}</span>
+              </div>
+
+              <div class="flex items-center gap-1 sm:gap-2">
+                <button onclick="moveTrack(${idx}, -1)" ${idx === 0 ? 'disabled class="opacity-20 cursor-not-allowed px-2 py-1 text-slate-400"' : 'class="px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-700/50 rounded transition"'} title="Вверх">
+                  <i class="fa-solid fa-arrow-up text-xs"></i>
+                </button>
+                <button onclick="moveTrack(${idx}, 1)" ${idx === album.tracks.length - 1 ? 'disabled class="opacity-20 cursor-not-allowed px-2 py-1 text-slate-400"' : 'class="px-2 py-1 text-slate-400 hover:text-white hover:bg-slate-700/50 rounded transition"'} title="Вниз">
+                  <i class="fa-solid fa-arrow-down text-xs"></i>
+                </button>
+                <button onclick="openTrackModal(${idx})" class="px-2 py-1 text-slate-400 hover:text-blue-400 hover:bg-slate-700/50 rounded transition" title="Редактировать">
+                  <i class="fa-solid fa-pen text-xs"></i>
+                </button>
+                <button onclick="deleteTrack(${idx})" class="px-2 py-1 text-slate-400 hover:text-rose-400 hover:bg-slate-700/50 rounded transition" title="Удалить">
+                  <i class="fa-solid fa-trash text-xs"></i>
+                </button>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      html += `
+          </div>
+        </div>
+      `;
+
+      app.innerHTML = html;
+    }
+
+    // TRACK DRAG & DROP AND ORDERING
+
+    function handleDragStart(e, idx) {
+      draggedTrackIdx = idx;
+      e.dataTransfer.effectAllowed = 'move';
+    }
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+    }
+
+    function handleDrop(e, idx) {
+      e.preventDefault();
+      if (draggedTrackIdx !== null && draggedTrackIdx !== idx) {
+        const album = albums.find(a => a.id === currentAlbumId);
+        if (album && album.tracks) {
+          const moved = album.tracks.splice(draggedTrackIdx, 1)[0];
+          album.tracks.splice(idx, 0, moved);
+          saveData();
+          showTracks(currentAlbumId);
+        }
+      }
+    }
+
+    function moveTrack(idx, direction) {
+      const album = albums.find(a => a.id === currentAlbumId);
+      if (!album || !album.tracks) return;
+
+      const targetIdx = idx + direction;
+      if (targetIdx < 0 || targetIdx >= album.tracks.length) return;
+
+      const temp = album.tracks[idx];
+      album.tracks[idx] = album.tracks[targetIdx];
+      album.tracks[targetIdx] = temp;
+
+      saveData();
+      showTracks(currentAlbumId);
+    }
+
+    // SONG LYRICS MODAL
+
+    function openSongLyricsModal(trackIndex) {
+      const album = albums.find(a => a.id === currentAlbumId);
+      if (!album || !album.tracks || !album.tracks[trackIndex]) return;
+
+      const track = album.tracks[trackIndex];
+      const artist = artists.find(a => a.id === album.artistId);
+
+      document.getElementById('songModalTitle').textContent = track.title;
+      document.getElementById('songModalSubtitle').textContent = `${artist ? artist.name : ''} — ${album.title}`;
+      document.getElementById('songModalEng').textContent = track.eng || '(Текст оригинальной версии отсутствует)';
+      document.getElementById('songModalRus').textContent = track.rus || '(Перевод текста отсутствует)';
+
+      document.getElementById('songModalEditBtn').onclick = function() {
+        closeModal('songLyricsModal');
+        openTrackModal(trackIndex);
+      };
+
+      openModal('songLyricsModal');
+    }
+
+    // AUTO TRANSLATION LOGIC
+
+    async function autoTranslateTrack() {
+      const engText = document.getElementById('trackEngInput').value.trim();
+      if (!engText) {
+        alert('Пожалуйста, введите текст на английском языке перед переведением.');
+        return;
+      }
+
+      const btn = document.getElementById('autoTranslateBtn');
+      const oldHtml = btn.innerHTML;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Выполняется перевод...`;
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ru&dt=t&q=${encodeURIComponent(engText)}`);
+        const result = await response.json();
+        
+        let translatedText = '';
+        if (result && result[0]) {
+          translatedText = result[0].map(item => item[0]).join('');
+        }
+
+        if (translatedText) {
+          document.getElementById('trackRusInput').value = translatedText;
+        } else {
+          alert('Не удалось автоматически перевести текст.');
+        }
+      } catch (err) {
+        alert('Ошибка автоматического перевода. Пожалуйста, проверьте подключение к Интернету или введите перевод вручную.');
+      } finally {
+        btn.innerHTML = oldHtml;
+        btn.disabled = false;
+      }
+    }
+
+    // MODAL CONTROL HELPERS
+
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    // ARTIST CRUD
+
+    function openArtistModal(artistId = null) {
+      document.getElementById('artistEditId').value = artistId || '';
+      if (artistId) {
+        const art = artists.find(a => a.id === artistId);
+        document.getElementById('artistModalHeader').textContent = 'Редактировать артиста';
+        document.getElementById('artistNameInput').value = art ? art.name : '';
+        document.getElementById('artistImageInput').value = art ? art.image || '' : '';
+      } else {
+        document.getElementById('artistModalHeader').textContent = 'Добавить исполнителя';
+        document.getElementById('artistNameInput').value = '';
+        document.getElementById('artistImageInput').value = '';
+      }
+      openModal('artistModal');
+    }
+
+    function saveArtist() {
+      const id = document.getElementById('artistEditId').value;
+      const name = document.getElementById('artistNameInput').value.trim();
+      const image = document.getElementById('artistImageInput').value.trim();
+
+      if (!name) return alert('Введите имя исполнителя!');
+
+      if (id) {
+        const art = artists.find(a => a.id === id);
+        if (art) { art.name = name; art.image = image; }
+      } else {
+        artists.push({ id: 'art_' + Date.now(), name, image });
+      }
+
+      saveData();
+      closeModal('artistModal');
+      if (currentArtistId) showAlbums(currentArtistId); else showArtists();
+    }
+
+    function deleteArtist(id) {
+      if (!confirm('Вы уверены, что хотите удалить исполнителя и все его альбомы?')) return;
+      artists = artists.filter(a => a.id !== id);
+      albums = albums.filter(a => a.artistId !== id);
+      saveData();
+      showArtists();
+    }
+
+    // ALBUM CRUD
+
+    function openAlbumModal(albumId = null) {
+      const select = document.getElementById('albumArtistSelect');
+      select.innerHTML = artists.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
+
+      document.getElementById('albumEditId').value = albumId || '';
+      if (albumId) {
+        const alb = albums.find(a => a.id === albumId);
+        document.getElementById('albumModalHeader').textContent = 'Редактировать альбом';
+        select.value = alb ? alb.artistId : (artists[0] ? artists[0].id : '');
+        document.getElementById('albumTitleInput').value = alb ? alb.title : '';
+        document.getElementById('albumYearInput').value = alb ? alb.year || '' : '';
+        document.getElementById('albumCoverInput').value = alb ? alb.cover || '' : '';
+      } else {
+        document.getElementById('albumModalHeader').textContent = 'Добавить альбом';
+        if (currentArtistId) select.value = currentArtistId;
+        document.getElementById('albumTitleInput').value = '';
+        document.getElementById('albumYearInput').value = '';
+        document.getElementById('albumCoverInput').value = '';
+      }
+      openModal('albumModal');
+    }
+
+    function saveAlbum() {
+      const id = document.getElementById('albumEditId').value;
+      const artistId = document.getElementById('albumArtistSelect').value;
+      const title = document.getElementById('albumTitleInput').value.trim();
+      const year = document.getElementById('albumYearInput').value.trim();
+      const cover = document.getElementById('albumCoverInput').value.trim();
+
+      if (!title) return alert('Введите название альбома!');
+
+      if (id) {
+        const alb = albums.find(a => a.id === id);
+        if (alb) {
+          alb.artistId = artistId;
+          alb.title = title;
+          alb.year = year;
+          alb.cover = cover;
+        }
+      } else {
+        albums.push({ id: 'alb_' + Date.now(), artistId, title, year, cover, tracks: [] });
+      }
+
+      saveData();
+      closeModal('albumModal');
+      if (currentAlbumId) showTracks(currentAlbumId); else if (currentArtistId) showAlbums(currentArtistId); else showArtists();
+    }
+
+    function deleteAlbum(id) {
+      if (!confirm('Вы уверены, что хотите удалить альбом и его треклист?')) return;
+      albums = albums.filter(a => a.id !== id);
+      saveData();
+      if (currentArtistId) showAlbums(currentArtistId); else showArtists();
+    }
+
+    // TRACK CRUD
+
+    function openTrackModal(trackIndex = -1) {
+      document.getElementById('trackEditIndex').value = trackIndex;
+      const album = albums.find(a => a.id === currentAlbumId);
+
+      if (trackIndex >= 0 && album && album.tracks && album.tracks[trackIndex]) {
+        const trk = album.tracks[trackIndex];
+        document.getElementById('trackModalHeader').textContent = 'Редактировать песню';
+        document.getElementById('trackTitleInput').value = trk.title;
+        document.getElementById('trackEngInput').value = trk.eng || '';
+        document.getElementById('trackRusInput').value = trk.rus || '';
+      } else {
+        document.getElementById('trackModalHeader').textContent = 'Добавить песню';
+        document.getElementById('trackTitleInput').value = '';
+        document.getElementById('trackEngInput').value = '';
+        document.getElementById('trackRusInput').value = '';
+      }
+      openModal('trackModal');
+    }
+
+    function saveTrack() {
+      const index = parseInt(document.getElementById('trackEditIndex').value, 10);
+      const title = document.getElementById('trackTitleInput').value.trim();
+      const eng = document.getElementById('trackEngInput').value;
+      const rus = document.getElementById('trackRusInput').value;
+
+      if (!title) return alert('Введите название песни!');
+
+      const album = albums.find(a => a.id === currentAlbumId);
+      if (!album) return;
+
+      if (!album.tracks) album.tracks = [];
+
+      if (index >= 0) {
+        album.tracks[index] = { title, eng, rus };
+      } else {
+        album.tracks.push({ title, eng, rus });
+      }
+
+      saveData();
+      closeModal('trackModal');
+      showTracks(currentAlbumId);
+    }
+
+    function deleteTrack(index) {
+      if (!confirm('Вы уверены, что хотите удалить данную песню?')) return;
       const album = albums.find(a => a.id === currentAlbumId);
       if (album && album.tracks) {
-        const movedItem = album.tracks.splice(dragSrcIndex, 1)[0];
-        album.tracks.splice(index, 0, movedItem);
+        album.tracks.splice(index, 1);
         saveData();
         showTracks(currentAlbumId);
       }
     }
-    return false;
-  }
 
-  function moveTrack(index, direction) {
-    const album = albums.find(a => a.id === currentAlbumId);
-    if (!album || !album.tracks) return;
+    // EXPORT & IMPORT DATA
 
-    const newIndex = index + direction;
-    if (newIndex < 0 || newIndex >= album.tracks.length) return;
-
-    const temp = album.tracks[index];
-    album.tracks[index] = album.tracks[newIndex];
-    album.tracks[newIndex] = temp;
-
-    saveData();
-    showTracks(currentAlbumId);
-  }
-
-  async function autoTranslateTrack() {
-    const engText = document.getElementById('trackEngInput').value.trim();
-    if (!engText) {
-      alert('Пожалуйста, введите текст на английском для перевода!');
-      return;
+    function exportData() {
+      const payload = { artists, albums };
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(payload, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `music_library_${Date.now()}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
     }
 
-    const btn = document.getElementById('autoTranslateBtn');
-    const originalBtnText = btn.textContent;
-    btn.textContent = '⌛ Переводим...';
-    btn.disabled = true;
+    function importData(e) {
+      const file = e.target.files[0];
+      if (!file) return;
 
-    try {
-      const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ru&dt=t&q=${encodeURIComponent(engText)}`;
-      const res = await fetch(url);
-      const data = await res.json();
-
-      let translated = '';
-      if (data && data[0]) {
-        translated = data[0].map(item => item[0]).join('');
-      }
-
-      if (translated) {
-        document.getElementById('trackRusInput').value = translated;
-      } else {
-        alert('Не удалось автоматически перевести текст.');
-      }
-    } catch (err) {
-      alert('Ошибка при вызове автоперевода: ' + err.message);
-    } finally {
-      btn.textContent = originalBtnText;
-      btn.disabled = false;
-    }
-  }
-
-  function closeModal(modalId) {
-    document.getElementById(modalId).classList.add('hidden');
-  }
-
-  function openArtistModal(artistId = null) {
-    document.getElementById('artistEditId').value = artistId || '';
-    if (artistId) {
-      const art = artists.find(a => a.id === artistId);
-      document.getElementById('artistModalTitle').textContent = 'Редактировать исполнителя';
-      document.getElementById('artistNameInput').value = art ? art.name : '';
-      document.getElementById('artistImageInput').value = art ? art.image || '' : '';
-    } else {
-      document.getElementById('artistModalTitle').textContent = 'Добавить исполнителя';
-      document.getElementById('artistNameInput').value = '';
-      document.getElementById('artistImageInput').value = '';
-    }
-    document.getElementById('artistModal').classList.remove('hidden');
-  }
-
-  function saveArtist() {
-    const id = document.getElementById('artistEditId').value;
-    const name = document.getElementById('artistNameInput').value.trim();
-    const image = document.getElementById('artistImageInput').value.trim();
-
-    if (!name) return alert('Введите имя исполнителя');
-
-    if (id) {
-      const art = artists.find(a => a.id === id);
-      if (art) { art.name = name; art.image = image; }
-    } else {
-      artists.push({ id: 'art_' + Date.now(), name, image });
-    }
-
-    saveData();
-    closeModal('artistModal');
-    if (currentArtistId) showAlbums(currentArtistId); else showArtists();
-  }
-
-  function deleteArtist(id) {
-    if (!confirm('Удалить исполнителя и все его альбомы?')) return;
-    artists = artists.filter(a => a.id !== id);
-    albums = albums.filter(a => a.artistId !== id);
-    saveData();
-    showArtists();
-  }
-
-  function openAlbumModal(albumId = null) {
-    const select = document.getElementById('albumArtistSelect');
-    select.innerHTML = artists.map(a => `<option value="${a.id}">${a.name}</option>`).join('');
-
-    document.getElementById('albumEditId').value = albumId || '';
-    if (albumId) {
-      const alb = albums.find(a => a.id === albumId);
-      document.getElementById('albumModalTitle').textContent = 'Редактировать альбом';
-      select.value = alb ? alb.artistId : '';
-      document.getElementById('albumTitleInput').value = alb ? alb.title : '';
-      document.getElementById('albumYearInput').value = alb ? alb.year || '' : '';
-      document.getElementById('albumCoverInput').value = alb ? alb.cover || '' : '';
-    } else {
-      document.getElementById('albumModalTitle').textContent = 'Добавить альбом';
-      if (currentArtistId) select.value = currentArtistId;
-      document.getElementById('albumTitleInput').value = '';
-      document.getElementById('albumYearInput').value = '';
-      document.getElementById('albumCoverInput').value = '';
-    }
-    document.getElementById('albumModal').classList.remove('hidden');
-  }
-
-  function saveAlbum() {
-    const id = document.getElementById('albumEditId').value;
-    const artistId = document.getElementById('albumArtistSelect').value;
-    const title = document.getElementById('albumTitleInput').value.trim();
-    const year = document.getElementById('albumYearInput').value.trim();
-    const cover = document.getElementById('albumCoverInput').value.trim();
-
-    if (!title) return alert('Введите название альбома');
-
-    if (id) {
-      const alb = albums.find(a => a.id === id);
-      if (alb) {
-        alb.artistId = artistId;
-        alb.title = title;
-        alb.year = year;
-        alb.cover = cover;
-      }
-    } else {
-      albums.push({ id: 'alb_' + Date.now(), artistId, title, year, cover, tracks: [] });
-    }
-
-    saveData();
-    closeModal('albumModal');
-    if (currentAlbumId) showTracks(currentAlbumId); else if (currentArtistId) showAlbums(currentArtistId); else showArtists();
-  }
-
-  function deleteAlbum(id) {
-    if (!confirm('Удалить альбом и все его песни?')) return;
-    albums = albums.filter(a => a.id !== id);
-    saveData();
-    if (currentArtistId) showAlbums(currentArtistId); else showArtists();
-  }
-
-  function openTrackModal(trackIndex = -1) {
-    document.getElementById('trackEditIndex').value = trackIndex;
-    const album = albums.find(a => a.id === currentAlbumId);
-
-    if (trackIndex >= 0 && album && album.tracks[trackIndex]) {
-      const trk = album.tracks[trackIndex];
-      document.getElementById('trackModalTitle').textContent = 'Редактировать песню';
-      document.getElementById('trackTitleInput').value = trk.title;
-      document.getElementById('trackEngInput').value = trk.eng || '';
-      document.getElementById('trackRusInput').value = trk.rus || '';
-    } else {
-      document.getElementById('trackModalTitle').textContent = 'Добавить песню';
-      document.getElementById('trackTitleInput').value = '';
-      document.getElementById('trackEngInput').value = '';
-      document.getElementById('trackRusInput').value = '';
-    }
-    document.getElementById('trackModal').classList.remove('hidden');
-  }
-
-  function saveTrack() {
-    const index = parseInt(document.getElementById('trackEditIndex').value, 10);
-    const title = document.getElementById('trackTitleInput').value.trim();
-    const eng = document.getElementById('trackEngInput').value;
-    const rus = document.getElementById('trackRusInput').value;
-
-    if (!title) return alert('Введите название песни');
-
-    const album = albums.find(a => a.id === currentAlbumId);
-    if (!album) return;
-
-    if (!album.tracks) album.tracks = [];
-
-    if (index >= 0) {
-      album.tracks[index] = { title, eng, rus };
-    } else {
-      album.tracks.push({ title, eng, rus });
-    }
-
-    saveData();
-    closeModal('trackModal');
-    showTracks(currentAlbumId);
-  }
-
-  function deleteTrack(index) {
-    if (!confirm('Удалить песню?')) return;
-    const album = albums.find(a => a.id === currentAlbumId);
-    if (album && album.tracks) {
-      album.tracks.splice(index, 1);
-      saveData();
-      showTracks(currentAlbumId);
-    }
-  }
-
-  function exportData() {
-    const data = { artists, albums };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'lyrics_library_backup.json';
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
-  function importData(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-      try {
-        const parsed = JSON.parse(evt.target.result);
-        if (parsed.artists && parsed.albums) {
-          artists = parsed.artists;
-          albums = parsed.albums;
-          saveData();
-          showArtists();
-          alert('Данные успешно загружены!');
-        } else {
-          alert('Неверный формат файла JSON!');
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        try {
+          const imported = JSON.parse(event.target.result);
+          if (imported.artists && imported.albums) {
+            artists = imported.artists;
+            albums = imported.albums;
+            saveData();
+            showArtists();
+            alert('Библиотека успешно импортирована!');
+          } else {
+            alert('Неверный формат файла JSON!');
+          }
+        } catch (err) {
+          alert('Ошибка чтения файла. Убедитесь, что это корректный JSON.');
         }
-      } catch (err) {
-        alert('Ошибка при чтении файла JSON');
-      }
-    };
-    reader.readAsText(file);
-  }
+      };
+      reader.readAsText(file);
+    }
 
-  showArtists();
-</script>
+    // INITIALIZATION
 
+    window.addEventListener('DOMContentLoaded', () => {
+      showArtists();
+    });
+  </script>
 </body>
 </html>
