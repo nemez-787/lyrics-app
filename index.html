@@ -60,6 +60,7 @@
       font-weight: 500;
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
       transition: background 0.2s, border-color 0.2s;
     }
@@ -107,7 +108,6 @@
       font-weight: 600;
     }
 
-    /* Grid for Artists & Albums */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -162,7 +162,6 @@
       opacity: 1;
     }
 
-    /* Breadcrumbs Navigation */
     .breadcrumbs {
       display: flex;
       align-items: center;
@@ -182,7 +181,6 @@
       text-decoration: underline;
     }
 
-    /* Album Header Info */
     .album-header-info {
       display: flex;
       gap: 24px;
@@ -201,7 +199,6 @@
       border-radius: 6px;
     }
 
-    /* Tracklist Styles */
     .track-list {
       list-style: none;
       display: flex;
@@ -257,7 +254,6 @@
       gap: 6px;
     }
 
-    /* Modals */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -277,7 +273,7 @@
       border: 1px solid var(--border-color);
       border-radius: 10px;
       width: 100%;
-      max-width: 800px;
+      max-width: 850px;
       max-height: 90vh;
       display: flex;
       flex-direction: column;
@@ -314,14 +310,13 @@
       gap: 10px;
     }
 
-    /* Song View Layout */
     .song-lyrics-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px;
+      gap: 16px;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 650px) {
       .song-lyrics-grid {
         grid-template-columns: 1fr;
       }
@@ -337,9 +332,10 @@
       line-height: 1.6;
       white-space: pre-wrap;
       word-break: break-word;
+      max-height: 380px;
+      overflow-y: auto;
     }
 
-    /* Forms */
     .form-group {
       display: flex;
       flex-direction: column;
@@ -349,9 +345,7 @@
     .form-group label {
       font-size: 13px;
       color: var(--text-muted);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      font-weight: 600;
     }
 
     .form-control {
@@ -370,8 +364,9 @@
 
     textarea.form-control {
       resize: vertical;
-      min-height: 160px;
+      min-height: 220px;
       font-family: monospace;
+      line-height: 1.4;
     }
 
     .hidden {
@@ -497,14 +492,18 @@
       <input type="hidden" id="trackEditIndex" value="-1">
       <div class="form-group">
         <label>Название песни</label>
-        <input type="text" id="trackTitleInput" class="form-control" placeholder="Например: Disposable Heroes">
+        <input type="text" id="trackTitleInput" class="form-control" placeholder="Например: Battery">
       </div>
+      
+      <div style="text-align: center; margin: 4px 0;">
+        <button type="button" class="btn btn-primary" id="autoTranslateBtn" onclick="autoTranslateTrack()" style="width: 100%;">
+          🌐 Автоперевод (English ➔ Русский)
+        </button>
+      </div>
+
       <div class="song-lyrics-grid">
         <div class="form-group">
-          <label>
-            <span>Оригинальный текст (English)</span>
-            <button type="button" class="btn btn-sm" id="autoTranslateBtn" onclick="autoTranslateTrack()">🌐 Перевести на русский</button>
-          </label>
+          <label>Оригинальный текст (English)</label>
           <textarea id="trackEngInput" class="form-control" placeholder="Текст песни на английском..."></textarea>
         </div>
         <div class="form-group">
@@ -521,7 +520,6 @@
 </div>
 
 <script>
-  // Initial Default Data
   const defaultArtists = [
     {
       "id": "art_metallica",
@@ -555,8 +553,8 @@
       "tracks": [
         {
           "title": "Battery",
-          "eng": "Lashing out the action, returning the reaction",
-          "rus": "Выплёскивая действия, получая реакцию"
+          "eng": "Lashing out the action, returning the reaction\nWeak are ripped and torn away\nHypnotizing power, crushing all that cower\nBattery is here to stay",
+          "rus": "Выплёскивая действия, получая реакцию\nСлабые вырваны и разорваны\nГипнотизирующая сила, крушащая всех, кто сжимается\nБатарея здесь навсегда"
         },
         {
           "title": "Master of Puppets",
@@ -565,8 +563,8 @@
         },
         {
           "title": "Disposable Heroes",
-          "eng": "Bodies fill the fields I see, hungry heroes end\nNo one to play soldier now, no one to pretend\nRunning blind through killing fields, bred to kill them all\nVictim of what said should be\nA servant 'til I fall",
-          "rus": "Тела заполняют поля, которые я вижу, голодные герои заканчиваются\nТеперь некому играть в солдата, некому притворяться\nБегу вслепую по полям смерти, рожденный, чтобы убить их всех.\nЖертва сказанного должна стать\nСлуга, пока я не упаду"
+          "eng": "Bodies fill the fields I see, hungry heroes end\nNo one to play soldier now, no one to pretend",
+          "rus": "Тела заполняют поля, которые я вижу, голодные герои заканчиваются\nТеперь некому играть в солдата, некому притворяться"
         }
       ]
     },
@@ -598,14 +596,13 @@
       "tracks": [
         {
           "title": "Raining Blood",
-          "eng": "Trapped in purgatory\nA lifeless object, alive\nAwaiting reprisal\nDeath will be their acquittance\nThe sky is turning red\nReturn to power draws near",
-          "rus": "В ловушке чистилища\nБезжизненный предмет, живой\nОжидание расправы\nСмерть будет их оправданием\nНебо становится красным\nВозвращение к власти приближается"
+          "eng": "Trapped in purgatory\nA lifeless object, alive\nAwaiting reprisal",
+          "rus": "В ловушке чистилища\nБезжизненный предмет, живой\nОжидание расправы"
         }
       ]
     }
   ];
 
-  // State
   let artists = JSON.parse(localStorage.getItem('music_artists')) || defaultArtists;
   let albums = JSON.parse(localStorage.getItem('music_albums')) || defaultAlbums;
   let currentArtistId = null;
@@ -617,7 +614,6 @@
     localStorage.setItem('music_albums', JSON.stringify(albums));
   }
 
-  // --- NAVIGATION & VIEWS ---
   function showArtists() {
     currentArtistId = null;
     currentAlbumId = null;
@@ -681,6 +677,7 @@
 
     currentArtistId = album.artistId;
     const artist = artists.find(a => a.id === currentArtistId);
+    const artistName = artist ? artist.name : '';
 
     document.getElementById('addTrackBtn').style.display = 'inline-flex';
 
@@ -688,7 +685,7 @@
     app.innerHTML = `
       <div class="breadcrumbs">
         <span onclick="showArtists()">Исполнители</span> /
-        <span onclick="showAlbums('${artist.id}')">${artist ? artist.name : ''}</span> /
+        <span onclick="showAlbums('${artist ? artist.id : ''}')">${artistName}</span> /
         <span>${album.title}</span>
       </div>
 
@@ -696,7 +693,7 @@
         <img src="${album.cover || 'https://via.placeholder.com/200'}" alt="${album.title}">
         <div>
           <h2>${album.title}</h2>
-          <p style="color: var(--text-muted); margin-top: 4px;">${artist ? artist.name : ''} • ${album.year || ''}</p>
+          <p style="color: var(--text-muted); margin-top: 4px;">${artistName} • ${album.year || ''}</p>
           <p style="color: var(--text-muted); font-size: 13px; margin-top: 8px;">Всего треков: ${album.tracks ? album.tracks.length : 0}</p>
         </div>
       </div>
@@ -721,7 +718,6 @@
     `;
   }
 
-  // --- SONG WINDOW (DEDICATED MODAL) ---
   function openSongModal(trackIndex) {
     const album = albums.find(a => a.id === currentAlbumId);
     if (!album || !album.tracks || !album.tracks[trackIndex]) return;
@@ -746,7 +742,6 @@
     document.getElementById('songModal').classList.add('hidden');
   }
 
-  // --- DRAG AND DROP & ORDERING ---
   function handleDragStart(e, index) {
     dragSrcIndex = index;
     e.dataTransfer.effectAllowed = 'move';
@@ -787,7 +782,6 @@
     showTracks(currentAlbumId);
   }
 
-  // --- AUTO TRANSLATE FEATURE ---
   async function autoTranslateTrack() {
     const engText = document.getElementById('trackEngInput').value.trim();
     if (!engText) {
@@ -801,28 +795,28 @@
     btn.disabled = true;
 
     try {
-      const response = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ru&dt=t&q=${encodeURIComponent(engText)}`);
-      const data = await response.json();
+      const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ru&dt=t&q=${encodeURIComponent(engText)}`;
+      const res = await fetch(url);
+      const data = await res.json();
 
-      let translatedText = '';
+      let translated = '';
       if (data && data[0]) {
-        translatedText = data[0].map(item => item[0]).join('');
+        translated = data[0].map(item => item[0]).join('');
       }
 
-      if (translatedText) {
-        document.getElementById('trackRusInput').value = translatedText;
+      if (translated) {
+        document.getElementById('trackRusInput').value = translated;
       } else {
         alert('Не удалось автоматически перевести текст.');
       }
     } catch (err) {
-      alert('Ошибка при выполнении перевода: ' + err.message);
+      alert('Ошибка при вызове автоперевода: ' + err.message);
     } finally {
       btn.textContent = originalBtnText;
       btn.disabled = false;
     }
   }
 
-  // --- MODAL CONTROLS & SAVING ---
   function closeModal(modalId) {
     document.getElementById(modalId).classList.add('hidden');
   }
@@ -832,8 +826,8 @@
     if (artistId) {
       const art = artists.find(a => a.id === artistId);
       document.getElementById('artistModalTitle').textContent = 'Редактировать исполнителя';
-      document.getElementById('artistNameInput').value = art.name;
-      document.getElementById('artistImageInput').value = art.image || '';
+      document.getElementById('artistNameInput').value = art ? art.name : '';
+      document.getElementById('artistImageInput').value = art ? art.image || '' : '';
     } else {
       document.getElementById('artistModalTitle').textContent = 'Добавить исполнителя';
       document.getElementById('artistNameInput').value = '';
@@ -877,10 +871,10 @@
     if (albumId) {
       const alb = albums.find(a => a.id === albumId);
       document.getElementById('albumModalTitle').textContent = 'Редактировать альбом';
-      select.value = alb.artistId;
-      document.getElementById('albumTitleInput').value = alb.title;
-      document.getElementById('albumYearInput').value = alb.year || '';
-      document.getElementById('albumCoverInput').value = alb.cover || '';
+      select.value = alb ? alb.artistId : '';
+      document.getElementById('albumTitleInput').value = alb ? alb.title : '';
+      document.getElementById('albumYearInput').value = alb ? alb.year || '' : '';
+      document.getElementById('albumCoverInput').value = alb ? alb.cover || '' : '';
     } else {
       document.getElementById('albumModalTitle').textContent = 'Добавить альбом';
       if (currentArtistId) select.value = currentArtistId;
@@ -977,7 +971,6 @@
     }
   }
 
-  // --- IMPORT / EXPORT DATA ---
   function exportData() {
     const data = { artists, albums };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -1013,7 +1006,6 @@
     reader.readAsText(file);
   }
 
-  // Initialize view
   showArtists();
 </script>
 
