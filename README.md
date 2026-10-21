@@ -49,7 +49,7 @@ FontAwesome (для иконок)
 Убедитесь, что все файлы проекта находятся в одной папке (index.html, файлы стилей и скриптов).
 
 Дважды кликните по файлу index.html, чтобы открыть его в любом современном веб-браузере (Google Chrome, Firefox, Edge, Opera) или перейдите по 
-ссылке https://nemez-787.github.io/lyrics-app/ и загрузите файл .json  
+ссылке https://nemez-787.github.io/lyrics-app/  
 
 💾 Резервное копирование данных
 
