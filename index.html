@@ -154,8 +154,21 @@
           <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="importData(event)">
         </label>
 
-        <a href="/api/download/index.html" download="index.html" title="Скачать готовый файл index.html для GitHub" class="flex items-center gap-1.5 bg-blue-950/80 hover:bg-blue-900 text-blue-300 px-2.5 sm:px-3 py-1.5 rounded-xl border border-blue-800/80 text-xs sm:text-sm font-medium transition-all active:scale-95">
-          <i class="fa-brands fa-github text-sm"></i>
+        <!-- GitHub Link -->
+        <a href="https://github.com/nemez-787/lyrics-app" target="_blank" rel="noopener noreferrer" title="Репозиторий на GitHub (nemez-787/lyrics-app)" class="flex items-center gap-1.5 bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-700/80 text-xs sm:text-sm font-medium transition-all shadow-sm active:scale-95">
+          <i class="fa-brands fa-github text-sm text-slate-300"></i>
+          <span class="hidden md:inline">GitHub</span>
+        </a>
+
+        <!-- Telegram Contact -->
+        <a href="https://t.me/kakoitamyziikant" target="_blank" rel="noopener noreferrer" title="Связаться в Telegram: @kakoitamyziikant" class="flex items-center gap-1.5 bg-sky-950/80 hover:bg-sky-900 text-sky-300 hover:text-sky-200 px-2.5 sm:px-3 py-1.5 rounded-xl border border-sky-800/80 text-xs sm:text-sm font-medium transition-all shadow-sm active:scale-95">
+          <i class="fa-brands fa-telegram text-sm text-sky-400"></i>
+          <span class="hidden md:inline">@kakoitamyziikant</span>
+        </a>
+
+        <!-- Download HTML Link -->
+        <a href="/api/download/index.html" download="index.html" title="Скачать готовый файл index.html" class="flex items-center gap-1.5 bg-blue-950/80 hover:bg-blue-900 text-blue-300 px-2.5 sm:px-3 py-1.5 rounded-xl border border-blue-800/80 text-xs sm:text-sm font-medium transition-all active:scale-95">
+          <i class="fa-solid fa-file-code text-xs"></i>
           <span class="hidden xl:inline">Скачать HTML</span>
         </a>
 
@@ -174,6 +187,34 @@
   <main id="appContent" class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8">
     <!-- Dynamic views rendered via JavaScript -->
   </main>
+
+  <!-- ==========================================================================
+       FOOTER (GITHUB REPOSITORY & TELEGRAM CONTACT)
+       ========================================================================== -->
+  <footer class="mt-auto border-t border-slate-800/80 bg-slate-950/90 py-5 px-3 sm:px-6 shadow-inner">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+      <div class="flex items-center gap-2.5">
+        <span class="text-white font-bold tracking-wide flex items-center gap-1.5">
+          <i class="fa-solid fa-guitar text-blue-400"></i> Rock & Metal Vault
+        </span>
+        <span class="text-slate-600">•</span>
+        <span class="text-slate-400">58 альбомов • 598 треков</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-3 sm:gap-6">
+        <a href="https://github.com/nemez-787/lyrics-app" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-slate-300 hover:text-white transition font-medium">
+          <i class="fa-brands fa-github text-sm"></i>
+          <span>GitHub: nemez-787/lyrics-app</span>
+        </a>
+        <a href="https://t.me/kakoitamyziikant" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-sky-400 hover:text-sky-300 transition font-medium">
+          <i class="fa-brands fa-telegram text-sm"></i>
+          <span>Telegram: @kakoitamyziikant</span>
+        </a>
+        <a href="/api/download/index.html" download="index.html" class="flex items-center gap-1 text-slate-400 hover:text-blue-400 transition">
+          <i class="fa-solid fa-download text-xs"></i> Скачать index.html
+        </a>
+      </div>
+    </div>
+  </footer>
 
   <!-- ==========================================================================
        MODAL DIALOGS & OVERLAYS
@@ -209,23 +250,44 @@
         </div>
       </div>
 
-      <!-- Language & Mobile Tab Switcher Bar -->
-      <div class="px-3 py-2 sm:px-6 sm:py-2.5 bg-slate-900/70 border-b border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs shrink-0">
+      <!-- Dual Language Selectors & Mobile Tab Switcher Bar -->
+      <div class="px-3 py-2 sm:px-6 sm:py-2.5 bg-slate-900/80 border-b border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs shrink-0">
         
-        <!-- Target Language Selector -->
-        <div class="flex items-center gap-2">
-          <span class="text-slate-400 font-medium flex items-center gap-1.5">
-            <i class="fa-solid fa-globe text-blue-400"></i>
-            <span class="hidden xs:inline">Язык:</span>
-          </span>
-          <select id="lyricsTargetLangSelect" onchange="onLyricsLanguageChange(this.value)" class="bg-slate-800 hover:bg-slate-700 text-white font-medium border border-slate-700 rounded-lg px-2.5 py-1 text-xs focus:outline-none focus:border-blue-500 cursor-pointer transition shadow-sm">
-            <option value="ru">🇷🇺 Русский</option>
-            <option value="uk">🇺🇦 Українська</option>
-            <option value="pt">🇵🇹 Português</option>
-            <option value="es">🇪🇸 Español</option>
-            <option value="de">🇩🇪 Deutsch</option>
-            <option value="fr">🇫🇷 Français</option>
-          </select>
+        <!-- Dual Independent Language Selectors with Swap Button (Pixel-perfect matching UI) -->
+        <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+          <!-- Left Column Language Select -->
+          <div class="relative inline-flex items-center">
+            <select id="lyricsLeftLangSelect" onchange="onLyricsLeftLangChange(this.value)" class="appearance-none bg-slate-800/90 hover:bg-slate-700/90 text-white font-medium text-xs rounded-xl pl-3 pr-8 py-1.5 border border-slate-700/80 focus:outline-none focus:border-blue-500 cursor-pointer transition shadow-sm">
+              <option value="en">EN English</option>
+              <option value="de">DE Deutsch</option>
+              <option value="ru">RU Русский</option>
+              <option value="uk">UK Українська</option>
+              <option value="pt">PT Português</option>
+              <option value="es">ES Español</option>
+              <option value="fr">FR Français</option>
+            </select>
+            <i class="fa-solid fa-chevron-down absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-slate-400 pointer-events-none"></i>
+          </div>
+
+          <!-- Swap Button -->
+          <button onclick="swapLyricsLanguages()" title="Поменять языки местами" class="w-8 h-8 flex items-center justify-center bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl border border-slate-700/80 transition active:scale-90 shadow-sm" aria-label="Поменять языки местами">
+            <i class="fa-solid fa-arrow-right-arrow-left text-xs"></i>
+          </button>
+
+          <!-- Right Column Language Select -->
+          <div class="relative inline-flex items-center">
+            <select id="lyricsRightLangSelect" onchange="onLyricsRightLangChange(this.value)" class="appearance-none bg-slate-800/90 hover:bg-slate-700/90 text-white font-medium text-xs rounded-xl pl-3 pr-8 py-1.5 border border-slate-700/80 focus:outline-none focus:border-blue-500 cursor-pointer transition shadow-sm">
+              <option value="ru">RU Русский</option>
+              <option value="en">EN English</option>
+              <option value="de">DE Deutsch</option>
+              <option value="uk">UK Українська</option>
+              <option value="pt">PT Português</option>
+              <option value="es">ES Español</option>
+              <option value="fr">FR Français</option>
+            </select>
+            <i class="fa-solid fa-chevron-down absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-slate-400 pointer-events-none"></i>
+          </div>
+
           <span id="translationLoadingSpinner" class="hidden text-blue-400 items-center gap-1.5 text-xs font-medium">
             <i class="fa-solid fa-spinner fa-spin"></i> <span class="hidden sm:inline">Перевод...</span>
           </span>
@@ -233,11 +295,11 @@
 
         <!-- Layout / Mobile Tabs Switcher -->
         <div class="flex items-center bg-slate-800/90 border border-slate-700/80 rounded-xl p-0.5">
-          <button id="lyricsTabBtnOrig" onclick="setLyricsViewTab('orig')" class="px-2 sm:px-2.5 py-1 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition">
-            🇬🇧 <span class="hidden sm:inline">Оригинал</span>
+          <button id="lyricsTabBtnOrig" onclick="setLyricsViewTab('left')" class="px-2 sm:px-2.5 py-1 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition">
+            <span id="lyricsLeftTabLabel">Колонка 1</span>
           </button>
-          <button id="lyricsTabBtnTrans" onclick="setLyricsViewTab('trans')" class="px-2 sm:px-2.5 py-1 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition">
-            🌐 <span id="lyricsTransTabLabel">Перевод</span>
+          <button id="lyricsTabBtnTrans" onclick="setLyricsViewTab('right')" class="px-2 sm:px-2.5 py-1 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition">
+            <span id="lyricsRightTabLabel">Колонка 2</span>
           </button>
           <button id="lyricsTabBtnBoth" onclick="setLyricsViewTab('both')" class="px-2 sm:px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-blue-600 transition shadow-sm">
             <i class="fa-solid fa-table-columns"></i> <span class="hidden sm:inline">Оба</span>
@@ -248,14 +310,14 @@
       <!-- Modal Body (Lyrics Content) -->
       <div id="lyricsContentContainer" class="p-3 sm:p-5 overflow-y-auto flex-1 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-5 bg-slate-950/60 touch-scroll">
         
-        <!-- English Original Column -->
+        <!-- Left Column -->
         <div id="lyricsColOrig" class="flex flex-col min-h-0 bg-slate-900/60 p-3 sm:p-4 rounded-xl border border-slate-800/80">
           <div class="flex items-center justify-between mb-2 pb-2 border-b border-slate-800/60 shrink-0">
-            <div class="flex items-center gap-2 text-xs font-semibold tracking-wider text-slate-400 uppercase">
+            <div class="flex items-center gap-2 text-xs font-semibold tracking-wider text-slate-300 uppercase">
               <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-              Оригинал (English)
+              <span id="lyricsLeftHeaderLabel">🇬🇧 English</span>
             </div>
-            <button onclick="copyLyrics('songModalEng')" title="Скопировать оригинальный текст" class="text-[11px] text-slate-400 hover:text-blue-400 transition flex items-center gap-1 bg-slate-800/80 hover:bg-slate-700 px-2 py-1 rounded-md">
+            <button onclick="copyLyrics('songModalEng')" title="Скопировать текст" class="text-[11px] text-slate-400 hover:text-blue-400 transition flex items-center gap-1 bg-slate-800/80 hover:bg-slate-700 px-2 py-1 rounded-md">
               <i class="fa-regular fa-copy"></i> Копировать
             </button>
           </div>
@@ -264,14 +326,14 @@
           </div>
         </div>
 
-        <!-- Translated Column -->
+        <!-- Right Column -->
         <div id="lyricsColTrans" class="flex flex-col min-h-0 bg-slate-900/60 p-3 sm:p-4 rounded-xl border border-slate-800/80">
           <div class="flex items-center justify-between mb-2 pb-2 border-b border-slate-800/60 shrink-0">
-            <div class="flex items-center gap-2 text-xs font-semibold tracking-wider text-slate-400 uppercase">
+            <div class="flex items-center gap-2 text-xs font-semibold tracking-wider text-slate-300 uppercase">
               <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-              <span id="lyricsTransHeaderLabel">Перевод (Русский)</span>
+              <span id="lyricsRightHeaderLabel">🇷🇺 Русский</span>
             </div>
-            <button onclick="copyLyrics('songModalRus')" title="Скопировать перевод" class="text-[11px] text-slate-400 hover:text-emerald-400 transition flex items-center gap-1 bg-slate-800/80 hover:bg-slate-700 px-2 py-1 rounded-md">
+            <button onclick="copyLyrics('songModalRus')" title="Скопировать текст" class="text-[11px] text-slate-400 hover:text-emerald-400 transition flex items-center gap-1 bg-slate-800/80 hover:bg-slate-700 px-2 py-1 rounded-md">
               <i class="fa-regular fa-copy"></i> Копировать
             </button>
           </div>
@@ -284,8 +346,14 @@
 
       <!-- Modal Footer -->
       <div class="p-3 sm:p-4 border-t border-slate-800/90 bg-slate-900/90 flex items-center justify-between gap-2 shrink-0">
-        <div class="text-[11px] text-slate-500 hidden sm:block">
-          <i class="fa-solid fa-arrows-up-down text-[10px]"></i> На мобильном используйте вкладки выше для быстрого чтения
+        <div class="text-[11px] text-slate-400 hidden sm:flex items-center gap-3">
+          <a href="https://github.com/nemez-787/lyrics-app" target="_blank" rel="noopener noreferrer" class="hover:text-white transition flex items-center gap-1">
+            <i class="fa-brands fa-github text-slate-300"></i> nemez-787/lyrics-app
+          </a>
+          <span class="text-slate-600">•</span>
+          <a href="https://t.me/kakoitamyziikant" target="_blank" rel="noopener noreferrer" class="text-sky-400 hover:text-sky-300 transition flex items-center gap-1">
+            <i class="fa-brands fa-telegram"></i> @kakoitamyziikant
+          </a>
         </div>
         <div class="flex items-center gap-2 ml-auto">
           <button id="songModalEditBtn" class="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-medium transition border border-slate-700/80 active:scale-95">
@@ -379,11 +447,12 @@
           <input type="text" id="trackTitleInput" placeholder="Например: Holy Wars... The Punishment Due" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
         </div>
 
-        <!-- Auto Translate Language and Button -->
+        <!-- Auto Translate Language and Button with Source/Target selectors -->
         <div class="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
-          <div class="flex items-center gap-2 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-300 shrink-0">
-            <span class="text-slate-400 font-medium">Язык перевода:</span>
-            <select id="trackTranslateLang" onchange="updateTrackModalTranslationLabel()" class="bg-slate-800 text-white font-medium rounded-lg px-2.5 py-1 focus:outline-none border border-slate-700 cursor-pointer">
+          <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-300 shrink-0">
+            <span class="text-slate-400 font-medium">Из:</span>
+            <select id="trackSourceLang" class="bg-slate-800 text-white font-medium rounded-lg px-2 py-1 focus:outline-none border border-slate-700 cursor-pointer text-xs">
+              <option value="en">🇬🇧 English</option>
               <option value="ru">🇷🇺 Русский</option>
               <option value="uk">🇺🇦 Українська</option>
               <option value="pt">🇵🇹 Português</option>
@@ -391,17 +460,30 @@
               <option value="de">🇩🇪 Deutsch</option>
               <option value="fr">🇫🇷 Français</option>
             </select>
+            <button type="button" onclick="swapTrackModalLyrics()" title="Поменять тексты и языки местами" class="w-6 h-6 flex items-center justify-center bg-slate-800 hover:bg-slate-700 text-slate-300 rounded border border-slate-700">
+              <i class="fa-solid fa-arrow-right-arrow-left text-[10px]"></i>
+            </button>
+            <span class="text-slate-400 font-medium">В:</span>
+            <select id="trackTranslateLang" onchange="updateTrackModalTranslationLabel()" class="bg-slate-800 text-white font-medium rounded-lg px-2 py-1 focus:outline-none border border-slate-700 cursor-pointer text-xs">
+              <option value="ru">🇷🇺 Русский</option>
+              <option value="en">🇬🇧 English</option>
+              <option value="uk">🇺🇦 Українська</option>
+              <option value="pt">🇵🇹 Português</option>
+              <option value="es">🇪🇸 Español</option>
+              <option value="de">🇩🇪 Deutsch</option>
+              <option value="fr">🇫🇷 Français</option>
+            </select>
           </div>
-          <button type="button" id="autoTranslateBtn" onclick="autoTranslateTrack()" class="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-2.5 px-4 rounded-xl text-sm font-medium transition shadow-md active:scale-95">
-            <i class="fa-solid fa-language text-lg"></i>
+          <button type="button" id="autoTranslateBtn" onclick="autoTranslateTrack()" class="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white py-2 px-4 rounded-xl text-xs sm:text-sm font-medium transition shadow-md active:scale-95">
+            <i class="fa-solid fa-language text-base"></i>
             <span id="autoTranslateBtnText">Автоперевод текста</span>
           </button>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-medium text-slate-400 mb-1.5">Текст песни (Оригинал)</label>
-            <textarea id="trackEngInput" rows="10" placeholder="Вставьте оригинал текста..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs font-mono text-white focus:outline-none focus:border-blue-500 leading-relaxed"></textarea>
+            <label class="block text-xs font-medium text-slate-400 mb-1.5">Текст песни (Исходный)</label>
+            <textarea id="trackEngInput" rows="10" placeholder="Вставьте исходный текст песни..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs font-mono text-white focus:outline-none focus:border-blue-500 leading-relaxed"></textarea>
           </div>
           <div>
             <label id="trackRusLabel" class="block text-xs font-medium text-slate-400 mb-1.5">Перевод текста (Русский)</label>
@@ -458,23 +540,34 @@
     let artistSortMode = "random"; // 'random', 'name', 'default'
     let currentShuffledArtists = [];
 
-    // Lyrics Viewer & Multi-language state
+    // Lyrics Viewer & Multi-language state (Dual-Language Panes)
     let currentLyricsTrack = null;
     let currentLyricsAlbum = null;
     let currentLyricsArtist = null;
-    let currentLyricsLang = "ru";
-    let currentLyricsTab = "both"; // 'orig', 'trans', 'both'
+    let currentLyricsLeftLang = "en";
+    let currentLyricsRightLang = "ru";
+    let currentLyricsTab = "both"; // 'left', 'right', 'both'
     let currentLyricsFontSize = 14; // pixels
     const lyricsTranslationCache = new Map(); // key: `${trackTitle}_${lang}` => string
 
     const LANG_NAMES = {
+      en: "English",
       ru: "Русский",
       uk: "Українська",
       pt: "Português",
       es: "Español",
       de: "Deutsch",
-      fr: "Français",
-      en: "English"
+      fr: "Français"
+    };
+
+    const LANG_FLAGS = {
+      en: "🇬🇧",
+      ru: "🇷🇺",
+      uk: "🇺🇦",
+      pt: "🇵🇹",
+      es: "🇪🇸",
+      de: "🇩🇪",
+      fr: "🇫🇷"
     };
 
     function saveData() {
@@ -805,6 +898,43 @@
       app.innerHTML = html;
     }
 
+    /* Helper function to accurately detect language of original track lyrics */
+    function detectLyricsLanguage(text, title = "") {
+      if (!text || text.trim().length === 0) return "en";
+      const t = text.toLowerCase();
+      const tit = (title || "").toLowerCase();
+
+      // Explicit known German tracks or lyrics
+      if (tit.includes("die eier von satan") || t.includes("eine halbe tasse") || t.includes("und keine eier") || t.includes("staubzucker")) {
+        return "de";
+      }
+
+      // German markers & umlauts
+      const deMatches = (t.match(/\b(und|der|die|das|nicht|ich|sie|ist|ein|eine|einen|keine|mit|für|auf|dem|den|zu|im|aus|wie|aber|wenn|nach|von|dich|mich|du)\b/g) || []).length;
+      const deChars = (t.match(/[äöüß]/g) || []).length;
+
+      // Portuguese markers
+      const ptMatches = (t.match(/\b(que|não|uma|com|para|por|mais|como|mas|foi|ele|das|dos|pelo|pela|tão|meu|sua|você|onde|quando|sempre|tudo)\b/g) || []).length;
+      const ptChars = (t.match(/[ãõç]/g) || []).length;
+
+      // Spanish markers
+      const esMatches = (t.match(/\b(que|los|las|del|una|con|para|por|más|como|pero|sus|este|esta|entre|cuando|todo|sobre|yo|tu|sin)\b/g) || []).length;
+      const esChars = (t.match(/[ñ¿¡áéíóú]/g) || []).length;
+
+      // French markers
+      const frMatches = (t.match(/\b(que|les|des|une|dans|pour|pas|sur|qui|avec|tout|plus|par|mais|nous|vous|cette|comme|elle|est)\b/g) || []).length;
+
+      // English common words
+      const enMatches = (t.match(/\b(the|you|and|that|with|this|from|they|will|would|there|their|what|about|which|when|make|can|like|time|just|know|take|people|into|year|your|good|some|could|them|see|other|than|then|now|look|only|come|its|over|think|also|back|after|use|two|how|our|work|first|well|way|even|new|want|because|any|these|give|day|most|us)\b/g) || []).length;
+
+      if ((deMatches > 3 || deChars > 1) && deMatches > enMatches) return "de";
+      if ((ptMatches > 3 || ptChars > 1) && ptMatches > enMatches) return "pt";
+      if ((esMatches > 3 || esChars > 1) && esMatches > enMatches) return "es";
+      if (frMatches > 3 && frMatches > enMatches) return "fr";
+
+      return "en";
+    }
+
     function showTracks(albumId) {
       currentAlbumId = albumId;
       const headerAddTrackBtn = document.getElementById("headerAddTrackBtn");
@@ -889,7 +1019,9 @@
           if (isFiltered) return;
 
           const hasLyrics = track.eng && track.eng.trim() !== "";
-          const hasRussian = track.rus && track.rus.trim() !== "";
+          const origLang = detectLyricsLanguage(track.eng, track.title);
+          const origLangCode = (origLang || "en").toUpperCase();
+          const hasRussian = track.rus && track.rus.trim() !== "" && origLang !== "ru";
 
           html += `
             <div 
@@ -910,7 +1042,7 @@
               <div class="flex-1 min-w-0 cursor-pointer" onclick="openSongLyricsModal(${idx})">
                 <div class="flex items-center gap-2">
                   <h4 class="text-xs sm:text-sm font-semibold text-white group-hover:text-blue-400 transition truncate">${track.title}</h4>
-                  ${hasLyrics ? '<span class="text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded font-mono shrink-0">EN</span>' : ''}
+                  ${hasLyrics ? `<span class="text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded font-mono shrink-0">${origLangCode}</span>` : ''}
                   ${hasRussian ? '<span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded font-mono shrink-0">RU</span>' : ''}
                 </div>
               </div>
@@ -992,6 +1124,65 @@
       if (el) el.classList.add("hidden");
     }
 
+    /* ==========================================================================
+       MODULE 6.6: MODAL DIALOGS CONTROLLERS (DUAL-LANGUAGE MULTI-LINGUAL ENGINE)
+       ========================================================================== */
+    async function getTrackLyricsForLang(lang, track) {
+      if (!track) return "";
+      const detectedOrig = detectLyricsLanguage(track.eng, track.title);
+
+      // 1. If requesting the original language of this song
+      if (lang === detectedOrig && track.eng && track.eng.trim() !== "") {
+        return track.eng;
+      }
+      // 2. If requesting Russian and stored russian text exists
+      if (lang === "ru" && track.rus && track.rus.trim() !== "") {
+        return track.rus;
+      }
+      // 3. If requesting English and the song is originally English
+      if (lang === "en" && detectedOrig === "en" && track.eng && track.eng.trim() !== "") {
+        return track.eng;
+      }
+
+      // 4. Check in-memory translation cache
+      const cacheKey = `${track.title}_${lang}`;
+      if (lyricsTranslationCache.has(cacheKey)) {
+        return lyricsTranslationCache.get(cacheKey);
+      }
+
+      // 5. Determine source text and source lang
+      let sourceText = "";
+      let sourceLang = detectedOrig;
+      if (track.eng && track.eng.trim() !== "") {
+        sourceText = track.eng;
+        sourceLang = detectedOrig;
+      } else if (track.rus && track.rus.trim() !== "") {
+        sourceText = track.rus;
+        sourceLang = "ru";
+      }
+
+      if (!sourceText) {
+        return "(Текст песни отсутствует для перевода)";
+      }
+
+      if (sourceLang === lang) {
+        return sourceText;
+      }
+
+      // 6. Request translation via server proxy / API
+      try {
+        const translated = await requestTranslation(sourceText, sourceLang, lang);
+        if (translated) {
+          lyricsTranslationCache.set(cacheKey, translated);
+          return translated;
+        }
+      } catch (err) {
+        console.warn("Translation failed for", lang, err);
+      }
+
+      return sourceText;
+    }
+
     function openSongLyricsModal(trackIndex) {
       const album = albums.find(a => a.id === currentAlbumId);
       if (!album || !album.tracks || !album.tracks[trackIndex]) return;
@@ -1005,12 +1196,18 @@
 
       document.getElementById("songModalTitle").textContent = track.title;
       document.getElementById("songModalSubtitle").textContent = `${artist ? artist.name : ''} — ${album.title} (${album.year || ''})`;
-      document.getElementById("songModalEng").textContent = track.eng || "(Оригинальный текст отсутствует)";
 
-      // Reset to Russian by default or keep selected language
-      const langSelect = document.getElementById("lyricsTargetLangSelect");
-      const targetLang = langSelect ? langSelect.value : "ru";
-      renderLyricsTranslation(targetLang);
+      // Detect track's actual original language and set as left pane
+      const detectedOrig = detectLyricsLanguage(track.eng, track.title);
+      currentLyricsLeftLang = detectedOrig;
+      currentLyricsRightLang = (detectedOrig === "ru") ? "en" : "ru";
+
+      const leftSelect = document.getElementById("lyricsLeftLangSelect");
+      const rightSelect = document.getElementById("lyricsRightLangSelect");
+      if (leftSelect) leftSelect.value = currentLyricsLeftLang;
+      if (rightSelect) rightSelect.value = currentLyricsRightLang;
+
+      renderLyricsPanes();
 
       // Edit button handler
       document.getElementById("songModalEditBtn").onclick = function() {
@@ -1018,71 +1215,117 @@
         openTrackModal(trackIndex);
       };
 
-      // Ensure appropriate view tab
-      setLyricsViewTab(window.innerWidth < 768 ? "trans" : "both");
+      // Set view tab according to screen width
+      setLyricsViewTab(window.innerWidth < 768 ? "right" : "both");
       applyLyricsFontSize();
-
       openModal("songLyricsModal");
     }
 
-    async function onLyricsLanguageChange(newLang) {
-      currentLyricsLang = newLang;
-      await renderLyricsTranslation(newLang);
+    function onLyricsLeftLangChange(newLang) {
+      currentLyricsLeftLang = newLang;
+      renderLyricsPanes();
     }
 
-    async function renderLyricsTranslation(lang) {
-      if (!currentLyricsTrack) return;
+    function onLyricsRightLangChange(newLang) {
+      currentLyricsRightLang = newLang;
+      renderLyricsPanes();
+    }
 
-      const rusPre = document.getElementById("songModalRus");
-      const headerLabel = document.getElementById("lyricsTransHeaderLabel");
-      const tabLabel = document.getElementById("lyricsTransTabLabel");
+    function swapLyricsLanguages() {
+      const leftSelect = document.getElementById("lyricsLeftLangSelect");
+      const rightSelect = document.getElementById("lyricsRightLangSelect");
+      if (!leftSelect || !rightSelect) return;
+
+      const temp = currentLyricsLeftLang;
+      currentLyricsLeftLang = currentLyricsRightLang;
+      currentLyricsRightLang = temp;
+
+      leftSelect.value = currentLyricsLeftLang;
+      rightSelect.value = currentLyricsRightLang;
+      renderLyricsPanes();
+    }
+
+    async function renderLyricsPanes() {
+      if (!currentLyricsTrack) return;
+      const leftLang = currentLyricsLeftLang;
+      const rightLang = currentLyricsRightLang;
+
+      const leftLabel = document.getElementById("lyricsLeftHeaderLabel");
+      const rightLabel = document.getElementById("lyricsRightHeaderLabel");
+      const leftTab = document.getElementById("lyricsLeftTabLabel");
+      const rightTab = document.getElementById("lyricsRightTabLabel");
       const spinner = document.getElementById("translationLoadingSpinner");
 
-      const langTitle = LANG_NAMES[lang] || lang.toUpperCase();
-      if (headerLabel) headerLabel.textContent = `Перевод (${langTitle})`;
-      if (tabLabel) tabLabel.textContent = langTitle;
+      const leftName = `${leftLang.toUpperCase()} ${LANG_NAMES[leftLang] || leftLang}`;
+      const rightName = `${rightLang.toUpperCase()} ${LANG_NAMES[rightLang] || rightLang}`;
 
-      // 1. If Russian and default text is available in track
-      if (lang === "ru" && currentLyricsTrack.rus && currentLyricsTrack.rus.trim() !== "") {
-        rusPre.textContent = currentLyricsTrack.rus;
-        return;
+      if (leftLabel) leftLabel.textContent = leftName;
+      if (rightLabel) rightLabel.textContent = rightName;
+      if (leftTab) leftTab.textContent = leftName;
+      if (rightTab) rightTab.textContent = rightName;
+
+      const leftPre = document.getElementById("songModalEng");
+      const rightPre = document.getElementById("songModalRus");
+
+      const leftCacheKey = `${currentLyricsTrack.title}_${leftLang}`;
+      const rightCacheKey = `${currentLyricsTrack.title}_${rightLang}`;
+
+      let needLeftFetch = false;
+      let needRightFetch = false;
+
+      const detectedOrig = detectLyricsLanguage(currentLyricsTrack.eng, currentLyricsTrack.title);
+
+      // Handle left pane
+      if (leftLang === detectedOrig && currentLyricsTrack.eng && currentLyricsTrack.eng.trim() !== "") {
+        leftPre.textContent = currentLyricsTrack.eng;
+      } else if (leftLang === "ru" && currentLyricsTrack.rus && currentLyricsTrack.rus.trim() !== "") {
+        leftPre.textContent = currentLyricsTrack.rus;
+      } else if (lyricsTranslationCache.has(leftCacheKey)) {
+        leftPre.textContent = lyricsTranslationCache.get(leftCacheKey);
+      } else {
+        leftPre.textContent = `⏳ Загрузка (${LANG_NAMES[leftLang] || leftLang})...`;
+        needLeftFetch = true;
       }
 
-      // 2. Check in-memory cache
-      const cacheKey = `${currentLyricsTrack.title}_${lang}`;
-      if (lyricsTranslationCache.has(cacheKey)) {
-        rusPre.textContent = lyricsTranslationCache.get(cacheKey);
-        return;
+      // Handle right pane
+      if (rightLang === detectedOrig && currentLyricsTrack.eng && currentLyricsTrack.eng.trim() !== "") {
+        rightPre.textContent = currentLyricsTrack.eng;
+      } else if (rightLang === "ru" && currentLyricsTrack.rus && currentLyricsTrack.rus.trim() !== "") {
+        rightPre.textContent = currentLyricsTrack.rus;
+      } else if (lyricsTranslationCache.has(rightCacheKey)) {
+        rightPre.textContent = lyricsTranslationCache.get(rightCacheKey);
+      } else {
+        rightPre.textContent = `⏳ Загрузка (${LANG_NAMES[rightLang] || rightLang})...`;
+        needRightFetch = true;
       }
 
-      // 3. Otherwise fetch on-the-fly translation
-      if (!currentLyricsTrack.eng || currentLyricsTrack.eng.trim() === "") {
-        rusPre.textContent = "(Оригинальный текст отсутствует для перевода)";
-        return;
-      }
-
-      if (spinner) spinner.classList.remove("hidden");
-      rusPre.textContent = `⏳ Выполняется перевод на ${langTitle}... Пожалуйста, подождите.`;
-
-      try {
-        const translated = await requestTranslation(currentLyricsTrack.eng, "en", lang);
-        if (translated) {
-          lyricsTranslationCache.set(cacheKey, translated);
-          rusPre.textContent = translated;
-        } else {
-          rusPre.textContent = currentLyricsTrack.rus || "(Не удалось перевести текст на выбранный язык)";
+      if (needLeftFetch || needRightFetch) {
+        if (spinner) spinner.classList.remove("hidden");
+        try {
+          const promises = [];
+          if (needLeftFetch) {
+            promises.push(getTrackLyricsForLang(leftLang, currentLyricsTrack).then(txt => {
+              if (leftPre) leftPre.textContent = txt;
+            }));
+          }
+          if (needRightFetch) {
+            promises.push(getTrackLyricsForLang(rightLang, currentLyricsTrack).then(txt => {
+              if (rightPre) rightPre.textContent = txt;
+            }));
+          }
+          await Promise.all(promises);
+        } catch (e) {
+          console.error("Failed to load translated panes:", e);
+        } finally {
+          if (spinner) spinner.classList.add("hidden");
         }
-      } catch (e) {
-        console.error("Translation failed:", e);
-        rusPre.textContent = currentLyricsTrack.rus || "(Ошибка перевода. Проверьте интернет-соединение)";
-      } finally {
-        if (spinner) spinner.classList.add("hidden");
       }
     }
 
     async function requestTranslation(text, sourceLang = "en", targetLang = "ru") {
       let result = "";
-      // Try server proxy
+
+      // 1. Try backend server proxy
       try {
         const resp = await fetch("/api/translate", {
           method: "POST",
@@ -1097,7 +1340,7 @@
         console.warn("Server proxy failed, trying direct browser request:", err);
       }
 
-      // Fallback direct browser call
+      // 2. Direct browser fallback call
       if (!result) {
         try {
           const resp = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t`, {
@@ -1128,7 +1371,6 @@
       const btnBoth = document.getElementById("lyricsTabBtnBoth");
       const container = document.getElementById("lyricsContentContainer");
 
-      // Reset button classes
       [btnOrig, btnTrans, btnBoth].forEach(btn => {
         if (btn) {
           btn.classList.remove("bg-blue-600", "text-white");
@@ -1136,14 +1378,14 @@
         }
       });
 
-      if (tab === "orig") {
+      if (tab === "left" || tab === "orig") {
         btnOrig?.classList.add("bg-blue-600", "text-white");
         btnOrig?.classList.remove("text-slate-400");
         colOrig?.classList.remove("hidden");
         colTrans?.classList.add("hidden");
         container?.classList.remove("md:grid-cols-2");
         container?.classList.add("grid-cols-1");
-      } else if (tab === "trans") {
+      } else if (tab === "right" || tab === "trans") {
         btnTrans?.classList.add("bg-blue-600", "text-white");
         btnTrans?.classList.remove("text-slate-400");
         colOrig?.classList.add("hidden");
@@ -1173,17 +1415,37 @@
     }
 
     function updateTrackModalTranslationLabel() {
-      const select = document.getElementById("trackTranslateLang");
+      const srcSelect = document.getElementById("trackSourceLang");
+      const tgtSelect = document.getElementById("trackTranslateLang");
       const label = document.getElementById("trackRusLabel");
       const btnText = document.getElementById("autoTranslateBtnText");
-      if (!select) return;
-      const lang = select.value;
-      const langTitle = LANG_NAMES[lang] || lang;
-      if (label) label.textContent = `Перевод текста (${langTitle})`;
-      if (btnText) btnText.textContent = `Автоперевод на ${langTitle}`;
+      if (!tgtSelect) return;
+      const tgtLang = tgtSelect.value;
+      const tgtTitle = LANG_NAMES[tgtLang] || tgtLang;
+      if (label) label.textContent = `Перевод текста (${tgtTitle})`;
+      if (btnText) btnText.textContent = `Автоперевод на ${tgtTitle}`;
     }
 
-    function openArtistModal(artistId = null) {
+    function swapTrackModalLyrics() {
+      const engInput = document.getElementById("trackEngInput");
+      const rusInput = document.getElementById("trackRusInput");
+      const srcSelect = document.getElementById("trackSourceLang");
+      const tgtSelect = document.getElementById("trackTranslateLang");
+
+      if (engInput && rusInput) {
+        const tempText = engInput.value;
+        engInput.value = rusInput.value;
+        rusInput.value = tempText;
+      }
+      if (srcSelect && tgtSelect) {
+        const tempLang = srcSelect.value;
+        srcSelect.value = tgtSelect.value;
+        tgtSelect.value = tempLang;
+      }
+      updateTrackModalTranslationLabel();
+    }
+
+        function openArtistModal(artistId = null) {
       document.getElementById("artistEditId").value = artistId || "";
       if (artistId) {
         const art = artists.find(a => a.id === artistId);
@@ -1437,11 +1699,14 @@
        ========================================================================== */
     async function autoTranslateTrack() {
       const engText = document.getElementById("trackEngInput").value.trim();
-      const targetLang = document.getElementById("trackTranslateLang")?.value || "ru";
+      const srcSelect = document.getElementById("trackSourceLang");
+      const tgtSelect = document.getElementById("trackTranslateLang");
+      const sourceLang = srcSelect ? srcSelect.value : "en";
+      const targetLang = tgtSelect ? tgtSelect.value : "ru";
       const langTitle = LANG_NAMES[targetLang] || targetLang;
 
       if (!engText) {
-        showNotification("Введите оригинальный текст песни перед переводом", "error");
+        showNotification("Введите текст песни для перевода в левое поле", "error");
         return;
       }
 
@@ -1451,7 +1716,7 @@
       btn.disabled = true;
 
       try {
-        const translated = await requestTranslation(engText, "en", targetLang);
+        const translated = await requestTranslation(engText, sourceLang, targetLang);
         if (translated) {
           document.getElementById("trackRusInput").value = translated;
           showNotification(`Текст успешно переведен на ${langTitle}!`, "success");
