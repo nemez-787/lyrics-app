@@ -95,12 +95,10 @@
           <i class="fa-solid fa-users text-xs"></i>
           <span>Группы</span>
         </button>
-
         <button onclick="switchMainTab('years')" id="headerYearsBtn" title="Хронология и поиск альбомов по годам" class="flex items-center gap-1.5 bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl border border-slate-700/80 text-xs sm:text-sm font-semibold transition-all shadow-sm active:scale-95">
           <i class="fa-solid fa-calendar-days text-amber-400 text-xs"></i>
           <span>По годам</span>
         </button>
-
         <div class="flex items-center gap-1.5">
           <span class="text-xs font-bold tracking-wider text-slate-500 uppercase hidden xl:inline-block">/ Vault</span>
           <span id="vaultStatsBadge" class="text-[10px] sm:text-[11px] bg-blue-950/80 text-blue-400 border border-blue-800/50 px-2 py-0.5 rounded-full font-mono"></span>
@@ -124,7 +122,7 @@
         </div>
       </div>
 
-      <!-- Action Buttons -->
+      <!-- Action Buttons (Clean & Streamlined) -->
       <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
         <!-- Random Song Button -->
         <button onclick="openRandomTrack()" title="Открыть случайную песню с текстом и переводом" class="flex items-center gap-1.5 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white px-2.5 sm:px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all shadow-md shadow-purple-900/20 active:scale-95">
@@ -132,22 +130,28 @@
           <span class="hidden sm:inline">Случайный трек</span>
         </button>
 
-        <button onclick="openArtistModal()" title="Добавить нового исполнителя" class="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white px-2.5 sm:px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all shadow-md shadow-blue-900/20 active:scale-95">
-          <i class="fa-solid fa-user-plus text-xs"></i>
-          <span>+ Артист</span>
-        </button>
+        <!-- Single Dropdown for Adding -->
+        <div class="relative" id="headerAddDropdownContainer">
+          <button onclick="toggleHeaderAddDropdown(event)" id="headerAddDropdownBtn" title="Добавить исполнителя или альбом" class="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white px-2.5 sm:px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all shadow-md shadow-blue-900/20 active:scale-95">
+            <i class="fa-solid fa-plus text-xs"></i>
+            <span>Добавить</span>
+            <i class="fa-solid fa-chevron-down text-[10px] ml-0.5 text-blue-200"></i>
+          </button>
+          <div id="headerAddDropdown" class="hidden absolute right-0 mt-1.5 w-48 bg-slate-900/95 backdrop-blur-md border border-slate-700/80 rounded-xl shadow-2xl z-50 py-1 divide-y divide-slate-800">
+            <button onclick="openArtistModal(); toggleHeaderAddDropdown(false);" class="w-full text-left px-3.5 py-2.5 hover:bg-slate-800 text-slate-200 hover:text-white flex items-center gap-2.5 text-xs font-medium transition">
+              <i class="fa-solid fa-user-plus text-blue-400 text-xs"></i>
+              <span>+ Новый артист / Группа</span>
+            </button>
+            <button onclick="openAlbumModal(); toggleHeaderAddDropdown(false);" class="w-full text-left px-3.5 py-2.5 hover:bg-slate-800 text-slate-200 hover:text-white flex items-center gap-2.5 text-xs font-medium transition">
+              <i class="fa-solid fa-record-vinyl text-indigo-400 text-xs"></i>
+              <span>+ Новый альбом</span>
+            </button>
+          </div>
+        </div>
 
-        <button onclick="openAlbumModal()" title="Добавить новый музыкальный альбом" class="flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-500 text-white px-2.5 sm:px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all shadow-md shadow-indigo-900/20 active:scale-95">
-          <i class="fa-solid fa-record-vinyl text-xs"></i>
-          <span>+ Альбом</span>
-        </button>
+        <span id="headerAddTrackBtn" class="hidden"></span>
 
-        <button id="headerAddTrackBtn" onclick="openTrackModal()" title="Добавить песню в текущий альбом" class="hidden items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 sm:px-3 py-1.5 rounded-xl text-xs sm:text-sm font-medium transition-all shadow-md shadow-emerald-900/20 active:scale-95">
-          <i class="fa-solid fa-music text-xs"></i>
-          <span>+ Песня</span>
-        </button>
-
-        <div class="h-4 w-px bg-slate-800 mx-1 hidden sm:block"></div>
+        <div class="h-4 w-px bg-slate-800 mx-0.5 hidden sm:block"></div>
 
         <button onclick="exportData()" title="Скачать всю базу данных в JSON файл" class="flex items-center gap-1.5 bg-slate-800/90 hover:bg-slate-700 text-slate-300 px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-700/80 text-xs sm:text-sm font-medium transition-all active:scale-95">
           <i class="fa-solid fa-download text-slate-400 text-xs"></i>
@@ -160,30 +164,11 @@
           <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="importData(event)">
         </label>
 
-        <!-- GitHub Link -->
-        <a href="https://github.com/nemez-787/lyrics-app" target="_blank" rel="noopener noreferrer" title="Репозиторий на GitHub (nemez-787/lyrics-app)" class="flex items-center gap-1.5 bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white px-2.5 sm:px-3 py-1.5 rounded-xl border border-slate-700/80 text-xs sm:text-sm font-medium transition-all shadow-sm active:scale-95">
-          <i class="fa-brands fa-github text-sm text-slate-300"></i>
-          <span class="hidden md:inline">GitHub</span>
-        </a>
-
-        <!-- Telegram Contact -->
-        <a href="https://t.me/kakoitamyziikant" target="_blank" rel="noopener noreferrer" title="Связаться в Telegram: @kakoitamyziikant" class="flex items-center gap-1.5 bg-sky-950/80 hover:bg-sky-900 text-sky-300 hover:text-sky-200 px-2.5 sm:px-3 py-1.5 rounded-xl border border-sky-800/80 text-xs sm:text-sm font-medium transition-all shadow-sm active:scale-95">
-          <i class="fa-brands fa-telegram text-sm text-sky-400"></i>
-          <span class="hidden md:inline">@kakoitamyziikant</span>
-        </a>
-
-        <!-- Download HTML Link -->
-        <a href="/api/download/index.html" download="index.html" title="Скачать готовый файл index.html" class="flex items-center gap-1.5 bg-blue-950/80 hover:bg-blue-900 text-blue-300 px-2.5 sm:px-3 py-1.5 rounded-xl border border-blue-800/80 text-xs sm:text-sm font-medium transition-all active:scale-95">
-          <i class="fa-solid fa-file-code text-xs"></i>
-          <span class="hidden xl:inline">Скачать HTML</span>
-        </a>
-
         <button onclick="resetToDefaultData()" title="Восстановить полную базу метал-хитов" class="flex items-center gap-1.5 bg-slate-800/90 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-xl border border-slate-700/80 text-xs font-medium transition-all active:scale-95">
           <i class="fa-solid fa-rotate-left text-slate-400 text-xs"></i>
           <span class="hidden 2xl:inline">Сброс</span>
         </button>
       </div>
-
     </div>
   </header>
 
@@ -228,10 +213,10 @@
 
   <!-- Modal: View Song Lyrics (Multi-Language, Responsive & Mobile-Optimized) -->
   <div id="songLyricsModal" class="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md hidden">
-    <div class="glass-card w-full max-w-4xl h-[92vh] sm:h-auto sm:max-h-[90vh] rounded-2xl border border-slate-800 flex flex-col overflow-hidden shadow-2xl bg-slate-950/90">
+    <div class="glass-card w-full max-w-5xl h-[94vh] sm:h-auto sm:max-h-[92vh] rounded-2xl border border-slate-800 flex flex-col overflow-hidden shadow-2xl bg-slate-950/90">
       
       <!-- Modal Header -->
-      <div class="px-3.5 py-3 sm:px-6 sm:py-4 border-b border-slate-800/90 flex items-center justify-between bg-slate-900/90 gap-2 shrink-0">
+      <div class="px-3.5 py-3 sm:px-6 sm:py-3.5 border-b border-slate-800/90 flex items-center justify-between bg-slate-900/90 gap-2 shrink-0">
         <div class="min-w-0 flex-1">
           <div class="flex items-center gap-2">
             <h3 id="songModalTitle" class="text-base sm:text-xl md:text-2xl font-bold text-white truncate"></h3>
@@ -242,24 +227,182 @@
           <p id="songModalSubtitle" class="text-xs sm:text-sm text-blue-400 font-medium mt-0.5 truncate"></p>
         </div>
 
-        <!-- Controls: Font Size, Close -->
+        <!-- Controls: Prev/Next Track, Mini-Player, Font Size, Close -->
         <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <!-- Fast Prev / Next Navigation -->
+          <div class="flex items-center bg-slate-800/90 border border-slate-700/80 rounded-xl p-0.5 text-xs text-slate-300">
+            <button id="lyricsPrevTrackBtn" onclick="prevLyricsTrack()" title="Предыдущая песня [← Стрелка влево]" class="px-2 py-1 hover:text-white rounded-lg hover:bg-slate-700/60 transition active:scale-95 flex items-center gap-1">
+              <i class="fa-solid fa-chevron-left text-[10px]"></i>
+              <span class="hidden lg:inline text-[11px]">Пред</span>
+            </button>
+            <span id="lyricsTrackCounter" class="px-2 text-[11px] text-slate-400 font-mono font-semibold">1/1</span>
+            <button id="lyricsNextTrackBtn" onclick="nextLyricsTrack()" title="Следующая песня [→ Стрелка вправо]" class="px-2 py-1 hover:text-white rounded-lg hover:bg-slate-700/60 transition active:scale-95 flex items-center gap-1">
+              <span class="hidden lg:inline text-[11px]">След</span>
+              <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            </button>
+          </div>
+
+          <!-- Mini-Player Toggle Button -->
+          <button id="lyricsPlayerToggleBtn" onclick="toggleLyricsPlayer()" title="Слушать песню (YouTube плеер)" class="flex items-center gap-1.5 bg-red-600/20 hover:bg-red-600 text-red-300 hover:text-white border border-red-500/30 px-2.5 py-1.5 rounded-xl text-xs font-semibold transition active:scale-95">
+            <i class="fa-brands fa-youtube text-red-400 group-hover:text-white text-xs"></i>
+            <span class="hidden sm:inline">Плеер</span>
+            <i id="lyricsPlayerChevron" class="fa-solid fa-chevron-down text-[10px]"></i>
+          </button>
+
+          <!-- Font Size Controls -->
           <div class="flex items-center bg-slate-800/90 border border-slate-700/80 rounded-xl p-0.5 text-xs text-slate-300">
             <button onclick="changeLyricsFontSize(-1)" title="Уменьшить шрифт" class="px-2 py-1 hover:text-white rounded-lg hover:bg-slate-700/60 transition active:scale-95 text-xs font-semibold">A-</button>
             <span class="w-px h-3 bg-slate-700"></span>
             <button onclick="changeLyricsFontSize(1)" title="Увеличить шрифт" class="px-2 py-1 hover:text-white rounded-lg hover:bg-slate-700/60 transition active:scale-95 text-xs font-semibold">A+</button>
           </div>
 
-          <button onclick="closeModal('songLyricsModal')" aria-label="Закрыть" class="text-slate-400 hover:text-white p-2 rounded-xl hover:bg-slate-800/80 transition active:scale-95">
+          <button onclick="closeSongLyricsModalSafe()" aria-label="Закрыть" class="text-slate-400 hover:text-white p-2 rounded-xl hover:bg-slate-800/80 transition active:scale-95">
             <i class="fa-solid fa-xmark text-lg sm:text-xl"></i>
           </button>
         </div>
       </div>
 
-      <!-- Dual Language Selectors & Mobile Tab Switcher Bar -->
+      <!-- Collapsible Mini-Player Section with Custom Link Support -->
+      <div id="lyricsPlayerContainer" class="hidden px-3 sm:px-6 py-2.5 bg-slate-900 border-b border-slate-800/90 transition-all">
+        <!-- Player Top Bar -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-2 mb-2">
+          <div class="flex items-center gap-2 text-xs text-slate-300 min-w-0">
+            <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0"></span>
+            <span id="lyricsPlayerTrackInfo" class="font-semibold text-white truncate max-w-xs sm:max-w-md"></span>
+            <span id="lyricsPlayerHasCustomBadge" class="hidden text-[10px] bg-blue-500/20 text-blue-400 border border-blue-500/30 px-1.5 py-0.5 rounded font-mono shrink-0">
+              <i class="fa-solid fa-link text-[9px]"></i> Своя ссылка
+            </span>
+          </div>
+
+          <div class="flex items-center gap-1.5 sm:gap-2 text-xs shrink-0 flex-wrap justify-end">
+            <!-- Edit/Add custom link button -->
+            <button onclick="togglePlayerCustomLinkBar()" id="playerEditLinkBtn" title="Привязать свою ссылку на YouTube или Spotify" class="bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-2.5 py-1 rounded-lg border border-slate-700 text-xs flex items-center gap-1.5 transition active:scale-95">
+              <i class="fa-solid fa-link text-blue-400 text-[11px]"></i>
+              <span id="playerEditLinkBtnText">Указать ссылку</span>
+            </button>
+
+            <!-- Prominent Direct Video Link Button (Direct watch without Error 153!) -->
+            <a id="lyricsExternalYtLink" href="#" target="_blank" rel="noopener noreferrer" title="Смотреть это видео на YouTube в новой вкладке" class="bg-red-600 hover:bg-red-500 text-white font-medium px-2.5 py-1 rounded-lg flex items-center gap-1.5 transition shadow-sm active:scale-95">
+              <i class="fa-brands fa-youtube"></i>
+              <span class="font-semibold">YouTube ↗</span>
+            </a>
+
+            <!-- Direct Spotify Link Button -->
+            <a id="lyricsExternalSpotifyLink" href="#" target="_blank" rel="noopener noreferrer" title="Слушать в Spotify" class="bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white border border-emerald-600/30 px-2.5 py-1 rounded-lg flex items-center gap-1 transition">
+              <i class="fa-brands fa-spotify"></i>
+              <span class="hidden sm:inline">Spotify ↗</span>
+            </a>
+
+            <button onclick="toggleLyricsPlayer(false)" title="Скрыть плеер" class="text-slate-400 hover:text-white p-1 ml-0.5">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Custom Link Input Drawer -->
+        <div id="playerCustomLinkDrawer" class="hidden mb-2.5 p-3 bg-slate-950 rounded-xl border border-slate-700/80 shadow-lg">
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+            <div class="flex-1 relative">
+              <i class="fa-brands fa-youtube absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+              <input 
+                type="text" 
+                id="playerCustomUrlInput" 
+                placeholder="Вставьте ссылку на YouTube (https://youtu.be/...), Spotify или MP3..." 
+                class="w-full bg-slate-900 border border-slate-700 rounded-lg pl-8 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                onkeydown="if(event.key === 'Enter') savePlayerCustomUrl()"
+              >
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button onclick="savePlayerCustomUrl()" class="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1.5 rounded-lg text-xs font-semibold transition active:scale-95 shadow-sm">
+                Сохранить
+              </button>
+              <button onclick="clearPlayerCustomUrl()" title="Сбросить ссылку" class="bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-rose-400 px-2.5 py-1.5 rounded-lg text-xs border border-slate-700 transition">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+              <button onclick="togglePlayerCustomLinkBar(false)" class="text-slate-400 hover:text-white p-1.5 text-xs">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+          </div>
+          <div class="mt-2 text-[11px] text-slate-400 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 border-t border-slate-800/80 pt-2">
+            <span>
+              💡 Поддерживаются ссылки <b>youtu.be</b>, <b>youtube.com</b>, треки <b>Spotify</b> и аудиофайлы <b>.mp3</b>.
+            </span>
+            <span class="text-slate-500 text-[10px]">
+              Если официальный клип выдает Ошибку 153 — вставьте live или lyric-видео.
+            </span>
+          </div>
+        </div>
+
+        <!-- Player Active Video/Audio Frame -->
+        <div id="playerFrameWrapper" class="w-full h-44 sm:h-56 rounded-xl overflow-hidden bg-black shadow-inner border border-slate-800 relative">
+          <iframe 
+            id="lyricsPlayerIframe" 
+            class="w-full h-full" 
+            src="" 
+            title="Музыкальный плеер" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            allowfullscreen
+          ></iframe>
+          <audio id="lyricsPlayerAudio" class="hidden w-full absolute inset-x-0 bottom-4 px-4" controls></audio>
+        </div>
+
+        <!-- Error 153 Helper & 1-Click Direct Watch Banner -->
+        <div id="playerError153Helper" class="mt-2 px-3 py-2 rounded-xl bg-slate-950/90 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
+          <div class="flex items-center gap-2 text-slate-300">
+            <i class="fa-brands fa-youtube text-red-500 text-sm"></i>
+            <span>Если плеер пишет <b>«Ошибка 153»</b> — правообладатель отключил встраивание видео во фреймы.</span>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <a id="playerDirectWatchBtn" href="#" target="_blank" rel="noopener noreferrer" class="bg-red-600 hover:bg-red-500 text-white font-semibold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5 transition active:scale-95 shadow-md">
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+              <span>Смотреть на YouTube без ограничений</span>
+            </a>
+            <button onclick="togglePlayerCustomLinkBar(true)" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg text-xs border border-slate-700 transition">
+              Другая ссылка
+            </button>
+          </div>
+        </div>
+
+        <!-- Empty State (When no link is attached yet) -->
+        <div id="playerEmptyState" class="hidden p-5 sm:p-7 rounded-xl bg-slate-950/90 border border-slate-800 text-center">
+          <div class="w-12 h-12 mx-auto rounded-full bg-red-600/15 text-red-400 flex items-center justify-center text-xl mb-3">
+            <i class="fa-brands fa-youtube"></i>
+          </div>
+          <h4 class="text-sm font-bold text-white mb-1">Прикрепите видео или аудио к этой песне</h4>
+          <p class="text-xs text-slate-400 max-w-md mx-auto mb-4">
+            Вставьте любую ссылку с YouTube (или Spotify), чтобы слушать трек прямо в плеере.
+          </p>
+          <div class="max-w-md mx-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+            <input 
+              type="text" 
+              id="emptyStateUrlInput" 
+              placeholder="https://www.youtube.com/watch?v=..." 
+              class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+              onkeydown="if(event.key === 'Enter') saveEmptyStateUrl()"
+            >
+            <button onclick="saveEmptyStateUrl()" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg text-xs font-semibold transition active:scale-95 shrink-0 shadow-md">
+              Прикрепить
+            </button>
+          </div>
+          <div class="mt-4 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-400">
+            <a id="emptyStateYtSearchBtn" href="#" target="_blank" rel="noopener noreferrer" class="text-red-400 hover:text-red-300 flex items-center gap-1.5 font-medium">
+              <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> Найти видео на YouTube
+            </a>
+            <span class="text-slate-700">•</span>
+            <a id="emptyStateSpSearchBtn" href="#" target="_blank" rel="noopener noreferrer" class="text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5 font-medium">
+              <i class="fa-brands fa-spotify text-xs"></i> Найти в Spotify
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dual Language Selectors & Display Mode Switcher Bar -->
       <div class="px-3 py-2 sm:px-6 sm:py-2.5 bg-slate-900/80 border-b border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs shrink-0">
         
-        <!-- Dual Independent Language Selectors with Swap Button (Pixel-perfect matching UI) -->
+        <!-- Dual Independent Language Selectors with Swap Button -->
         <div class="flex items-center gap-1.5 sm:gap-2 flex-wrap">
           <!-- Left Column Language Select -->
           <div class="relative inline-flex items-center">
@@ -299,21 +442,36 @@
           </span>
         </div>
 
-        <!-- Layout / Mobile Tabs Switcher -->
-        <div class="flex items-center bg-slate-800/90 border border-slate-700/80 rounded-xl p-0.5">
-          <button id="lyricsTabBtnOrig" onclick="setLyricsViewTab('left')" class="px-2 sm:px-2.5 py-1 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition">
-            <span id="lyricsLeftTabLabel">Колонка 1</span>
-          </button>
-          <button id="lyricsTabBtnTrans" onclick="setLyricsViewTab('right')" class="px-2 sm:px-2.5 py-1 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition">
-            <span id="lyricsRightTabLabel">Колонка 2</span>
-          </button>
-          <button id="lyricsTabBtnBoth" onclick="setLyricsViewTab('both')" class="px-2 sm:px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-blue-600 transition shadow-sm">
-            <i class="fa-solid fa-table-columns"></i> <span class="hidden sm:inline">Оба</span>
-          </button>
+        <!-- Right Side: Display Mode Switcher (Parallel vs Interlinear) & Mobile Tabs -->
+        <div class="flex items-center gap-2">
+          <!-- Display Mode Switcher -->
+          <div class="flex items-center bg-slate-800/90 border border-slate-700/80 rounded-xl p-0.5 text-xs">
+            <button id="modeParallelBtn" onclick="setLyricsDisplayMode('parallel')" title="Параллельный режим (в две колонки)" class="px-2.5 py-1 rounded-lg font-medium text-white bg-blue-600 transition shadow-sm flex items-center gap-1">
+              <i class="fa-solid fa-table-columns text-[10px]"></i>
+              <span class="hidden sm:inline">Параллельно</span>
+            </button>
+            <button id="modeInterlinearBtn" onclick="setLyricsDisplayMode('interlinear')" title="Построчный режим (строка за строкой)" class="px-2.5 py-1 rounded-lg font-medium text-slate-400 hover:text-white transition flex items-center gap-1">
+              <i class="fa-solid fa-bars-staggered text-[10px]"></i>
+              <span>Построчно</span>
+            </button>
+          </div>
+
+          <!-- Mobile Parallel Tabs Switcher (Only shown in parallel mode) -->
+          <div id="parallelTabsContainer" class="flex items-center bg-slate-800/90 border border-slate-700/80 rounded-xl p-0.5">
+            <button id="lyricsTabBtnOrig" onclick="setLyricsViewTab('left')" class="px-2 sm:px-2.5 py-1 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition">
+              <span id="lyricsLeftTabLabel">Колонка 1</span>
+            </button>
+            <button id="lyricsTabBtnTrans" onclick="setLyricsViewTab('right')" class="px-2 sm:px-2.5 py-1 rounded-lg text-xs font-medium text-slate-400 hover:text-white transition">
+              <span id="lyricsRightTabLabel">Колонка 2</span>
+            </button>
+            <button id="lyricsTabBtnBoth" onclick="setLyricsViewTab('both')" class="px-2 sm:px-2.5 py-1 rounded-lg text-xs font-medium text-white bg-blue-600 transition shadow-sm">
+              <i class="fa-solid fa-table-columns"></i> <span class="hidden sm:inline">Оба</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- Modal Body (Lyrics Content) -->
+      <!-- Modal Body 1: Parallel Side-by-Side View -->
       <div id="lyricsContentContainer" class="p-3 sm:p-5 overflow-y-auto flex-1 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-5 bg-slate-950/60 touch-scroll">
         
         <!-- Left Column -->
@@ -323,7 +481,7 @@
               <span class="w-2 h-2 rounded-full bg-blue-500"></span>
               <span id="lyricsLeftHeaderLabel">🇬🇧 English</span>
             </div>
-            <button onclick="copyLyrics('songModalEng')" title="Скопировать текст" class="text-[11px] text-slate-400 hover:text-blue-400 transition flex items-center gap-1 bg-slate-800/80 hover:bg-slate-700 px-2 py-1 rounded-md">
+            <button onclick="copyLyrics('songModalEng')" title="Скопировать оригинальный текст" class="text-[11px] text-slate-400 hover:text-blue-400 transition flex items-center gap-1 bg-slate-800/80 hover:bg-slate-700 px-2 py-1 rounded-md">
               <i class="fa-regular fa-copy"></i> Копировать
             </button>
           </div>
@@ -339,7 +497,7 @@
               <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
               <span id="lyricsRightHeaderLabel">🇷🇺 Русский</span>
             </div>
-            <button onclick="copyLyrics('songModalRus')" title="Скопировать текст" class="text-[11px] text-slate-400 hover:text-emerald-400 transition flex items-center gap-1 bg-slate-800/80 hover:bg-slate-700 px-2 py-1 rounded-md">
+            <button onclick="copyLyrics('songModalRus')" title="Скопировать текст перевода" class="text-[11px] text-slate-400 hover:text-emerald-400 transition flex items-center gap-1 bg-slate-800/80 hover:bg-slate-700 px-2 py-1 rounded-md">
               <i class="fa-regular fa-copy"></i> Копировать
             </button>
           </div>
@@ -347,11 +505,17 @@
             <pre id="songModalRus" class="lyrics-pre text-slate-200 select-text leading-relaxed"></pre>
           </div>
         </div>
+      </div>
 
+      <!-- Modal Body 2: Interlinear (Построчный) View -->
+      <div id="lyricsInterlinearContainer" class="hidden p-3 sm:p-6 overflow-y-auto flex-1 bg-slate-950/60 touch-scroll">
+        <div id="lyricsInterlinearList" class="max-w-3xl mx-auto space-y-2.5">
+          <!-- Populated dynamically via renderLyricsPanes() -->
+        </div>
       </div>
 
       <!-- Modal Footer -->
-      <div class="p-3 sm:p-4 border-t border-slate-800/90 bg-slate-900/90 flex items-center justify-between gap-2 shrink-0">
+      <div class="p-3 sm:p-4 border-t border-slate-800/90 bg-slate-900/90 flex flex-wrap items-center justify-between gap-2 shrink-0">
         <div class="text-[11px] text-slate-400 hidden sm:flex items-center gap-3">
           <a href="https://github.com/nemez-787/lyrics-app" target="_blank" rel="noopener noreferrer" class="hover:text-white transition flex items-center gap-1">
             <i class="fa-brands fa-github text-slate-300"></i> nemez-787/lyrics-app
@@ -361,12 +525,18 @@
             <i class="fa-brands fa-telegram"></i> @kakoitamyziikant
           </a>
         </div>
+
         <div class="flex items-center gap-2 ml-auto">
+          <!-- Copy Combined Button -->
+          <button onclick="copyCombinedLyrics()" title="Скопировать оригинал и перевод вместе" class="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-medium transition border border-slate-700/80 active:scale-95">
+            <i class="fa-regular fa-copy text-amber-400"></i>
+            <span>Скопировать всё</span>
+          </button>
           <button id="songModalEditBtn" class="flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 px-3.5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-medium transition border border-slate-700/80 active:scale-95">
             <i class="fa-solid fa-pen-to-square text-blue-400"></i>
             <span>Редактировать</span>
           </button>
-          <button onclick="closeModal('songLyricsModal')" class="bg-blue-600 hover:bg-blue-500 text-white px-4 sm:px-5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-medium transition active:scale-95">
+          <button onclick="closeSongLyricsModalSafe()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 sm:px-5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-medium transition active:scale-95">
             Закрыть
           </button>
         </div>
@@ -453,6 +623,22 @@
           <input type="text" id="trackTitleInput" placeholder="Например: Holy Wars... The Punishment Due" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
         </div>
 
+        <div>
+          <label class="block text-xs font-medium text-slate-400 mb-1.5 flex items-center justify-between">
+            <span class="flex items-center gap-1.5">
+              <i class="fa-brands fa-youtube text-red-500 text-xs"></i>
+              <span>Ссылка на видеоклип или аудио (YouTube / Spotify / ID)</span>
+            </span>
+            <span class="text-[11px] text-slate-500">Необязательно</span>
+          </label>
+          <input 
+            type="text" 
+            id="trackVideoUrlInput" 
+            placeholder="Например: https://www.youtube.com/watch?v=... или https://youtu.be/..." 
+            class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+          >
+        </div>
+
         <!-- Auto Translate Language and Button with Source/Target selectors -->
         <div class="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
           <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-300 shrink-0">
@@ -534,6 +720,16 @@
     /* ==========================================================================
        MODULE 6.2: GLOBAL STATE & LOCAL STORAGE PERSISTENCE
        ========================================================================== */
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
     let artists = [];
     let albums = [];
     let currentArtistId = null;
@@ -1332,14 +1528,21 @@
       return "en";
     }
 
+    let currentTrackFilter = "all"; // "all" | "ru" | "instrumental" | "favorites"
+    let albumTrackSearchQuery = "";
+
+    function setTrackFilter(filterType) {
+      currentTrackFilter = filterType;
+      if (currentAlbumId) showTracks(currentAlbumId);
+    }
+
+    function handleAlbumTrackSearch(val) {
+      albumTrackSearchQuery = val ? val.toLowerCase().trim() : "";
+      if (currentAlbumId) showTracks(currentAlbumId);
+    }
+
     function showTracks(albumId) {
       currentAlbumId = albumId;
-      const headerAddTrackBtn = document.getElementById("headerAddTrackBtn");
-      if (headerAddTrackBtn) {
-        headerAddTrackBtn.classList.remove("hidden");
-        headerAddTrackBtn.classList.add("flex");
-      }
-
       const album = albums.find(a => a.id === albumId);
       if (!album) {
         showArtists();
@@ -1347,9 +1550,20 @@
       }
       const artist = artists.find(a => a.id === album.artistId);
       currentArtistId = album.artistId;
-
       const app = document.getElementById("appContent");
       const trackList = album.tracks || [];
+
+      // Calculate track counts for filter tabs
+      let countRu = 0;
+      let countInst = 0;
+      let countFav = 0;
+      trackList.forEach(t => {
+        const hasLyrics = Boolean(t.eng && t.eng.trim() !== "");
+        const hasRu = Boolean(t.rus && t.rus.trim() !== "");
+        if (hasRu) countRu++;
+        if (!hasLyrics) countInst++;
+        if (isTrackFavorite(album.id, t.title)) countFav++;
+      });
 
       let html = `
         <!-- Breadcrumbs Navigation -->
@@ -1365,7 +1579,7 @@
           <span class="text-slate-200 font-semibold truncate max-w-[150px] sm:max-w-none">${album.title}</span>
         </nav>
 
-        <!-- Album Header Info Card -->
+        <!-- Album Header Info Card (Clean, no redundant banner) -->
         <div class="glass-card rounded-3xl p-4 sm:p-7 mb-8 flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-7 border border-slate-800">
           <div class="w-32 h-32 sm:w-44 sm:h-44 rounded-2xl overflow-hidden shrink-0 shadow-2xl border border-slate-700 bg-slate-900">
             <img src="${album.cover || 'https://via.placeholder.com/300?text=No+Cover'}" alt="${album.title}" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/300?text=No+Cover'">
@@ -1375,7 +1589,7 @@
               <div>
                 <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-400">Альбом</span>
                 <h1 class="text-2xl sm:text-3xl font-black text-white mt-0.5 tracking-tight">${album.title}</h1>
-                <p class="text-xs sm:text-sm text-slate-400 font-medium mt-1">Исполнитель: <span class="text-slate-200 font-semibold">${artist ? artist.name : ''}</span> • Год: ${album.year || 'Н/Д'}</p>
+                <p class="text-xs sm:text-sm text-slate-400 font-medium mt-1">Исполнитель: <span class="text-slate-200 font-semibold">${artist ? artist.name : ''}</span> • Год: <span class="text-amber-400 font-semibold">${album.year || 'Н/Д'}</span></p>
               </div>
               <div class="flex items-center gap-2">
                 <button onclick="openTrackModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-medium transition shadow-md flex items-center gap-1.5 active:scale-95">
@@ -1386,18 +1600,46 @@
                 </button>
               </div>
             </div>
-            <p class="text-xs text-slate-500 mt-3 flex items-center justify-center sm:justify-start gap-2">
-              <i class="fa-solid fa-circle-info"></i>
-              <span>Кликните по названию песни, чтобы открыть оригинальный текст и перевод на русском, украинском, португальском и других языках.</span>
-            </p>
           </div>
         </div>
 
-        <!-- Tracklist Table -->
+        <!-- Tracklist Table with Filters and Quick In-Album Search -->
         <div class="glass-card rounded-2xl overflow-hidden border border-slate-800">
-          <div class="px-4 py-3 border-b border-slate-800/80 bg-slate-900/60 flex items-center justify-between">
-            <h2 class="text-sm sm:text-base font-bold text-white tracking-wide">Список треков (${trackList.length})</h2>
-            <span class="text-xs text-slate-400 hidden sm:inline"><i class="fa-solid fa-arrows-up-down"></i> Перетаскивайте за иконку для сортировки</span>
+          <div class="px-4 py-3 border-b border-slate-800/80 bg-slate-900/80 flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <h2 class="text-sm sm:text-base font-bold text-white tracking-wide">Список треков (${trackList.length})</h2>
+              <span class="text-[11px] text-slate-500 hidden md:inline">• Перетаскивайте строки для изменения порядка</span>
+            </div>
+            
+            <!-- In-Album Quick Search -->
+            <div class="relative w-full sm:w-56">
+              <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+              <input 
+                type="text" 
+                value="${escapeHtml(albumTrackSearchQuery)}" 
+                oninput="handleAlbumTrackSearch(this.value)" 
+                placeholder="Поиск песни в альбоме..." 
+                class="w-full bg-slate-950/80 border border-slate-700/80 rounded-lg pl-7 pr-7 py-1 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+              >
+              ${albumTrackSearchQuery ? `<button onclick="handleAlbumTrackSearch('');" class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs"><i class="fa-solid fa-xmark"></i></button>` : ''}
+            </div>
+          </div>
+
+          <!-- Quick Filter Tabs -->
+          <div class="px-3 sm:px-4 py-2 border-b border-slate-800/60 bg-slate-900/40 flex flex-wrap items-center gap-1.5 text-xs">
+            <button onclick="setTrackFilter('all')" class="px-2.5 py-1 rounded-lg font-medium transition ${currentTrackFilter === 'all' ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-800/80 text-slate-300 hover:text-white'}">
+              Все (${trackList.length})
+            </button>
+            <button onclick="setTrackFilter('ru')" class="px-2.5 py-1 rounded-lg font-medium transition ${currentTrackFilter === 'ru' ? 'bg-emerald-600 text-white shadow-sm' : 'bg-slate-800/80 text-slate-300 hover:text-white'}">
+              С переводом RU (${countRu})
+            </button>
+            <button onclick="setTrackFilter('instrumental')" class="px-2.5 py-1 rounded-lg font-medium transition ${currentTrackFilter === 'instrumental' ? 'bg-purple-600 text-white shadow-sm' : 'bg-slate-800/80 text-slate-300 hover:text-white'}">
+              Инструментал (${countInst})
+            </button>
+            <button onclick="setTrackFilter('favorites')" class="px-2.5 py-1 rounded-lg font-medium transition flex items-center gap-1.5 ${currentTrackFilter === 'favorites' ? 'bg-amber-600 text-white shadow-sm' : 'bg-slate-800/80 text-slate-300 hover:text-white'}">
+              <i class="fa-solid fa-star text-amber-300 text-[10px]"></i>
+              <span>Избранное (${countFav})</span>
+            </button>
           </div>
       `;
 
@@ -1411,14 +1653,26 @@
         `;
       } else {
         html += `<div class="divide-y divide-slate-800/60">`;
-        trackList.forEach((track, idx) => {
-          const isFiltered = searchQuery && !track.title.toLowerCase().includes(searchQuery);
-          if (isFiltered) return;
+        let renderedCount = 0;
 
-          const hasLyrics = track.eng && track.eng.trim() !== "";
+        trackList.forEach((track, idx) => {
+          // Global search query filter
+          if (searchQuery && !track.title.toLowerCase().includes(searchQuery)) return;
+          // In-album search query filter
+          if (albumTrackSearchQuery && !track.title.toLowerCase().includes(albumTrackSearchQuery)) return;
+
+          const hasLyrics = Boolean(track.eng && track.eng.trim() !== "");
           const origLang = detectLyricsLanguage(track.eng, track.title);
           const origLangCode = (origLang || "en").toUpperCase();
-          const hasRussian = track.rus && track.rus.trim() !== "" && origLang !== "ru";
+          const hasRussian = Boolean(track.rus && track.rus.trim() !== "" && origLang !== "ru");
+          const isFav = isTrackFavorite(album.id, track.title);
+
+          // Apply tab filters
+          if (currentTrackFilter === "ru" && !hasRussian) return;
+          if (currentTrackFilter === "instrumental" && hasLyrics) return;
+          if (currentTrackFilter === "favorites" && !isFav) return;
+
+          renderedCount++;
 
           html += `
             <div 
@@ -1426,31 +1680,42 @@
               ondragstart="handleDragStart(event, ${idx})" 
               ondragover="handleDragOver(event)" 
               ondrop="handleDrop(event, ${idx})"
-              class="px-3.5 py-3 flex items-center gap-3 sm:gap-4 hover:bg-slate-800/40 transition group select-none"
+              class="px-3.5 py-3 flex items-center gap-2.5 sm:gap-4 hover:bg-slate-800/40 transition group select-none"
             >
-              <div class="cursor-grab active:cursor-grabbing text-slate-600 group-hover:text-slate-400 px-1 hidden sm:block">
+              <!-- Drag Handle -->
+              <div class="cursor-grab active:cursor-grabbing text-slate-600 group-hover:text-slate-400 px-0.5 hidden sm:block">
                 <i class="fa-solid fa-grip-vertical text-xs"></i>
               </div>
 
+              <!-- Track Number -->
               <div class="text-xs font-mono font-bold text-slate-500 w-6 text-center">
                 ${idx + 1}
               </div>
 
+              <!-- Favorite Star Toggle -->
+              <button 
+                onclick="event.stopPropagation(); toggleTrackFavorite('${album.id}', ${JSON.stringify(track.title)})" 
+                title="${isFav ? 'Убрать из избранного' : 'Добавить в избранное'}" 
+                class="p-1 transition active:scale-90 shrink-0"
+              >
+                <i class="${isFav ? 'fa-solid fa-star text-amber-400' : 'fa-regular fa-star text-slate-600 hover:text-amber-400'} text-xs"></i>
+              </button>
+
+              <!-- Track Title & Language Badges -->
               <div class="flex-1 min-w-0 cursor-pointer" onclick="openSongLyricsModal(${idx})">
                 <div class="flex items-center gap-2">
                   <h4 class="text-xs sm:text-sm font-semibold text-white group-hover:text-blue-400 transition truncate">${track.title}</h4>
-                  ${hasLyrics ? `<span class="text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded font-mono shrink-0">${origLangCode}</span>` : ''}
+                  ${hasLyrics ? `<span class="text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded font-mono shrink-0">${origLangCode}</span>` : '<span class="text-[10px] bg-purple-500/10 text-purple-400 border border-purple-500/20 px-1.5 py-0.5 rounded font-mono shrink-0">INST</span>'}
                   ${hasRussian ? '<span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-1.5 py-0.5 rounded font-mono shrink-0">RU</span>' : ''}
                 </div>
               </div>
 
-              <!-- Quick action buttons -->
+              <!-- Quick Action Buttons -->
               <div class="flex items-center gap-1 sm:gap-2 shrink-0">
                 <button onclick="openSongLyricsModal(${idx})" title="Смотреть текст и перевод" class="bg-blue-600/20 hover:bg-blue-600 text-blue-300 hover:text-white px-2.5 py-1.5 rounded-lg text-xs font-medium transition flex items-center gap-1">
                   <i class="fa-solid fa-align-left text-[11px]"></i>
                   <span class="hidden sm:inline">Текст</span>
                 </button>
-
                 <div class="flex items-center sm:opacity-0 group-hover:opacity-100 transition-opacity">
                   <button onclick="moveTrack(${idx}, -1)" title="Поднять трек выше" class="p-1.5 text-slate-400 hover:text-white hover:bg-slate-700/60 rounded ${idx === 0 ? 'opacity-30 cursor-not-allowed' : ''}">
                     <i class="fa-solid fa-chevron-up text-xs"></i>
@@ -1469,12 +1734,21 @@
             </div>
           `;
         });
+
+        if (renderedCount === 0) {
+          html += `
+            <div class="p-8 text-center text-slate-500 text-xs">
+              Нет треков, соответствующих выбранному фильтру
+            </div>
+          `;
+        }
+
         html += `</div>`;
       }
-
       html += `</div>`;
       app.innerHTML = html;
     }
+
 
     function openRandomTrack() {
       const allTracksWithContext = [];
@@ -1580,19 +1854,88 @@
       return sourceText;
     }
 
+        /* ==========================================================================
+       MODULE: FAVORITES PERSISTENCE & HEADER DROPDOWN
+       ========================================================================== */
+    const FAVORITES_STORAGE_KEY = "rock_metal_vault_favorites";
+    function getFavoritesMap() {
+      try {
+        const raw = localStorage.getItem(FAVORITES_STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch (e) {
+        return {};
+      }
+    }
+    function saveFavoritesMap(map) {
+      try {
+        localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(map));
+      } catch (e) {}
+    }
+    function isTrackFavorite(albumId, trackTitle) {
+      if (!albumId || !trackTitle) return false;
+      const map = getFavoritesMap();
+      return Boolean(map[`${albumId}::${trackTitle}`]);
+    }
+    function toggleTrackFavorite(albumId, trackTitle) {
+      const map = getFavoritesMap();
+      const key = `${albumId}::${trackTitle}`;
+      if (map[key]) {
+        delete map[key];
+        showNotification(`Удалено из избранного: ${trackTitle}`, "info");
+      } else {
+        map[key] = true;
+        showNotification(`Добавлено в избранное: ${trackTitle}`, "success");
+      }
+      saveFavoritesMap(map);
+      if (currentAlbumId === albumId) {
+        showTracks(albumId);
+      }
+    }
+
+    function toggleHeaderAddDropdown(eventOrForce) {
+      const dd = document.getElementById("headerAddDropdown");
+      if (!dd) return;
+      if (typeof eventOrForce === "boolean") {
+        if (eventOrForce) dd.classList.remove("hidden");
+        else dd.classList.add("hidden");
+      } else {
+        if (eventOrForce && eventOrForce.stopPropagation) eventOrForce.stopPropagation();
+        dd.classList.toggle("hidden");
+      }
+    }
+    window.addEventListener("click", (e) => {
+      const container = document.getElementById("headerAddDropdownContainer");
+      if (container && !container.contains(e.target)) {
+        toggleHeaderAddDropdown(false);
+      }
+    });
+
+    /* ==========================================================================
+       MODULE: LYRICS MODAL ADVANCED CONTROLLERS (PREV/NEXT, PLAYER, INTERLINEAR, COPY)
+       ========================================================================== */
+    let currentLyricsTrackIndex = -1;
+    let currentLyricsMode = "parallel"; // "parallel" | "interlinear"
+    let lyricsPlayerOpen = false;
+
     function openSongLyricsModal(trackIndex) {
       const album = albums.find(a => a.id === currentAlbumId);
       if (!album || !album.tracks || !album.tracks[trackIndex]) return;
 
+      currentLyricsTrackIndex = trackIndex;
       const track = album.tracks[trackIndex];
       const artist = artists.find(a => a.id === album.artistId);
-
       currentLyricsTrack = track;
       currentLyricsAlbum = album;
       currentLyricsArtist = artist;
 
       document.getElementById("songModalTitle").textContent = track.title;
       document.getElementById("songModalSubtitle").textContent = `${artist ? artist.name : ''} — ${album.title} (${album.year || ''})`;
+
+      // Update track counter indicator
+      const counterEl = document.getElementById("lyricsTrackCounter");
+      if (counterEl) {
+        counterEl.textContent = `${trackIndex + 1} / ${album.tracks.length}`;
+      }
 
       // Detect track's actual original language and set as left pane
       const detectedOrig = detectLyricsLanguage(track.eng, track.title);
@@ -1604,18 +1947,591 @@
       if (leftSelect) leftSelect.value = currentLyricsLeftLang;
       if (rightSelect) rightSelect.value = currentLyricsRightLang;
 
+      // Update Mini-Player if open
+      if (lyricsPlayerOpen) {
+        updatePlayerTrack();
+      }
+
       renderLyricsPanes();
 
       // Edit button handler
       document.getElementById("songModalEditBtn").onclick = function() {
-        closeModal("songLyricsModal");
+        closeSongLyricsModalSafe();
         openTrackModal(trackIndex);
       };
 
-      // Set view tab according to screen width
-      setLyricsViewTab(window.innerWidth < 768 ? "right" : "both");
+      // Set view tab according to screen width in parallel mode
+      if (currentLyricsMode === "parallel") {
+        setLyricsViewTab(window.innerWidth < 768 ? "right" : "both");
+      }
       applyLyricsFontSize();
       openModal("songLyricsModal");
+    }
+
+    function prevLyricsTrack() {
+      if (!currentLyricsAlbum || !currentLyricsAlbum.tracks || currentLyricsAlbum.tracks.length === 0) return;
+      const len = currentLyricsAlbum.tracks.length;
+      const newIndex = (currentLyricsTrackIndex - 1 + len) % len;
+      openSongLyricsModal(newIndex);
+    }
+
+    function nextLyricsTrack() {
+      if (!currentLyricsAlbum || !currentLyricsAlbum.tracks || currentLyricsAlbum.tracks.length === 0) return;
+      const len = currentLyricsAlbum.tracks.length;
+      const newIndex = (currentLyricsTrackIndex + 1) % len;
+      openSongLyricsModal(newIndex);
+    }
+
+    // Keyboard navigation (ArrowLeft / ArrowRight)
+    window.addEventListener("keydown", (e) => {
+      const modal = document.getElementById("songLyricsModal");
+      if (!modal || modal.classList.contains("hidden")) return;
+      const activeEl = document.activeElement;
+      const tag = activeEl ? activeEl.tagName.toLowerCase() : "";
+      if (tag === "input" || tag === "textarea" || tag === "select") return;
+
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        prevLyricsTrack();
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        nextLyricsTrack();
+      }
+    });
+
+    // YouTube Mini-Player Controller
+    function toggleLyricsPlayer(force) {
+      lyricsPlayerOpen = (typeof force === "boolean") ? force : !lyricsPlayerOpen;
+      const container = document.getElementById("lyricsPlayerContainer");
+      const chevron = document.getElementById("lyricsPlayerChevron");
+      const toggleBtn = document.getElementById("lyricsPlayerToggleBtn");
+
+      if (!container) return;
+
+      if (lyricsPlayerOpen) {
+        container.classList.remove("hidden");
+        if (chevron) {
+          chevron.classList.remove("fa-chevron-down");
+          chevron.classList.add("fa-chevron-up");
+        }
+        if (toggleBtn) {
+          toggleBtn.classList.remove("bg-red-600/20");
+          toggleBtn.classList.add("bg-red-600", "text-white");
+        }
+        updatePlayerTrack();
+      } else {
+        container.classList.add("hidden");
+        if (chevron) {
+          chevron.classList.remove("fa-chevron-up");
+          chevron.classList.add("fa-chevron-down");
+        }
+        if (toggleBtn) {
+          toggleBtn.classList.remove("bg-red-600", "text-white");
+          toggleBtn.classList.add("bg-red-600/20", "text-red-300");
+        }
+        const iframe = document.getElementById("lyricsPlayerIframe");
+        if (iframe) iframe.src = "";
+      }
+    }
+
+    // Pre-seeded verified YouTube video IDs for iconic rock/metal hits
+    const DEFAULT_TRACK_VIDEOS = {
+      // Marilyn Manson
+      "marilyn manson - tainted love": "1IUqO1bN_5A",
+      "tainted love": "1IUqO1bN_5A",
+      "the beautiful people": "Ypkv0HeUvTc",
+      "sweet dreams": "QUvV3tT4nit",
+      "the dope show": "5R682M357nQ",
+      "mobscene": "mdwZX477EEE",
+      "this is the new shit": "1A7w2qV6N8o",
+      
+      // Metallica
+      "master of puppets": "E0ozmU9cJDg",
+      "enter sandman": "CD-E-LDc384",
+      "one": "WM8bTdBs-cw",
+      "nothing else matters": "tAGnKpE4NCI",
+      "fade to black": "WEQnzs8wl6E",
+      "for whom the bell tolls": "B_HSa1dEL9s",
+      "the unforgiven": "Ckom3gf57Yw",
+      "sad but true": "A8MO7fkZc5o",
+      "hardwired": "uhBHL3v4d3I",
+      "lux æterna": "_u-7rWKnVVo",
+
+      // Rammstein
+      "du hast": "W3q8Od5qJio",
+      "sonne": "kIBeYoP9Wi0",
+      "deutschland": "NeQM1c-XCDc",
+      "engel": "x2rQzv8OWEY",
+      "ich will": "f4K6dBGFQ4I",
+      "feuer frei!": "ZkW-K5RQdzo",
+      "mutter": "gXYzDclgnls",
+      "radio": "z0NfI2NeDHI",
+
+      // Tool
+      "vicarious": "h_TUP2vuaFs",
+      "schism": "-LhyqQ_s-0E",
+      "the pot": "civuoU_NE38",
+      "sober": "nspxAG12Cpc",
+      "stinkfist": "07pLGIgymdg",
+      "lateralus": "Y7JG63Iua4A",
+      "parabola": "tvqOTJQ0rFc",
+      "aenema": "E8v41DnGqCs",
+      "die eier von satan": "hA_6Zg9H5bY",
+
+      // Megadeth
+      "holy wars... the punishment due": "9d4ui9q7eDM",
+      "symphony of destruction": "67bTYMW5v9E",
+      "peace sells": "rdEupvsL0nE",
+      "hangar 18": "B-oU222148I",
+      "tornado of souls": "Mr9q9gJy-RU",
+      "a tout le monde": "aU-TW4SwP60",
+
+      // Slipknot
+      "psychosocial": "5abamRO41fE",
+      "duality": "7K2A_8yVjfc",
+      "wait and bleed": "qw2LU1yS7aw",
+      "before i forget": "v_09WVBFjPE",
+      "snuff": "LXEKuttVRIo",
+      "the devil in i": "XEEasR7hVhA",
+
+      // System of a Down
+      "chop suey!": "CSvFpBO48dQ",
+      "toxicity": "iywaBOMvYLI",
+      "aerials": "L-iepu3EtyE",
+      "b.y.o.b.": "zUzd9KyIDrU",
+      "lonely day": "DnGdoEa1tPg",
+
+      // Korn
+      "freak on a leash": "jRGrNDV2NWo",
+      "falling away from me": "2s3iWbQKh74",
+      "blind": "5_hI__69Qgs",
+      "twist": "312SBG2MobA",
+      "got the life": "VAWjsVoDpm0",
+      "coming undone": "CSJXle3LP_Q",
+
+      // Limp Bizkit
+      "break stuff": "ZpUYjpKg9KY",
+      "rollin' (air raid vehicle)": "RYnFIRc0k6E",
+      "nookie": "JTMVOzPPirw",
+      "take a look around": "bKF3lP843w8",
+      "my way": "dnkYqZ77s88",
+      "behind blue eyes": "8P2m3pA9n7w",
+
+      // Disturbed
+      "down with the sickness": "09LTT0sfASE",
+      "the sound of silence": "u9Dg-g7t2l4",
+      "stricken": "I77mjenvu40",
+      "indestructible": "aWxBrI0g1AQ",
+
+      // Linkin Park
+      "in the end": "eVTXPUF4Oz4",
+      "numb": "kXYiU_JCYtU",
+      "crawling": "Gd9OhYroLN0",
+      "faint": "LYU-8IFcDPw",
+      "somewhere i belong": "zsCD5XCu6CM",
+      "breaking the habit": "v2H4W90gk10",
+      "one step closer": "4qlCC19Ja44"
+    };
+
+    function parseMediaEmbedUrl(rawUrl) {
+      if (!rawUrl || typeof rawUrl !== "string") return null;
+      const url = rawUrl.trim();
+      if (!url) return null;
+
+      // 1. Direct audio file (.mp3, .wav, .ogg, .m4a, .aac)
+      if (/\.(mp3|wav|ogg|m4a|aac)(\?.*)?$/i.test(url)) {
+        return {
+          type: "audio",
+          audioUrl: url,
+          directUrl: url,
+          title: "Аудиофайл"
+        };
+      }
+
+      // 2. Spotify track URL
+      const spotifyMatch = url.match(/open\.spotify\.com\/(?:intl-[a-z]+\/)?track\/([a-zA-Z0-9]+)/i);
+      if (spotifyMatch && spotifyMatch[1]) {
+        const id = spotifyMatch[1];
+        return {
+          type: "spotify",
+          embedUrl: `https://open.spotify.com/embed/track/${id}?utm_source=generator`,
+          directUrl: `https://open.spotify.com/track/${id}`,
+          id: id
+        };
+      }
+
+      // 3. Spotify album or playlist
+      const spotifyAlbMatch = url.match(/open\.spotify\.com\/(?:intl-[a-z]+\/)?(album|playlist)\/([a-zA-Z0-9]+)/i);
+      if (spotifyAlbMatch && spotifyAlbMatch[1] && spotifyAlbMatch[2]) {
+        return {
+          type: "spotify",
+          embedUrl: `https://open.spotify.com/embed/${spotifyAlbMatch[1]}/${spotifyAlbMatch[2]}?utm_source=generator`,
+          directUrl: url,
+          id: spotifyAlbMatch[2]
+        };
+      }
+
+      // 4. YouTube raw 11-char ID
+      let ytId = null;
+      if (/^[a-zA-Z0-9_-]{11}$/.test(url)) {
+        ytId = url;
+      } else {
+        // 5. YouTube URL (youtu.be, youtube.com watch/embed/v/shorts/music)
+        const ytMatch = url.match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=|shorts\/|live\/))([a-zA-Z0-9_-]{11})/i);
+        if (ytMatch && ytMatch[1]) {
+          ytId = ytMatch[1];
+        }
+      }
+
+      if (ytId) {
+        return {
+          type: "youtube",
+          // Use standard www.youtube.com for broadest compatibility with embeds
+          embedUrl: `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0&playsinline=1&enablejsapi=1`,
+          directUrl: `https://www.youtube.com/watch?v=${ytId}`,
+          id: ytId
+        };
+      }
+
+      // 6. Generic embed URL
+      if (url.includes("/embed/")) {
+        return {
+          type: "custom",
+          embedUrl: url,
+          directUrl: url
+        };
+      }
+
+      return null;
+    }
+
+    function togglePlayerCustomLinkBar(force) {
+      const drawer = document.getElementById("playerCustomLinkDrawer");
+      if (!drawer) return;
+      const isOpen = (typeof force === "boolean") ? !force : drawer.classList.contains("hidden");
+      if (isOpen) {
+        drawer.classList.remove("hidden");
+        const input = document.getElementById("playerCustomUrlInput");
+        if (input) {
+          input.value = currentLyricsTrack?.videoUrl || "";
+          input.focus();
+        }
+      } else {
+        drawer.classList.add("hidden");
+      }
+    }
+
+    function savePlayerCustomUrl() {
+      if (!currentLyricsTrack) return;
+      const input = document.getElementById("playerCustomUrlInput");
+      const val = input ? input.value.trim() : "";
+      
+      if (val) {
+        const parsed = parseMediaEmbedUrl(val);
+        if (!parsed) {
+          showNotification("Не удалось распознать ссылку на YouTube, Spotify или MP3. Проверьте адрес.", "warning");
+          return;
+        }
+        currentLyricsTrack.videoUrl = val;
+        showNotification("✓ Ссылка успешно сохранена и прикреплена к песне!", "success");
+      } else {
+        delete currentLyricsTrack.videoUrl;
+        showNotification("Ссылка удалена", "info");
+      }
+
+      saveData();
+      togglePlayerCustomLinkBar(false);
+      updatePlayerTrack();
+    }
+
+    function saveEmptyStateUrl() {
+      if (!currentLyricsTrack) return;
+      const input = document.getElementById("emptyStateUrlInput");
+      const val = input ? input.value.trim() : "";
+      if (!val) {
+        showNotification("Вставьте ссылку на YouTube, Spotify или аудио", "error");
+        return;
+      }
+      const parsed = parseMediaEmbedUrl(val);
+      if (!parsed) {
+        showNotification("Не удалось распознать ссылку. Поддерживаются: youtu.be, youtube.com, Spotify, MP3", "warning");
+        return;
+      }
+
+      currentLyricsTrack.videoUrl = val;
+      saveData();
+      showNotification("✓ Ссылка прикреплена и активирована!", "success");
+      updatePlayerTrack();
+    }
+
+    function clearPlayerCustomUrl() {
+      if (!currentLyricsTrack) return;
+      delete currentLyricsTrack.videoUrl;
+      const input = document.getElementById("playerCustomUrlInput");
+      if (input) input.value = "";
+      saveData();
+      showNotification("Ссылка сброшена", "info");
+      togglePlayerCustomLinkBar(false);
+      updatePlayerTrack();
+    }
+
+    function updatePlayerTrack() {
+      if (!currentLyricsTrack) return;
+
+      const artistName = currentLyricsArtist?.name || "";
+      const trackTitle = currentLyricsTrack.title || "";
+      const fullQuery = `${artistName} ${trackTitle}`.trim();
+      const encoded = encodeURIComponent(fullQuery);
+
+      const info = document.getElementById("lyricsPlayerTrackInfo");
+      const ytLink = document.getElementById("lyricsExternalYtLink");
+      const spLink = document.getElementById("lyricsExternalSpotifyLink");
+      const iframe = document.getElementById("lyricsPlayerIframe");
+      const audioEl = document.getElementById("lyricsPlayerAudio");
+      const frameWrapper = document.getElementById("playerFrameWrapper");
+      const emptyState = document.getElementById("playerEmptyState");
+      const customBadge = document.getElementById("lyricsPlayerHasCustomBadge");
+      const editBtnText = document.getElementById("playerEditLinkBtnText");
+      const errorHelper = document.getElementById("playerError153Helper");
+      const directWatchBtn = document.getElementById("playerDirectWatchBtn");
+      const emptyYtSearch = document.getElementById("emptyStateYtSearchBtn");
+      const emptySpSearch = document.getElementById("emptyStateSpSearchBtn");
+
+      if (info) info.textContent = `${artistName} — ${trackTitle}`;
+
+      // Determine active media URL:
+      // Priority 1: User's custom videoUrl on this track
+      // Priority 2: Pre-seeded verified YouTube ID
+      let targetMedia = null;
+      let isUserCustom = false;
+
+      if (currentLyricsTrack.videoUrl) {
+        const parsed = parseMediaEmbedUrl(currentLyricsTrack.videoUrl);
+        if (parsed) {
+          targetMedia = parsed;
+          isUserCustom = true;
+        }
+      }
+
+      if (!targetMedia) {
+        const key1 = `${artistName.toLowerCase()} - ${trackTitle.toLowerCase()}`;
+        const key2 = trackTitle.toLowerCase();
+        const fallbackId = DEFAULT_TRACK_VIDEOS[key1] || DEFAULT_TRACK_VIDEOS[key2];
+        if (fallbackId) {
+          targetMedia = parseMediaEmbedUrl(fallbackId);
+        }
+      }
+
+      // External YouTube button: Always link directly to video if we have one, otherwise search
+      if (targetMedia && targetMedia.type === "youtube" && targetMedia.directUrl) {
+        if (ytLink) {
+          ytLink.href = targetMedia.directUrl;
+          ytLink.title = "Смотреть это видео прямо на YouTube";
+        }
+        if (directWatchBtn) {
+          directWatchBtn.href = targetMedia.directUrl;
+        }
+      } else {
+        if (ytLink) {
+          ytLink.href = `https://www.youtube.com/results?search_query=${encoded}`;
+          ytLink.title = "Найти видео на YouTube";
+        }
+        if (directWatchBtn) {
+          directWatchBtn.href = `https://www.youtube.com/results?search_query=${encoded}`;
+        }
+      }
+
+      // External Spotify button: Link directly if Spotify URL, otherwise search
+      if (targetMedia && targetMedia.type === "spotify" && targetMedia.directUrl) {
+        if (spLink) spLink.href = targetMedia.directUrl;
+      } else {
+        if (spLink) spLink.href = `https://open.spotify.com/search/${encoded}`;
+      }
+
+      if (emptyYtSearch) emptyYtSearch.href = `https://www.youtube.com/results?search_query=${encoded}`;
+      if (emptySpSearch) emptySpSearch.href = `https://open.spotify.com/search/${encoded}`;
+
+      if (customBadge) {
+        if (isUserCustom) customBadge.classList.remove("hidden");
+        else customBadge.classList.add("hidden");
+      }
+
+      if (editBtnText) {
+        editBtnText.textContent = isUserCustom ? "Изменить ссылку" : "Указать ссылку";
+      }
+
+      if (targetMedia) {
+        if (emptyState) emptyState.classList.add("hidden");
+        if (frameWrapper) frameWrapper.classList.remove("hidden");
+
+        if (targetMedia.type === "audio") {
+          // Direct HTML5 Audio playback
+          if (iframe) {
+            iframe.classList.add("hidden");
+            iframe.src = "";
+          }
+          if (audioEl) {
+            audioEl.classList.remove("hidden");
+            audioEl.src = targetMedia.audioUrl;
+            audioEl.play().catch(() => {});
+          }
+          if (errorHelper) errorHelper.classList.add("hidden");
+        } else if (targetMedia.type === "spotify") {
+          // Spotify Embed playback
+          if (audioEl) {
+            audioEl.pause();
+            audioEl.classList.add("hidden");
+            audioEl.src = "";
+          }
+          if (iframe) {
+            iframe.classList.remove("hidden");
+            iframe.src = targetMedia.embedUrl;
+          }
+          if (frameWrapper) {
+            frameWrapper.classList.remove("h-44", "sm:h-56");
+            frameWrapper.classList.add("h-24", "sm:h-32");
+          }
+          if (errorHelper) errorHelper.classList.add("hidden");
+        } else {
+          // YouTube / Video Embed playback
+          if (audioEl) {
+            audioEl.pause();
+            audioEl.classList.add("hidden");
+            audioEl.src = "";
+          }
+          if (iframe) {
+            iframe.classList.remove("hidden");
+            iframe.src = targetMedia.embedUrl;
+          }
+          if (frameWrapper) {
+            frameWrapper.classList.remove("h-24", "sm:h-32");
+            frameWrapper.classList.add("h-44", "sm:h-56");
+          }
+          if (errorHelper) errorHelper.classList.remove("hidden");
+        }
+      } else {
+        // No custom link and no pre-seeded ID -> Show intuitive empty state box
+        if (frameWrapper) frameWrapper.classList.add("hidden");
+        if (iframe) iframe.src = "";
+        if (audioEl) {
+          audioEl.pause();
+          audioEl.classList.add("hidden");
+          audioEl.src = "";
+        }
+        if (errorHelper) errorHelper.classList.add("hidden");
+        if (emptyState) emptyState.classList.remove("hidden");
+        const emptyInput = document.getElementById("emptyStateUrlInput");
+        if (emptyInput) emptyInput.value = "";
+      }
+    }
+
+    function closeSongLyricsModalSafe() {
+      toggleLyricsPlayer(false);
+      closeModal("songLyricsModal");
+    }
+
+    // Display Mode Switcher (Parallel vs Interlinear / Построчный)
+    function setLyricsDisplayMode(mode) {
+      currentLyricsMode = mode;
+      const parallelBtn = document.getElementById("modeParallelBtn");
+      const interBtn = document.getElementById("modeInterlinearBtn");
+      const contentContainer = document.getElementById("lyricsContentContainer");
+      const interlinearContainer = document.getElementById("lyricsInterlinearContainer");
+      const parallelTabs = document.getElementById("parallelTabsContainer");
+
+      if (mode === "interlinear") {
+        interBtn?.classList.add("bg-blue-600", "text-white");
+        interBtn?.classList.remove("text-slate-400");
+        parallelBtn?.classList.remove("bg-blue-600", "text-white");
+        parallelBtn?.classList.add("text-slate-400");
+
+        contentContainer?.classList.add("hidden");
+        interlinearContainer?.classList.remove("hidden");
+        parallelTabs?.classList.add("hidden");
+
+        renderInterlinearView();
+      } else {
+        parallelBtn?.classList.add("bg-blue-600", "text-white");
+        parallelBtn?.classList.remove("text-slate-400");
+        interBtn?.classList.remove("bg-blue-600", "text-white");
+        interBtn?.classList.add("text-slate-400");
+
+        contentContainer?.classList.remove("hidden");
+        interlinearContainer?.classList.add("hidden");
+        parallelTabs?.classList.remove("hidden");
+      }
+    }
+
+    function renderInterlinearView() {
+      const list = document.getElementById("lyricsInterlinearList");
+      if (!list) return;
+      const leftPre = document.getElementById("songModalEng");
+      const rightPre = document.getElementById("songModalRus");
+      const leftText = leftPre ? leftPre.textContent : "";
+      const rightText = rightPre ? rightPre.textContent : "";
+
+      const leftLines = (leftText || "").split("\n");
+      const rightLines = (rightText || "").split("\n");
+      const maxLen = Math.max(leftLines.length, rightLines.length);
+
+      if (maxLen === 0 || (!leftText.trim() && !rightText.trim())) {
+        list.innerHTML = `<div class="p-8 text-center text-slate-500 text-sm">Текст песни пока отсутствует</div>`;
+        return;
+      }
+
+      let html = "";
+      let lineNum = 1;
+      for (let i = 0; i < maxLen; i++) {
+        const oLine = (leftLines[i] !== undefined) ? leftLines[i].trim() : "";
+        const tLine = (rightLines[i] !== undefined) ? rightLines[i].trim() : "";
+
+        if (!oLine && !tLine) {
+          html += `<div class="h-3 sm:h-4 border-b border-slate-800/40 my-2"></div>`;
+          continue;
+        }
+
+        html += `
+          <div class="p-2.5 sm:p-3 rounded-xl bg-slate-900/60 hover:bg-slate-900/90 border border-slate-800/80 transition group">
+            <div class="flex items-start gap-2">
+              <span class="text-[10px] font-mono text-slate-600 select-none pt-0.5 w-5 text-right shrink-0">${lineNum++}</span>
+              <div class="flex-1 min-w-0">
+                <div class="text-xs sm:text-sm font-medium text-slate-100 select-text leading-relaxed tracking-wide">${escapeHtml(oLine || "...")}</div>
+                ${tLine ? `<div class="text-xs sm:text-sm text-emerald-400 font-medium select-text leading-relaxed mt-1">${escapeHtml(tLine)}</div>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      list.innerHTML = html;
+    }
+
+    // Copy Combined Lyrics (Оригинал + Перевод вместе)
+    function copyCombinedLyrics() {
+      if (!currentLyricsTrack) return;
+      const leftPre = document.getElementById("songModalEng");
+      const rightPre = document.getElementById("songModalRus");
+      const leftText = leftPre ? leftPre.textContent : "";
+      const rightText = rightPre ? rightPre.textContent : "";
+      const leftLangName = LANG_NAMES[currentLyricsLeftLang] || currentLyricsLeftLang;
+      const rightLangName = LANG_NAMES[currentLyricsRightLang] || currentLyricsRightLang;
+      const artistName = currentLyricsArtist?.name || "";
+      const albumTitle = currentLyricsAlbum?.title || "";
+      const year = currentLyricsAlbum?.year ? ` (${currentLyricsAlbum.year})` : "";
+
+      let combined = `${artistName} — ${currentLyricsTrack.title}\n`;
+      if (albumTitle) combined += `Альбом: ${albumTitle}${year}\n`;
+      combined += `\n=== ${leftLangName.toUpperCase()} ===\n${leftText}\n\n`;
+      combined += `=== ${rightLangName.toUpperCase()} ===\n${rightText}\n`;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(combined).then(() => {
+          showNotification("Оригинал и перевод успешно скопированы!", "success");
+        }).catch(() => {
+          showNotification("Не удалось скопировать текст", "error");
+        });
+      } else {
+        showNotification("Буфер обмена недоступен в этом браузере", "warning");
+      }
     }
 
     function onLyricsLeftLangChange(newLang) {
@@ -1632,11 +2548,9 @@
       const leftSelect = document.getElementById("lyricsLeftLangSelect");
       const rightSelect = document.getElementById("lyricsRightLangSelect");
       if (!leftSelect || !rightSelect) return;
-
       const temp = currentLyricsLeftLang;
       currentLyricsLeftLang = currentLyricsRightLang;
       currentLyricsRightLang = temp;
-
       leftSelect.value = currentLyricsLeftLang;
       rightSelect.value = currentLyricsRightLang;
       renderLyricsPanes();
@@ -1644,6 +2558,7 @@
 
     async function renderLyricsPanes() {
       if (!currentLyricsTrack) return;
+
       const leftLang = currentLyricsLeftLang;
       const rightLang = currentLyricsRightLang;
 
@@ -1696,6 +2611,11 @@
         needRightFetch = true;
       }
 
+      // Refresh interlinear view if active
+      if (currentLyricsMode === "interlinear") {
+        renderInterlinearView();
+      }
+
       if (needLeftFetch || needRightFetch) {
         if (spinner) spinner.classList.remove("hidden");
         try {
@@ -1711,6 +2631,9 @@
             }));
           }
           await Promise.all(promises);
+          if (currentLyricsMode === "interlinear") {
+            renderInterlinearView();
+          }
         } catch (e) {
           console.error("Failed to load translated panes:", e);
         } finally {
@@ -1718,6 +2641,7 @@
         }
       }
     }
+
 
     async function requestTranslation(text, sourceLang = "en", targetLang = "ru") {
       let result = "";
@@ -1889,11 +2813,13 @@
         document.getElementById("trackTitleInput").value = track.title || "";
         document.getElementById("trackEngInput").value = track.eng || "";
         document.getElementById("trackRusInput").value = track.rus || "";
+        const vInput = document.getElementById("trackVideoUrlInput"); if (vInput) vInput.value = track.videoUrl || "";
       } else {
         document.getElementById("trackModalHeader").textContent = "Добавить трек";
         document.getElementById("trackTitleInput").value = "";
         document.getElementById("trackEngInput").value = "";
         document.getElementById("trackRusInput").value = "";
+        const vInputEmpty = document.getElementById("trackVideoUrlInput"); if (vInputEmpty) vInputEmpty.value = "";
       }
       openModal("trackModal");
     }
@@ -2012,6 +2938,8 @@
       const title = document.getElementById("trackTitleInput").value.trim();
       const eng = document.getElementById("trackEngInput").value.trim();
       const rus = document.getElementById("trackRusInput").value.trim();
+      const vInput = document.getElementById("trackVideoUrlInput");
+      const videoUrl = vInput ? vInput.value.trim() : "";
 
       if (!title) {
         showNotification("Введите название трека", "error");
@@ -2024,9 +2952,12 @@
         album.tracks[idx].title = title;
         album.tracks[idx].eng = eng;
         album.tracks[idx].rus = rus;
+        if (videoUrl) album.tracks[idx].videoUrl = videoUrl; else delete album.tracks[idx].videoUrl;
         showNotification("Песня обновлена!", "success");
       } else {
-        album.tracks.push({ title, eng, rus });
+        const newTrackObj = { title, eng, rus };
+        if (videoUrl) newTrackObj.videoUrl = videoUrl;
+        album.tracks.push(newTrackObj);
         showNotification("Песня добавлена в альбом!", "success");
       }
 
