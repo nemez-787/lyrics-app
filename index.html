@@ -625,6 +625,109 @@
     </div>
   </div>
 
+    <!-- Modal: Quick Rate Album (Author, Visitor 1-10, Arithmetic Mean) -->
+  <div id="quickRateModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md hidden">
+    <div class="glass-card w-full max-w-lg rounded-2xl border border-slate-800 p-5 sm:p-6 shadow-2xl bg-slate-950/95">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-800/80">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg border border-amber-500/30 shrink-0">
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <div class="min-w-0">
+            <h3 class="text-base sm:text-lg font-bold text-white truncate">Оценка альбома</h3>
+            <p id="quickRateSubtitle" class="text-xs text-blue-400 font-medium truncate"></p>
+          </div>
+        </div>
+        <button onclick="closeModal('quickRateModal')" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800/80 transition">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <input type="hidden" id="quickRateAlbumId">
+
+      <div class="space-y-4">
+        <!-- 1. Visitor Rating (1 to 10) -->
+        <div class="p-4 bg-slate-900/90 rounded-2xl border border-slate-800 shadow-inner">
+          <div class="flex items-center justify-between mb-2.5">
+            <label class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+              <i class="fa-solid fa-user text-amber-400 text-xs"></i>
+              <span>Ваша оценка (посетитель)</span>
+            </label>
+            <span id="quickRateVisitorBadge" class="text-xs font-mono font-bold text-amber-400">Не оценено</span>
+          </div>
+          <div class="flex items-center gap-1.5 flex-wrap justify-between" id="quickRateVisitorButtons">
+            <!-- Dynamically populated 1 to 10 buttons -->
+          </div>
+          <div class="mt-2.5 flex justify-end">
+            <button onclick="setQuickRateVisitor(0)" class="text-[11px] text-slate-500 hover:text-rose-400 transition flex items-center gap-1">
+              <i class="fa-solid fa-rotate-left text-[10px]"></i> Сбросить оценку посетителя
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Author Rating (1.0 to 10.0) -->
+        <div class="p-4 bg-slate-900/90 rounded-2xl border border-slate-800 shadow-inner">
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+              <i class="fa-solid fa-user-pen text-indigo-400 text-xs"></i>
+              <span>Оценка автора (меня)</span>
+            </label>
+            <span class="text-[11px] text-slate-400 font-mono">Шкала: 1.0 – 10.0</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <input 
+              type="number" 
+              id="quickRateAuthorInput" 
+              min="1" 
+              max="10" 
+              step="0.1" 
+              placeholder="Например: 9.5" 
+              oninput="updateQuickRatePreview()"
+              class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 font-mono font-semibold"
+            >
+            <button onclick="document.getElementById('quickRateAuthorInput').value = ''; updateQuickRatePreview();" title="Очистить оценку автора" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white rounded-xl text-xs transition border border-slate-700">
+              <i class="fa-solid fa-eraser"></i>
+            </button>
+          </div>
+          <!-- Quick presets for Author -->
+          <div class="flex items-center gap-1.5 mt-2.5 overflow-x-auto text-xs">
+            <span class="text-[10px] text-slate-500 shrink-0">Быстрый выбор:</span>
+            <button onclick="document.getElementById('quickRateAuthorInput').value = '7.5'; updateQuickRatePreview();" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-indigo-600/30 text-indigo-300 hover:text-white border border-slate-700/60 font-mono text-[11px] transition">7.5</button>
+            <button onclick="document.getElementById('quickRateAuthorInput').value = '8.0'; updateQuickRatePreview();" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-indigo-600/30 text-indigo-300 hover:text-white border border-slate-700/60 font-mono text-[11px] transition">8.0</button>
+            <button onclick="document.getElementById('quickRateAuthorInput').value = '8.5'; updateQuickRatePreview();" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-indigo-600/30 text-indigo-300 hover:text-white border border-slate-700/60 font-mono text-[11px] transition">8.5</button>
+            <button onclick="document.getElementById('quickRateAuthorInput').value = '9.0'; updateQuickRatePreview();" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-indigo-600/30 text-indigo-300 hover:text-white border border-slate-700/60 font-mono text-[11px] transition">9.0</button>
+            <button onclick="document.getElementById('quickRateAuthorInput').value = '9.5'; updateQuickRatePreview();" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-indigo-600/30 text-indigo-300 hover:text-white border border-slate-700/60 font-mono text-[11px] transition">9.5</button>
+            <button onclick="document.getElementById('quickRateAuthorInput').value = '10.0'; updateQuickRatePreview();" class="px-2 py-0.5 rounded-lg bg-slate-800 hover:bg-indigo-600/30 text-indigo-300 hover:text-white border border-slate-700/60 font-mono text-[11px] transition">10.0</button>
+          </div>
+        </div>
+
+        <!-- 3. Live Arithmetic Mean Preview -->
+        <div class="p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-slate-900/90 to-indigo-500/10 border border-amber-500/30 flex items-center justify-between shadow-md">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-amber-400 block flex items-center gap-1.5">
+              <i class="fa-solid fa-calculator text-xs"></i>
+              <span>Среднее арифметическое</span>
+            </span>
+            <span class="text-xs text-slate-400 mt-0.5 block">(Автор + Посетитель) ÷ 2</span>
+          </div>
+          <div class="text-right">
+            <span id="quickRateAverageDisplay" class="text-2xl sm:text-3xl font-black text-white font-mono">—</span>
+            <span class="text-xs text-slate-400 font-semibold">/ 10</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2.5 mt-6">
+        <button onclick="closeModal('quickRateModal')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition active:scale-95">
+          Отмена
+        </button>
+        <button onclick="saveQuickRateModal()" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition active:scale-95 shadow-md shadow-blue-900/20">
+          Сохранить оценку
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal: Track Add / Edit (With multi-language auto-translate) -->
   <div id="trackModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm hidden">
     <div class="glass-card w-full max-w-3xl rounded-2xl border border-slate-800 p-5 sm:p-6 shadow-2xl flex flex-col max-h-[92vh]">
@@ -1303,12 +1406,9 @@
                   </button>
                 </div>
                 
-                <!-- Album Cover Image with Year Badge -->
+                <!-- Album Cover Image (Clean Artwork, No Obstructive Badges) -->
                 <div class="w-full aspect-square rounded-xl overflow-hidden mb-2.5 shadow-lg bg-slate-900 border border-slate-800 relative">
                   <img src="${alb.cover || 'https://via.placeholder.com/300?text=No+Cover'}" alt="${alb.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300?text=No+Cover'">
-                  <div class="absolute bottom-1.5 left-1.5 bg-black/80 backdrop-blur-sm text-amber-300 text-[10px] font-mono font-bold px-1.5 py-0.5 rounded border border-amber-500/30">
-                    ${alb.year || 'Н/Д'}
-                  </div>
                 </div>
 
                 <!-- Band Name with Icon -->
@@ -1322,10 +1422,14 @@
                   ${alb.title}
                 </h3>
                 
-                <!-- Track Count -->
-                <p class="text-[10px] sm:text-[11px] text-slate-400 mt-1">
-                  ${trackCount} ${getPluralForm(trackCount, ['трек', 'трека', 'треков'])}
-                </p>
+                <!-- Track Count & Quick Rate Button -->
+                <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-slate-400 mt-1.5 gap-1">
+                  <span class="truncate">${alb.year || 'Н/Д'} • ${trackCount} ${getPluralForm(trackCount, ['трек', 'трека', 'треков'])}</span>
+                  <button onclick="event.stopPropagation(); openQuickRateModal('${alb.id}')" title="Поставить или изменить оценку альбома" class="shrink-0 transition active:scale-95 flex items-center gap-1 px-1.5 py-0.5 rounded-lg ${r.average > 0 ? 'text-amber-400 font-bold bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30' : 'text-slate-400 hover:text-amber-400 bg-slate-800/80 hover:bg-slate-700 border border-slate-700/60'}">
+                    <i class="${r.average > 0 ? 'fa-solid' : 'fa-regular'} fa-star text-[9px] ${r.average > 0 ? 'text-amber-400' : ''}"></i>
+                    <span>${r.average > 0 ? r.average : 'Оценить'}</span>
+                  </button>
+                </div>
               </div>
             `;
           });
@@ -1504,22 +1608,17 @@
                   <i class="fa-solid fa-trash"></i>
                 </button>
               </div>
+              <!-- Album Cover Image (Clean Artwork, No Obstructive Badges) -->
               <div class="w-full aspect-square rounded-xl overflow-hidden mb-3 shadow-lg bg-slate-900 border border-slate-800 relative">
                 <img src="${alb.cover || 'https://via.placeholder.com/300?text=No+Cover'}" alt="${alb.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://via.placeholder.com/300?text=No+Cover'">
-                <div class="absolute bottom-1.5 left-1.5 bg-black/80 backdrop-blur-sm text-amber-300 text-[10px] font-mono font-bold px-1.5 py-0.5 rounded border border-amber-500/30">
-                  ${alb.year || 'Н/Д'}
-                </div>
-                ${r.average > 0 ? `
-                  <div class="absolute bottom-1.5 right-1.5 bg-black/80 backdrop-blur-sm text-amber-400 text-[10px] font-bold px-1.5 py-0.5 rounded border border-amber-500/30 flex items-center gap-1 shadow-md">
-                    <i class="fa-solid fa-star text-[9px]"></i>
-                    <span>${r.average}</span>
-                  </div>
-                ` : ''}
               </div>
               <h3 class="font-bold text-slate-100 text-xs sm:text-sm group-hover:text-indigo-400 transition line-clamp-1">${alb.title}</h3>
-              <div class="flex items-center justify-between text-[11px] sm:text-xs text-slate-400 mt-1">
-                <span>${trackCount} ${getPluralForm(trackCount, ['трек', 'трека', 'треков'])}</span>
-                ${r.average > 0 ? `<span class="text-amber-400 font-semibold text-[11px]">⭐ ${r.average}</span>` : '<span class="text-slate-600 text-[11px]">без оценки</span>'}
+              <div class="flex items-center justify-between text-[11px] sm:text-xs text-slate-400 mt-1.5 gap-1">
+                <span class="truncate">${alb.year || 'Н/Д'} • ${trackCount} ${getPluralForm(trackCount, ['трек', 'трека', 'треков'])}</span>
+                <button onclick="event.stopPropagation(); openQuickRateModal('${alb.id}')" title="Поставить или изменить оценку альбома" class="shrink-0 transition active:scale-95 flex items-center gap-1 px-2 py-0.5 rounded-lg ${r.average > 0 ? 'text-amber-400 font-bold bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30' : 'text-slate-400 hover:text-amber-400 bg-slate-800/80 hover:bg-slate-700 border border-slate-700/60'}">
+                  <i class="${r.average > 0 ? 'fa-solid' : 'fa-regular'} fa-star text-[10px] ${r.average > 0 ? 'text-amber-400' : ''}"></i>
+                  <span>${r.average > 0 ? r.average : 'Оценить'}</span>
+                </button>
               </div>
             </div>
           `;
@@ -1591,6 +1690,7 @@
       currentArtistId = album.artistId;
       const app = document.getElementById("appContent");
       const trackList = album.tracks || [];
+      const ratings = getAlbumRatings(album);
 
       // Calculate track counts for filter tabs
       let countRu = 0;
@@ -1631,12 +1731,88 @@
                 <p class="text-xs sm:text-sm text-slate-400 font-medium mt-1">Исполнитель: <span class="text-slate-200 font-semibold">${artist ? artist.name : ''}</span> • Год: <span class="text-amber-400 font-semibold">${album.year || 'Н/Д'}</span></p>
               </div>
               <div class="flex items-center gap-2">
+                <button onclick="openQuickRateModal('${album.id}')" title="Оценить этот альбом" class="bg-amber-600/20 hover:bg-amber-600 text-amber-300 hover:text-white px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold transition shadow-md flex items-center gap-1.5 active:scale-95 border border-amber-500/30">
+                  <i class="fa-solid fa-star text-xs"></i> <span>${ratings.average > 0 ? ratings.average + ' / 10' : 'Оценить'}</span>
+                </button>
                 <button onclick="openTrackModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-medium transition shadow-md flex items-center gap-1.5 active:scale-95">
                   <i class="fa-solid fa-plus"></i> + Песня
                 </button>
                 <button onclick="openAlbumModal('${album.id}')" title="Редактировать альбом" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-medium transition border border-slate-700">
                   <i class="fa-solid fa-pen"></i>
                 </button>
+              </div>
+            </div>
+
+            <!-- Full 3-Way Ratings Widget: Author, Visitor (1-10), Average -->
+            <div class="mt-4 p-3.5 sm:p-4 rounded-2xl bg-slate-900/90 border border-slate-800/90 flex flex-wrap items-center justify-between gap-3 shadow-inner">
+              <!-- 1. Author Rating -->
+              <div class="flex items-center gap-2.5">
+                <div class="text-left">
+                  <span class="text-slate-400 block text-[11px] font-medium flex items-center gap-1">
+                    <i class="fa-solid fa-user-pen text-indigo-400 text-[10px]"></i> Оценка автора (меня):
+                  </span>
+                  <div class="flex items-center gap-2 mt-0.5">
+                    <span class="text-indigo-300 font-extrabold text-base font-mono">
+                      ${ratings.author > 0 ? '⭐ ' + ratings.author : 'Не указана'}
+                    </span>
+                    ${ratings.author > 0 ? '<span class="text-slate-500 text-xs">/ 10</span>' : ''}
+                    <button onclick="openAuthorRatingPrompt('${album.id}')" title="Поставить или изменить оценку автора" class="bg-indigo-600/20 hover:bg-indigo-600 text-indigo-300 hover:text-white px-2 py-0.5 rounded-lg text-xs font-medium transition active:scale-95 flex items-center gap-1 border border-indigo-500/30">
+                      <i class="fa-solid fa-pen text-[10px]"></i>
+                      <span>${ratings.author > 0 ? 'Изменить' : 'Оценить'}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Vertical Divider -->
+              <div class="hidden md:block w-px h-8 bg-slate-800"></div>
+
+              <!-- 2. Visitor Rating (Interactive 1-10 Buttons) -->
+              <div class="flex flex-col items-start gap-1">
+                <span class="text-slate-400 text-[11px] font-medium flex items-center gap-1.5">
+                  <i class="fa-solid fa-star text-amber-400 text-[10px]"></i> Ваша оценка (посетитель):
+                  ${ratings.visitor > 0 ? `<b class="text-amber-400 font-mono ml-1 font-bold">${ratings.visitor}/10</b>` : '<span class="text-slate-500 text-[11px]">нажмите цифру:</span>'}
+                </span>
+                <div class="flex items-center gap-1 flex-wrap">
+                  ${[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => `
+                    <button 
+                      onclick="setVisitorAlbumRating('${album.id}', ${n})" 
+                      title="Оценить в ${n} из 10"
+                      class="w-7 h-7 rounded-lg text-xs font-mono font-bold transition-all active:scale-90 flex items-center justify-center ${
+                        ratings.visitor === n 
+                          ? 'bg-amber-500 text-slate-950 ring-2 ring-amber-300 font-black shadow-md' 
+                          : ratings.visitor > n 
+                          ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500 hover:text-slate-950' 
+                          : 'bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/60'
+                      }"
+                    >
+                      ${n}
+                    </button>
+                  `).join('')}
+                  ${ratings.visitor > 0 ? `
+                    <button onclick="clearVisitorAlbumRating('${album.id}')" title="Сбросить оценку посетителя" class="text-slate-500 hover:text-rose-400 text-xs p-1 ml-0.5 transition" aria-label="Сбросить">
+                      <i class="fa-solid fa-xmark"></i>
+                    </button>
+                  ` : ''}
+                </div>
+              </div>
+
+              <!-- Vertical Divider -->
+              <div class="hidden md:block w-px h-8 bg-slate-800"></div>
+
+              <!-- 3. Arithmetic Average Rating -->
+              <div class="flex items-center gap-2">
+                <div class="text-left">
+                  <span class="text-amber-400 block text-[11px] font-bold uppercase tracking-wider flex items-center gap-1">
+                    <i class="fa-solid fa-calculator text-[10px]"></i> Ср. арифм.:
+                  </span>
+                  <div class="flex items-baseline gap-1 mt-0.5">
+                    <span class="text-white font-extrabold text-lg sm:text-xl font-mono">
+                      ${ratings.average > 0 ? '⭐ ' + ratings.average : '—'}
+                    </span>
+                    <span class="text-slate-500 text-xs font-semibold">/ 10</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -2111,6 +2287,119 @@
         ratedCount: overallCount,
         totalAlbums: artistAlbums.length
       };
+    }
+
+    
+    /* Quick Rate Modal State & Actions */
+    let quickRateCurrentVisitor = 0;
+
+    function openQuickRateModal(albumId) {
+      const alb = albums.find(a => a.id === albumId);
+      if (!alb) return;
+      const art = artists.find(a => a.id === alb.artistId);
+      document.getElementById("quickRateAlbumId").value = albumId;
+      document.getElementById("quickRateSubtitle").textContent = `${art ? art.name : ''} — ${alb.title} (${alb.year || ''})`;
+
+      const ratings = getAlbumRatings(alb);
+      quickRateCurrentVisitor = ratings.visitor;
+
+      // Author rating input
+      const authInput = document.getElementById("quickRateAuthorInput");
+      if (authInput) authInput.value = ratings.author > 0 ? ratings.author : "";
+
+      renderQuickRateVisitorButtons();
+      updateQuickRatePreview();
+      openModal("quickRateModal");
+    }
+
+    function renderQuickRateVisitorButtons() {
+      const container = document.getElementById("quickRateVisitorButtons");
+      const badge = document.getElementById("quickRateVisitorBadge");
+      if (!container) return;
+
+      if (badge) {
+        badge.textContent = quickRateCurrentVisitor > 0 ? `⭐ ${quickRateCurrentVisitor} / 10` : "Не оценено";
+      }
+
+      container.innerHTML = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => `
+        <button 
+          type="button"
+          onclick="setQuickRateVisitor(${n})" 
+          title="Поставить оценку ${n} из 10" 
+          class="flex-1 min-w-[34px] py-2 rounded-xl text-xs sm:text-sm font-mono font-bold transition-all active:scale-90 ${
+            quickRateCurrentVisitor === n 
+              ? 'bg-amber-500 text-slate-950 ring-2 ring-amber-300 font-black shadow-md' 
+              : quickRateCurrentVisitor >= n 
+              ? 'bg-amber-500/25 text-amber-300 border border-amber-500/40 hover:bg-amber-500 hover:text-slate-950' 
+              : 'bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/60'
+          }"
+        >
+          ${n}
+        </button>
+      `).join('');
+    }
+
+    function setQuickRateVisitor(val) {
+      quickRateCurrentVisitor = val;
+      renderQuickRateVisitorButtons();
+      updateQuickRatePreview();
+    }
+
+    function updateQuickRatePreview() {
+      const authRaw = document.getElementById("quickRateAuthorInput")?.value;
+      const authVal = parseFloat(authRaw) || 0;
+      const visVal = quickRateCurrentVisitor || 0;
+
+      let sum = 0;
+      let count = 0;
+      if (authVal > 0) {
+        sum += authVal;
+        count++;
+      }
+      if (visVal > 0) {
+        sum += visVal;
+        count++;
+      }
+      const avg = count > 0 ? parseFloat((sum / count).toFixed(1)) : 0;
+      const displayEl = document.getElementById("quickRateAverageDisplay");
+      if (displayEl) {
+        displayEl.textContent = avg > 0 ? `⭐ ${avg}` : "—";
+      }
+    }
+
+    function saveQuickRateModal() {
+      const albumId = document.getElementById("quickRateAlbumId").value;
+      const alb = albums.find(a => a.id === albumId);
+      if (!alb) return;
+
+      // 1. Save visitor rating
+      if (quickRateCurrentVisitor > 0) {
+        setVisitorAlbumRating(albumId, quickRateCurrentVisitor);
+      } else {
+        clearVisitorAlbumRating(albumId);
+      }
+
+      // 2. Save author rating
+      const authRaw = document.getElementById("quickRateAuthorInput")?.value;
+      const authNum = parseFloat(authRaw);
+      if (!isNaN(authNum) && authNum > 0) {
+        const clamped = Math.min(10, Math.max(1, parseFloat(authNum.toFixed(1))));
+        alb.authorRating = clamped;
+      } else {
+        delete alb.authorRating;
+      }
+
+      saveData();
+      closeModal("quickRateModal");
+      showNotification(`Оценка альбома "${alb.title}" сохранена!`, "success");
+
+      if (currentAlbumId === albumId) {
+        showTracks(albumId);
+      } else if (currentArtistId) {
+        showAlbums(currentArtistId);
+      } else if (currentMainTab === "years") {
+        showAlbumsByYear();
+      }
     }
 
     function scrollToLyricsView() {
@@ -3398,7 +3687,7 @@
       });
 
       // Close modal on backdrop click
-      ["songLyricsModal", "artistModal", "albumModal", "trackModal", "confirmModal"].forEach(id => {
+      ["songLyricsModal", "artistModal", "albumModal", "trackModal", "confirmModal", "quickRateModal"].forEach(id => {
         const modal = document.getElementById(id);
         modal?.addEventListener("click", (e) => {
           if (e.target === modal) closeModal(id);
